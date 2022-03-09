@@ -1,4 +1,8 @@
 # liuzimo.cn
 website
 
-From github. 浙ICP备2021025464号-3 liuzimo.cn
+```
+ssh liuzimo.cn -p 8822
+```
+
+浙ICP备2021025464号-3 liuzimo.cn
