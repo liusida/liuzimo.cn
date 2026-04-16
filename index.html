@@ -179,6 +179,35 @@
       outline-offset: 6px;
     }
 
+    .hero-contact {
+      margin: 0.2rem 0 1rem;
+    }
+
+    .hero-contact-btn {
+      display: inline-block;
+      padding: 0.32rem 0.75rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #6d758c;
+      border: 1px solid rgba(100, 120, 180, 0.32);
+      border-radius: 999px;
+      background: rgba(20, 26, 45, 0.55);
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+
+    .hero-contact-btn:hover {
+      color: #e4e7ed;
+      border-color: rgba(160, 190, 255, 0.4);
+      background: rgba(50, 65, 110, 0.45);
+    }
+
+    .hero-contact-btn:focus-visible {
+      outline: 2px solid rgba(140, 170, 255, 0.45);
+      outline-offset: 4px;
+    }
+
     .site-nav {
       position: fixed;
       top: 0;
@@ -250,6 +279,7 @@
   <main>
     <section id="top" class="page page-hero" aria-label="Intro">
       <h1><a class="name-link" href="login.html">Zimo Liu</a></h1>
+      <p class="hero-contact"><a class="hero-contact-btn" href="contact.html">Contact</a></p>
       <a class="subtitle" href="zh.html" hreflang="zh-Hans">君子尚墨</a>
       <p class="scroll-hint">Scroll</p>
     </section>
