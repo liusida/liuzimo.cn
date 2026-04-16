@@ -5,6 +5,17 @@
   margin-top: 1.75rem;
 }
 
+.daily-fetch-err,
+.daily-empty {
+  font-size: 0.92rem;
+  color: #6d748e;
+  font-weight: 300;
+}
+
+.daily-fetch-err {
+  color: #b08088;
+}
+
 .daily-post {
   margin-top: 1.5rem;
   padding-top: 1.5rem;

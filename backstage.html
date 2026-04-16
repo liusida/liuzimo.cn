@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script src="backstage-session.js"></script>
   <script>
     try {
       if (sessionStorage.getItem('liuzimo_backstage_ok') !== '1') {
@@ -99,23 +100,6 @@
       transition: color 0.2s, border-color 0.2s, background 0.2s;
     }
 
-    .btn-create-article {
-      padding: 0.65rem 1.25rem;
-      color: #07080d;
-      background: linear-gradient(165deg, rgba(180, 200, 255, 0.92), rgba(120, 145, 210, 0.85));
-      border: 1px solid rgba(200, 215, 255, 0.45);
-      border-radius: 6px;
-      width: 100%;
-      max-width: 16rem;
-      font-weight: 500;
-    }
-
-    .btn-create-article:hover {
-      background: linear-gradient(165deg, rgba(200, 218, 255, 0.98), rgba(140, 165, 225, 0.92));
-      border-color: rgba(220, 230, 255, 0.55);
-      color: #05060a;
-    }
-
     .btn-home {
       padding: 0.65rem 1.25rem;
       color: #c8ccd4;
@@ -155,10 +139,9 @@
   <main class="backstage-wrap">
     <div class="backstage-card">
       <h1>Backstage</h1>
-      <p>You’re signed in. <strong>Create new article</strong> publishes to the homepage’s Daily recording (stored locally in this browser until you add a server).</p>
+      <p>You’re signed in. Blog posts are edited in <strong>posts.json</strong> in this GitHub repo—commit &amp; push to update what visitors see.</p>
+      <p style="font-size:0.85rem;margin-bottom:1rem;"><a href="https://github.com/liusida/liuzimo.cn/edit/main/posts.json" target="_blank" rel="noopener" style="color:#8c9abd;">Open posts.json on GitHub</a></p>
       <div class="backstage-actions">
-        <a class="btn-create-article" href="new-article.html">Create new article</a>
-        <a class="btn-home" href="manage-posts.html">Delete posts</a>
         <a class="btn-home" href="index.html">Home</a>
         <button type="button" class="btn-signout" id="sign-out">Sign out</button>
       </div>

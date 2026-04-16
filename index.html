@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <script src="backstage-session.js"></script>
   <script>try { sessionStorage.setItem('liuzimo_site_locale', 'en'); } catch (e) {}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Zimo Liu</title>
@@ -235,14 +236,13 @@
     <section class="page page-secondary" id="daily-recording" aria-label="Daily recording">
       <h2>Daily recording</h2>
       <div class="blurb">
-        <p>A light log for small updates: what I tried today, what broke, what I want to try next. Nothing polished—just a place to keep track of the day-to-day.</p>
-        <p>New entries will show up here over time as this corner of the site grows.</p>
+        <p>Short updates and notes—served from <code style="font-size:0.9em;color:#8c9abd;">posts.json</code> in this site’s repository so everyone sees the same content after you deploy.</p>
       </div>
       <div id="daily-posts" class="daily-posts" aria-live="polite"></div>
     </section>
   </main>
 
-  <script src="daily-posts.js"></script>
+  <script src="daily-posts-public.js" defer></script>
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');

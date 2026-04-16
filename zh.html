@@ -2,6 +2,7 @@
 <html lang="zh-Hans">
 <head>
   <meta charset="utf-8">
+  <script src="backstage-session.js"></script>
   <script>try { sessionStorage.setItem('liuzimo_site_locale', 'zh'); } catch (e) {}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>刘子墨</title>
@@ -238,14 +239,13 @@
     <section class="page page-secondary" id="daily-recording" aria-label="日常记录">
       <h2>日常记录</h2>
       <div class="blurb">
-        <p>这里会放些零碎记录：今天试了什么、哪里卡住、接下来想做什么。不追求工整，只是把日常留下来。</p>
-        <p>网站慢慢丰富以后，这个小角落也会陆续更新。</p>
+        <p>短文与备忘——内容由仓库根目录的 <code style="font-size:0.9em;color:#8c9abd;">posts.json</code> 提供，部署后所有访客看到相同文章。</p>
       </div>
       <div id="daily-posts" class="daily-posts" aria-live="polite"></div>
     </section>
   </main>
 
-  <script src="daily-posts.js"></script>
+  <script src="daily-posts-public.js" defer></script>
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');
