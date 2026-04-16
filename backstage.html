@@ -137,6 +137,31 @@
       outline-offset: 4px;
       border-radius: 4px;
     }
+
+    .backstage-card .btn-reload {
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #6d758c;
+      background: transparent;
+      border: 1px solid rgba(100, 120, 180, 0.28);
+      border-radius: 5px;
+      padding: 0.32rem 0.55rem;
+      margin-top: -0.75rem;
+      margin-bottom: 0.75rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .backstage-card .btn-reload:hover {
+      color: #a8b0cc;
+      border-color: rgba(140, 170, 255, 0.4);
+    }
+
+    .backstage-card .btn-reload:focus-visible {
+      outline: 2px solid rgba(140, 170, 255, 0.45);
+      outline-offset: 3px;
+    }
   </style>
 </head>
 <body>
@@ -145,7 +170,8 @@
     <div class="backstage-card">
       <h1>Backstage</h1>
       <p>You’re signed in. Write posts in English in <strong>drafts/posts.txt</strong>, run <code>node scripts/sync-drafts.mjs</code>, then ask Cursor to add <strong>zhTitle</strong> / <strong>zhBody</strong> in <code>posts/*.json</code> and push.</p>
-      <p style="font-size:0.85rem;margin-bottom:1rem;"><a href="https://github.com/liusida/liuzimo.cn/tree/main/drafts" target="_blank" rel="noopener" style="color:#8c9abd;">Open drafts on GitHub</a> · <a href="https://github.com/liusida/liuzimo.cn/tree/main/posts" target="_blank" rel="noopener" style="color:#8c9abd;">posts</a></p>
+      <p style="font-size:0.85rem;margin-bottom:0.5rem;"><a href="https://github.com/liusida/liuzimo.cn/tree/main/drafts" target="_blank" rel="noopener" style="color:#8c9abd;">Open drafts on GitHub</a> · <a href="https://github.com/liusida/liuzimo.cn/tree/main/posts" target="_blank" rel="noopener" style="color:#8c9abd;">posts</a></p>
+      <button type="button" class="btn-reload" id="reload-no-cache" title="Load this page again without using a cached copy">Reload (no cache)</button>
       <div class="backstage-actions">
         <button type="button" class="btn-home" id="download-posts">Download all posts (zip)</button>
         <a class="btn-home" href="index.html">Home</a>
@@ -242,6 +268,13 @@
           });
       });
     })();
+  </script>
+  <script>
+    document.getElementById('reload-no-cache').addEventListener('click', function () {
+      var u = new URL(window.location.href);
+      u.searchParams.set('_', String(Date.now()));
+      window.location.replace(u.toString());
+    });
   </script>
   <script>
     document.getElementById('sign-out').addEventListener('click', function () {
