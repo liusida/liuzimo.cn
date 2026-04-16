@@ -6,7 +6,7 @@
   <title>刘子墨</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -23,7 +23,7 @@
     body {
       background: #07080d;
       color: #c8ccd4;
-      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
       overflow-x: hidden;
       -ms-overflow-style: none;
       scrollbar-width: none;
@@ -80,10 +80,9 @@
     }
 
     .page-secondary h2 {
-      font-family: "Cormorant Garamond", "Georgia", serif;
       font-size: clamp(1.8rem, 4.5vw, 2.75rem);
-      font-weight: 300;
-      letter-spacing: 0.12em;
+      font-weight: 400;
+      letter-spacing: 0.14em;
       color: #e4e7ed;
       margin-bottom: 1em;
     }
@@ -93,9 +92,10 @@
       width: 100%;
       text-align: left;
       font-size: clamp(0.95rem, 2vw, 1.05rem);
-      line-height: 1.8;
+      line-height: 1.85;
       color: #7a8199;
-      font-weight: 300;
+      font-weight: 400;
+      letter-spacing: 0.03em;
     }
 
     .page-secondary .blurb p + p {
@@ -109,14 +109,13 @@
 
     body.zh h1,
     body.zh .page-secondary h2 {
-      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Georgia", serif;
+      font-family: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
     }
 
     h1 {
-      font-family: "Cormorant Garamond", "Georgia", serif;
       font-size: clamp(2.8rem, 7vw, 5.5rem);
-      font-weight: 300;
-      letter-spacing: 0.08em;
+      font-weight: 400;
+      letter-spacing: 0.1em;
       color: #e4e7ed;
       margin-bottom: 0.3em;
     }
@@ -169,6 +168,12 @@
       outline-offset: 6px;
     }
 
+    body.zh .subtitle {
+      letter-spacing: 0.14em;
+      font-weight: 400;
+      text-transform: none;
+    }
+
     .links {
       display: flex;
       gap: 2rem;
@@ -181,6 +186,11 @@
       letter-spacing: 0.15em;
       text-transform: uppercase;
       transition: color 0.3s;
+    }
+
+    body.zh .links a {
+      text-transform: none;
+      letter-spacing: 0.08em;
     }
 
     .links a:hover {
@@ -209,9 +219,9 @@
   <main>
     <section class="page page-hero" aria-label="简介">
       <h1>刘子墨</h1>
-      <a class="subtitle" href="index.html" hreflang="en">英文</a>
+      <a class="subtitle" href="index.html" hreflang="en">Esteem Knowledge</a>
       <nav class="links">
-        <a href="https://github.com/zimoliu-vt" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/zimoliu-vt" target="_blank" rel="noopener">GitHub 网站</a>
       </nav>
       <p class="scroll-hint">向下滚动</p>
     </section>
