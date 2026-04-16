@@ -1,0 +1,53 @@
+.daily-posts {
+  width: 100%;
+  max-width: 38rem;
+  text-align: left;
+  margin-top: 1.75rem;
+}
+
+.daily-post {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(90, 97, 122, 0.28);
+}
+
+.daily-post:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.daily-post time {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5a617a;
+  margin-bottom: 0.45rem;
+}
+
+.daily-post-title {
+  font-family: "Cormorant Garamond", "Georgia", serif;
+  font-size: clamp(1.15rem, 2.8vw, 1.4rem);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: #d8dce8;
+  margin-bottom: 0.6rem;
+}
+
+.daily-post-body {
+  font-size: clamp(0.92rem, 2vw, 1.02rem);
+  line-height: 1.75;
+  color: #8a92aa;
+  font-weight: 300;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+body.zh .daily-post-title {
+  font-family: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
+}
+
+body.zh .daily-post-body {
+  letter-spacing: 0.02em;
+}

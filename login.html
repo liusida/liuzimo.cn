@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <script>try { sessionStorage.setItem('liuzimo_site_locale', 'zh'); } catch (e) {}</script>
+  <script>
+    try {
+      if (sessionStorage.getItem('liuzimo_site_locale') === 'zh') {
+        window.location.replace('zh.html');
+      }
+    } catch (e) {}
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>刘子墨</title>
+  <title>Sign in — Zimo Liu</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="daily-posts.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     html {
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
       scrollbar-width: none;
     }
 
@@ -25,7 +28,7 @@
     body {
       background: #07080d;
       color: #c8ccd4;
-      font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
       overflow-x: hidden;
       -ms-overflow-style: none;
       scrollbar-width: none;
@@ -43,209 +46,213 @@
       height: 100%;
     }
 
-    .page {
+    .login-wrap {
       position: relative;
       z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       min-height: 100vh;
       min-height: 100dvh;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 2rem;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
     }
 
-    .scroll-hint {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.65rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: #3a4158;
-      animation: hintPulse 2.8s ease-in-out infinite;
-    }
-
-    @keyframes hintPulse {
-      0%, 100% { opacity: 0.35; }
-      50% { opacity: 0.9; }
-    }
-
-    .page-secondary {
-      justify-content: flex-start;
-      padding-top: clamp(2.75rem, 7vh, 4rem);
-      padding-bottom: clamp(3rem, 10vh, 6rem);
-    }
-
-    .page-secondary h2 {
-      font-size: clamp(1.8rem, 4.5vw, 2.75rem);
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      color: #e4e7ed;
-      margin-bottom: 1em;
-    }
-
-    .page-secondary .blurb {
-      max-width: 38rem;
+    .login-card {
       width: 100%;
-      text-align: left;
-      font-size: clamp(0.95rem, 2vw, 1.05rem);
-      line-height: 1.85;
-      color: #7a8199;
-      font-weight: 400;
-      letter-spacing: 0.03em;
+      max-width: 22rem;
+      padding: 2rem 1.75rem;
+      border: 1px solid rgba(100, 120, 180, 0.22);
+      border-radius: 12px;
+      background: rgba(10, 12, 20, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
     }
 
-    .page-secondary .blurb p + p {
-      margin-top: 1.2em;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-snap-type: none; scroll-behavior: auto; }
-      .scroll-hint { animation: none; opacity: 0.55; }
-    }
-
-    body.zh h1,
-    body.zh .page-secondary h2 {
-      font-family: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
-    }
-
-    h1 {
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
-      font-weight: 400;
+    .login-title {
+      font-family: "Cormorant Garamond", "Georgia", serif;
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 300;
       letter-spacing: 0.1em;
       color: #e4e7ed;
-      margin-bottom: 0.3em;
+      text-align: center;
+      margin-bottom: 1.75rem;
     }
 
-    .page-hero h1,
-    .page-hero .subtitle,
-    .page-secondary h2 {
-      display: inline-block;
-      transform-origin: center;
-      transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
+    .login-form label {
+      display: block;
+      margin-bottom: 1.1rem;
+      text-align: left;
     }
 
-    @media (hover: hover) and (pointer: fine) {
-      .page-hero h1:hover,
-      .page-hero .subtitle:hover,
-      .page-secondary h2:hover {
-        transform: scale(1.08);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .page-hero h1,
-      .page-hero .subtitle,
-      .page-secondary h2 { transition: none; }
-      .page-hero h1:hover,
-      .page-hero .subtitle:hover,
-      .page-secondary h2:hover { transform: none; }
-    }
-
-    .subtitle {
-      font-size: clamp(0.85rem, 2vw, 1.05rem);
-      letter-spacing: 0.35em;
+    .login-form .label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: #5a617a;
-      margin-bottom: 2.5em;
-      text-decoration: none;
+      margin-bottom: 0.45rem;
+    }
+
+    .login-form .label.label-sentence {
+      text-transform: none;
+      letter-spacing: 0.1em;
+    }
+
+    .login-form input {
+      width: 100%;
+      padding: 0.7rem 0.85rem;
+      font-size: 0.95rem;
+      color: #e4e7ed;
+      background: rgba(12, 14, 20, 0.9);
+      border: 1px solid rgba(90, 97, 122, 0.45);
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .login-form input:focus {
+      border-color: rgba(140, 170, 255, 0.4);
+      box-shadow: 0 0 0 3px rgba(100, 140, 220, 0.12);
+    }
+
+    .login-submit {
+      width: 100%;
+      margin-top: 0.35rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #c8ccd4;
+      background: rgba(60, 75, 120, 0.35);
+      border: 1px solid rgba(140, 170, 255, 0.25);
+      border-radius: 6px;
       cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
     }
 
-    a.subtitle {
-      display: inline-block;
-    }
-
-    a.subtitle:hover {
+    .login-submit:hover {
+      background: rgba(80, 100, 160, 0.45);
+      border-color: rgba(160, 190, 255, 0.4);
       color: #e4e7ed;
     }
 
-    a.subtitle:focus-visible {
-      outline: 2px solid rgba(140, 170, 255, 0.45);
-      outline-offset: 6px;
+    .back-nav {
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(90, 97, 122, 0.22);
+      text-align: center;
     }
 
-    body.zh .subtitle {
-      letter-spacing: 0.14em;
-      font-weight: 400;
-      text-transform: none;
-    }
-
-    .links {
-      display: flex;
-      gap: 2rem;
-    }
-
-    .links a {
-      color: #5a617a;
-      text-decoration: none;
-      font-size: 0.85rem;
-      letter-spacing: 0.15em;
+    .back-btn {
+      background: none;
+      border: none;
+      padding: 0.35rem 0.75rem;
+      font: inherit;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      transition: color 0.3s;
+      color: #5a617a;
+      cursor: pointer;
+      transition: color 0.2s;
     }
 
-    body.zh .links a {
-      text-transform: none;
-      letter-spacing: 0.08em;
-    }
-
-    .links a:hover {
+    .back-btn:hover {
       color: #e4e7ed;
     }
 
-    @media (max-width: 480px) {
-      .links { gap: 1.5rem; }
-      .links a {
-        font-size: 0.8rem;
-        padding: 0.5rem 0;
-      }
+    .back-btn:focus-visible {
+      outline: 2px solid rgba(140, 170, 255, 0.45);
+      outline-offset: 4px;
+      border-radius: 4px;
     }
 
-    @media (pointer: coarse) {
-      .links a {
-        min-height: 44px;
-        display: inline-flex;
-        align-items: center;
-      }
+    .login-error {
+      margin-bottom: 0.85rem;
+      font-size: 0.8rem;
+      line-height: 1.4;
+      color: #b08088;
+      text-align: center;
+    }
+
+    .login-error[hidden] {
+      display: none;
     }
   </style>
 </head>
-<body class="zh">
+<body>
   <canvas id="bg" aria-hidden="true"></canvas>
-  <main>
-    <section class="page page-hero" aria-label="简介">
-      <h1>刘子墨</h1>
-      <a class="subtitle" href="index.html" hreflang="en">Esteem Knowledge</a>
-      <nav class="links">
-        <a href="https://github.com/zimoliu-vt" target="_blank" rel="noopener">GitHub 网站</a>
+  <main class="login-wrap">
+    <div class="login-card">
+      <h1 class="login-title">Sign in</h1>
+      <form class="login-form" id="login-form" action="#" method="post" autocomplete="on">
+        <label>
+          <span class="label label-sentence">Username</span>
+          <input type="text" name="username" id="username" autocomplete="username" value="zimo" required>
+        </label>
+        <label>
+          <span class="label">Password</span>
+          <input type="password" name="password" id="password" autocomplete="current-password" required>
+        </label>
+        <p class="login-error" id="login-error" hidden role="alert">Invalid username or password.</p>
+        <button type="submit" class="login-submit">Sign in (Backstage)</button>
+      </form>
+      <nav class="back-nav" aria-label="Back">
+        <button type="button" class="back-btn" id="back-btn">Back</button>
       </nav>
-      <p class="scroll-hint">向下滚动</p>
-    </section>
-    <section class="page page-secondary" aria-label="我的旅程">
-      <h2>我的旅程</h2>
-      <div class="blurb">
-        <p>刘子墨是一名生活在新加坡、充满好奇心与活力的 12 岁少年，对探究事物如何运作有着浓厚兴趣。他在科学、数学与科技方面展现出敏锐的悟性，并尤其热衷参与学校的课外实践活动（CCA）中的机器人项目，在其中锻炼设计、搭建与编程等能力。</p>
-        <p>在学业之外，刘子墨喜爱户外活动，通过骑行 Rockrider 山地车保持积极的生活方式，体现出敢于挑战的冒险精神。他能使用中英文交流，求知若渴，不断寻找拓展知识、精进技能的机会，其中也包括自己动手开发个人网站等实践。</p>
-        <p>总体而言，刘子墨是一位积极主动、全面发展的学习者，在日常生活中能够较好地平衡创造力、思辨能力与体能活动。</p>
-      </div>
-    </section>
-    <section class="page page-secondary" id="daily-recording" aria-label="日常记录">
-      <h2>日常记录</h2>
-      <div class="blurb">
-        <p>这里会放些零碎记录：今天试了什么、哪里卡住、接下来想做什么。不追求工整，只是把日常留下来。</p>
-        <p>网站慢慢丰富以后，这个小角落也会陆续更新。</p>
-      </div>
-      <div id="daily-posts" class="daily-posts" aria-live="polite"></div>
-    </section>
+    </div>
   </main>
 
-  <script src="daily-posts.js"></script>
+  <script>
+    (function () {
+      var USER_SHA256 = 'c1c224b03cd9bc7b6a86d77f5dace40191766c485cd55dc48caf9ac873335d6f';
+      var PASS_SHA256 = 'c127129d984b9abcd8b582f42caf7989daa212d8094dec98783cb71d6d7da3ac';
+
+      function sha256Hex(str) {
+        return crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)).then(function (buf) {
+          return Array.from(new Uint8Array(buf)).map(function (b) {
+            return ('0' + b.toString(16)).slice(-2);
+          }).join('');
+        });
+      }
+
+      document.getElementById('login-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var user = document.getElementById('username').value.trim();
+        var pass = document.getElementById('password').value;
+        var err = document.getElementById('login-error');
+
+        if (!window.crypto || !window.crypto.subtle) {
+          err.textContent = 'Sign-in needs HTTPS (or localhost).';
+          err.hidden = false;
+          return;
+        }
+
+        Promise.all([sha256Hex(user), sha256Hex(pass)]).then(function (hashes) {
+          if (hashes[0] === USER_SHA256 && hashes[1] === PASS_SHA256) {
+            err.hidden = true;
+            err.textContent = 'Invalid username or password.';
+            try {
+              sessionStorage.setItem('liuzimo_backstage_ok', '1');
+            } catch (ignore) {}
+            window.location.href = 'backstage.html';
+          } else {
+            err.hidden = false;
+          }
+        }).catch(function () {
+          err.textContent = 'Could not verify. Try again.';
+          err.hidden = false;
+        });
+      });
+    })();
+    document.getElementById('back-btn').addEventListener('click', function () {
+      if (history.length > 1) {
+        history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');

@@ -2,25 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <script>try { sessionStorage.setItem('liuzimo_site_locale', 'en'); } catch (e) {}</script>
+  <script>
+    try {
+      if (sessionStorage.getItem('liuzimo_backstage_ok') !== '1') {
+        window.location.replace('login.html');
+      }
+    } catch (e) {
+      window.location.replace('login.html');
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Zimo Liu</title>
+  <title>Backstage — Zimo Liu</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="daily-posts.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html {
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
-      scrollbar-width: none;
-    }
-
-    html::-webkit-scrollbar {
-      display: none;
-    }
+    html { scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
 
     body {
       background: #07080d;
@@ -31,9 +31,7 @@
       scrollbar-width: none;
     }
 
-    body::-webkit-scrollbar {
-      display: none;
-    }
+    body::-webkit-scrollbar { display: none; }
 
     canvas {
       position: fixed;
@@ -43,206 +41,137 @@
       height: 100%;
     }
 
-    .page {
+    .backstage-wrap {
       position: relative;
       z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       min-height: 100vh;
       min-height: 100dvh;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 2rem;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
     }
 
-    .scroll-hint {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.65rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: #3a4158;
-      animation: hintPulse 2.8s ease-in-out infinite;
-    }
-
-    @keyframes hintPulse {
-      0%, 100% { opacity: 0.35; }
-      50% { opacity: 0.9; }
-    }
-
-    .page-secondary {
-      justify-content: flex-start;
-      padding-top: clamp(2.75rem, 7vh, 4rem);
-      padding-bottom: clamp(3rem, 10vh, 6rem);
-    }
-
-    .page-secondary h2 {
-      font-family: "Cormorant Garamond", "Georgia", serif;
-      font-size: clamp(1.8rem, 4.5vw, 2.75rem);
-      font-weight: 300;
-      letter-spacing: 0.12em;
-      color: #e4e7ed;
-      margin-bottom: 1em;
-    }
-
-    .page-secondary .blurb {
-      max-width: 38rem;
+    .backstage-card {
       width: 100%;
-      text-align: left;
-      font-size: clamp(0.95rem, 2vw, 1.05rem);
-      line-height: 1.8;
+      max-width: 26rem;
+      padding: 2rem 1.75rem;
+      border: 1px solid rgba(100, 120, 180, 0.22);
+      border-radius: 12px;
+      background: rgba(10, 12, 20, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+      text-align: center;
+    }
+
+    .backstage-card h1 {
+      font-family: "Cormorant Garamond", "Georgia", serif;
+      font-size: clamp(1.85rem, 4.5vw, 2.5rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: #e4e7ed;
+      margin-bottom: 0.75rem;
+    }
+
+    .backstage-card p {
+      font-size: 0.95rem;
+      line-height: 1.65;
       color: #7a8199;
       font-weight: 300;
+      margin-bottom: 1.75rem;
     }
 
-    .page-secondary .blurb p + p {
-      margin-top: 1.2em;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-snap-type: none; scroll-behavior: auto; }
-      .scroll-hint { animation: none; opacity: 0.55; }
-    }
-
-    h1 {
-      font-family: "Cormorant Garamond", "Georgia", serif;
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
-      font-weight: 300;
-      letter-spacing: 0.08em;
-      color: #e4e7ed;
-      margin-bottom: 0.3em;
-    }
-
-    .page-hero h1 .name-link {
-      color: inherit;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .page-hero h1 .name-link:focus-visible {
-      outline: 2px solid rgba(140, 170, 255, 0.45);
-      outline-offset: 6px;
-      border-radius: 4px;
-    }
-
-    .page-hero h1,
-    .page-hero .subtitle,
-    .page-secondary h2 {
-      display: inline-block;
-      transform-origin: center;
-      transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .page-hero h1:hover,
-      .page-hero .subtitle:hover,
-      .page-secondary h2:hover {
-        transform: scale(1.08);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .page-hero h1,
-      .page-hero .subtitle,
-      .page-secondary h2 { transition: none; }
-      .page-hero h1:hover,
-      .page-hero .subtitle:hover,
-      .page-secondary h2:hover { transform: none; }
-    }
-
-    .subtitle {
-      font-size: clamp(0.85rem, 2vw, 1.05rem);
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: #5a617a;
-      margin-bottom: 2.5em;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    a.subtitle {
-      display: inline-block;
-    }
-
-    a.subtitle:hover {
-      color: #e4e7ed;
-    }
-
-    a.subtitle:focus-visible {
-      outline: 2px solid rgba(140, 170, 255, 0.45);
-      outline-offset: 6px;
-    }
-
-    .links {
+    .backstage-actions {
       display: flex;
-      gap: 2rem;
+      flex-direction: column;
+      gap: 0.75rem;
+      align-items: center;
     }
 
-    .links a {
-      color: #5a617a;
-      text-decoration: none;
-      font-size: 0.85rem;
+    .backstage-actions a,
+    .backstage-actions button {
+      font-size: 0.72rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      transition: color 0.3s;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
     }
 
-    .links a:hover {
+    .btn-create-article {
+      padding: 0.65rem 1.25rem;
+      color: #07080d;
+      background: linear-gradient(165deg, rgba(180, 200, 255, 0.92), rgba(120, 145, 210, 0.85));
+      border: 1px solid rgba(200, 215, 255, 0.45);
+      border-radius: 6px;
+      width: 100%;
+      max-width: 16rem;
+      font-weight: 500;
+    }
+
+    .btn-create-article:hover {
+      background: linear-gradient(165deg, rgba(200, 218, 255, 0.98), rgba(140, 165, 225, 0.92));
+      border-color: rgba(220, 230, 255, 0.55);
+      color: #05060a;
+    }
+
+    .btn-home {
+      padding: 0.65rem 1.25rem;
+      color: #c8ccd4;
+      background: rgba(60, 75, 120, 0.35);
+      border: 1px solid rgba(140, 170, 255, 0.25);
+      border-radius: 6px;
+      width: 100%;
+      max-width: 16rem;
+    }
+
+    .btn-home:hover {
+      background: rgba(80, 100, 160, 0.45);
+      border-color: rgba(160, 190, 255, 0.4);
       color: #e4e7ed;
     }
 
-    @media (max-width: 480px) {
-      .links { gap: 1.5rem; }
-      .links a {
-        font-size: 0.8rem;
-        padding: 0.5rem 0;
-      }
+    .btn-signout {
+      background: none;
+      border: none;
+      color: #5a617a;
+      padding: 0.35rem;
     }
 
-    @media (pointer: coarse) {
-      .links a {
-        min-height: 44px;
-        display: inline-flex;
-        align-items: center;
-      }
+    .btn-signout:hover {
+      color: #b08088;
+    }
+
+    .btn-signout:focus-visible {
+      outline: 2px solid rgba(140, 170, 255, 0.45);
+      outline-offset: 4px;
+      border-radius: 4px;
     }
   </style>
 </head>
 <body>
   <canvas id="bg" aria-hidden="true"></canvas>
-  <main>
-    <section class="page page-hero" aria-label="Intro">
-      <h1><a class="name-link" href="login.html">Zimo Liu</a></h1>
-      <a class="subtitle" href="zh.html" hreflang="zh-Hans">君子尚墨</a>
-      <nav class="links">
-        <a href="https://github.com/zimoliu-vt" target="_blank" rel="noopener">GitHub</a>
-      </nav>
-      <p class="scroll-hint">Scroll</p>
-    </section>
-    <section class="page page-secondary" aria-label="My journey">
-      <h2>My journey</h2>
-      <div class="blurb">
-        <p>Zimo Liu is a curious and active 12-year-old based in Singapore with a strong interest in understanding how things work. He demonstrates a keen aptitude for science, mathematics, and technology, and is particularly engaged in robotics through his school’s co-curricular activities (CCA), where he develops skills in design, construction, and programming.</p>
-        <p>In addition to his academic pursuits, Zimo enjoys outdoor activities and maintains an active lifestyle by riding his Rockrider mountain bike, reflecting his sense of adventure and enthusiasm for physical challenges. Bilingual and eager to learn, he consistently seeks opportunities to expand his knowledge and refine his skills, including personal initiatives such as developing his own website.</p>
-        <p>Overall, Zimo is a motivated and well-rounded learner who effectively balances creativity, analytical thinking, and physical activity in his daily life.</p>
+  <main class="backstage-wrap">
+    <div class="backstage-card">
+      <h1>Backstage</h1>
+      <p>You’re signed in. <strong>Create new article</strong> publishes to the homepage’s Daily recording (stored locally in this browser until you add a server).</p>
+      <div class="backstage-actions">
+        <a class="btn-create-article" href="new-article.html">Create new article</a>
+        <a class="btn-home" href="index.html">Home</a>
+        <button type="button" class="btn-signout" id="sign-out">Sign out</button>
       </div>
-    </section>
-    <section class="page page-secondary" id="daily-recording" aria-label="Daily recording">
-      <h2>Daily recording</h2>
-      <div class="blurb">
-        <p>A light log for small updates: what I tried today, what broke, what I want to try next. Nothing polished—just a place to keep track of the day-to-day.</p>
-        <p>New entries will show up here over time as this corner of the site grows.</p>
-      </div>
-      <div id="daily-posts" class="daily-posts" aria-live="polite"></div>
-    </section>
+    </div>
   </main>
 
-  <script src="daily-posts.js"></script>
+  <script>
+    document.getElementById('sign-out').addEventListener('click', function () {
+      try {
+        sessionStorage.removeItem('liuzimo_backstage_ok');
+      } catch (e) {}
+      window.location.href = 'login.html';
+    });
+  </script>
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');
