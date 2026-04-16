@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 /**
- * Reads drafts/posts.txt and writes posts/<id>.json + posts/manifest.json
+ * Reads drafts/posts.txt (English only) and writes posts/<id>.json + manifest.
+ * Does not write zhTitle/zhBody — add those in posts/*.json (e.g. ask Cursor to translate).
  * Usage: node scripts/sync-drafts.mjs
  */
 import fs from 'fs';
@@ -43,11 +44,7 @@ function parseBlocks(text) {
 }
 
 function parseOneBlock(block) {
-  const zhSplit = block.split(/\n---zh---\n/);
-  const main = zhSplit[0];
-  const zhBody = zhSplit[1] != null ? zhSplit[1].trim() : '';
-
-  const lines = main.split('\n');
+  const lines = block.split('\n');
   const headers = {};
   let i = 0;
   for (; i < lines.length; i++) {
@@ -58,13 +55,13 @@ function parseOneBlock(block) {
     headers[cm[1]] = cm[2];
   }
 
-  let bodyLines = lines.slice(i + 1);
+  const bodyLines = lines.slice(i + 1);
   const body = bodyLines.join('\n').replace(/^\n+/, '').replace(/\n+$/, '');
 
-  return { headers, body, zhBody };
+  return { headers, body };
 }
 
-function buildPost(headers, body, zhBody, usedIds) {
+function buildPost(headers, body, usedIds) {
   const title = (headers.title || '').trim();
   if (!title) throw new Error('Each [[POST]] needs title: …');
 
@@ -84,17 +81,12 @@ function buildPost(headers, body, zhBody, usedIds) {
     dateIso = new Date(t).toISOString();
   }
 
-  const post = {
+  return {
     id,
     dateIso,
     title,
     body
   };
-  const zht = (headers.zhTitle || '').trim();
-  if (zht) post.zhTitle = zht;
-  if (zhBody) post.zhBody = zhBody;
-
-  return post;
 }
 
 function main() {
@@ -105,17 +97,13 @@ function main() {
 
   const raw = fs.readFileSync(draftPath, 'utf8');
   const blocks = parseBlocks(raw);
-  if (!blocks.length) {
-    console.error('No [[POST]] … [[/POST]] blocks found in drafts/posts.txt');
-    process.exit(1);
-  }
-
-  const usedIds = new Set();
   const posts = [];
+  const usedIds = new Set();
 
   for (const block of blocks) {
-    const { headers, body, zhBody } = parseOneBlock(block);
-    posts.push(buildPost(headers, body, zhBody, usedIds));
+    if (!block.length) continue;
+    const { headers, body } = parseOneBlock(block);
+    posts.push(buildPost(headers, body, usedIds));
   }
 
   posts.sort((a, b) => new Date(b.dateIso) - new Date(a.dateIso));
@@ -129,7 +117,7 @@ function main() {
 
   fs.writeFileSync(path.join(postsDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n', 'utf8');
 
-  const existing = fs.existsSync(postsDir) ? fs.readdirSync(postsDir) : [];
+  const existing = fs.readdirSync(postsDir);
   for (const f of existing) {
     if (!f.endsWith('.json') || f === 'manifest.json') continue;
     const id = f.replace(/\.json$/, '');
@@ -144,7 +132,7 @@ function main() {
     fs.writeFileSync(path.join(postsDir, p.id + '.json'), out, 'utf8');
   }
 
-  console.log('Wrote', posts.length, 'post(s) to posts/');
+  console.log('Wrote', posts.length, 'post(s) to posts/ (English fields only).');
 }
 
 main();
