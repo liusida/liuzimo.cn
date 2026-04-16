@@ -269,6 +269,39 @@
     .contact-alt-details summary::-webkit-details-marker {
       display: none;
     }
+
+    .contact-spam-hint {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.65rem;
+      margin-top: 1rem;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: #9aa3b8;
+      text-align: left;
+      border: 1px solid rgba(180, 140, 90, 0.28);
+      border-radius: 8px;
+      background: rgba(35, 28, 18, 0.45);
+    }
+
+    .contact-spam-badge {
+      flex-shrink: 0;
+      padding: 0.2rem 0.45rem;
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #d4b896;
+      background: rgba(90, 70, 40, 0.55);
+      border: 1px solid rgba(200, 160, 100, 0.35);
+      border-radius: 4px;
+    }
+
+    .contact-spam-hint strong {
+      color: #c8b898;
+      font-weight: 500;
+    }
   </style>
 </head>
 <body>
@@ -313,6 +346,10 @@
         </p>
       </details>
       <p class="contact-note">First time using this form, FormSubmit may email you once to confirm the address—check your inbox.</p>
+      <p class="contact-spam-hint" role="note">
+        <span class="contact-spam-badge">Spam</span>
+        <span>Emails from FormSubmit or replies from this site may be sorted into <strong>Spam</strong> or <strong>Junk</strong>. Check those folders if nothing appears in your inbox.</span>
+      </p>
       <p class="contact-direct">
         <a href="mailto:liu.zimo.email@gmail.com">liu.zimo.email@gmail.com</a>
         <button type="button" class="contact-copy" id="copy-email" title="Copy address">Copy</button>
