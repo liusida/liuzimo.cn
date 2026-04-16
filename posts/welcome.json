@@ -2,7 +2,7 @@
   "id": "welcome",
   "dateIso": "2026-04-16T12:00:00.000Z",
   "title": "Welcome",
-  "body": "Posts live in the repository’s posts/ folder (one JSON file each), with posts/manifest.json listing them. To add or change posts, edit those files on GitHub or locally, then commit and push.",
+  "body": "Posts live in the repository’s posts/ folder (one JSON file each), with posts/manifest.json listing them. You can keep this drafts/posts.txt as your source copy: edit here, then run the sync step above to update the site.",
   "zhTitle": "欢迎",
-  "zhBody": "文章保存在仓库的 posts/ 目录下（每篇一个 JSON），由 posts/manifest.json 索引。要发表或修改文章，请在 GitHub 或本地编辑这些文件，然后提交并推送。"
+  "zhBody": "文章保存在仓库的 posts/ 目录下（每篇一个 JSON），由 posts/manifest.json 索引。你也可以把本文件 drafts/posts.txt 当作草稿源：在这里修改后，按上面步骤同步到网站。"
 }

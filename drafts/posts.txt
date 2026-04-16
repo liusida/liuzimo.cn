@@ -1,0 +1,30 @@
+# =============================================================================
+# Daily posts — edit this file, then sync to the website.
+#
+# How to publish:
+#   1) Add or change a block below (between [[POST]] and [[/POST]]).
+#   2) In Cursor chat, say something like: “Sync drafts/posts.txt and push.”
+#      Or in the project folder run:  node scripts/sync-drafts.mjs
+#      then: git add posts drafts && git commit -m "Update posts" && git push
+#
+# Block rules:
+#   - Headers (id, date, title, zhTitle): one per line, “key: value”
+#   - id: optional (auto slug from title if omitted)
+#   - date: optional ISO time, e.g. 2026-04-16T12:00:00.000Z (defaults to “now” when omitted)
+#   - title: required (English)
+#   - zhTitle: optional
+#   - After headers: blank line, then English body text.
+#   - Optional Chinese body after a line that is exactly: ---zh---
+# =============================================================================
+
+[[POST]]
+id: welcome
+date: 2026-04-16T12:00:00.000Z
+title: Welcome
+zhTitle: 欢迎
+
+Posts live in the repository’s posts/ folder (one JSON file each), with posts/manifest.json listing them. You can keep this drafts/posts.txt as your source copy: edit here, then run the sync step above to update the site.
+
+---zh---
+文章保存在仓库的 posts/ 目录下（每篇一个 JSON），由 posts/manifest.json 索引。你也可以把本文件 drafts/posts.txt 当作草稿源：在这里修改后，按上面步骤同步到网站。
+[[/POST]]

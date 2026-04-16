@@ -139,8 +139,8 @@
   <main class="backstage-wrap">
     <div class="backstage-card">
       <h1>Backstage</h1>
-      <p>You’re signed in. Daily posts live in the <strong>posts/</strong> folder in the GitHub repo (each entry is a <code>.json</code> file; <strong>posts/manifest.json</strong> lists them). Commit and push to update what visitors see.</p>
-      <p style="font-size:0.85rem;margin-bottom:1rem;"><a href="https://github.com/liusida/liuzimo.cn/tree/main/posts" target="_blank" rel="noopener" style="color:#8c9abd;">Open posts on GitHub</a></p>
+      <p>You’re signed in. Daily posts are generated from <strong>drafts/posts.txt</strong> via <code>node scripts/sync-drafts.mjs</code>, which writes the <strong>posts/</strong> folder (<code>.json</code> files + <strong>posts/manifest.json</strong>). Commit and push after syncing.</p>
+      <p style="font-size:0.85rem;margin-bottom:1rem;"><a href="https://github.com/liusida/liuzimo.cn/tree/main/drafts" target="_blank" rel="noopener" style="color:#8c9abd;">Open drafts on GitHub</a> · <a href="https://github.com/liusida/liuzimo.cn/tree/main/posts" target="_blank" rel="noopener" style="color:#8c9abd;">posts</a></p>
       <div class="backstage-actions">
         <a class="btn-home" href="index.html">Home</a>
         <button type="button" class="btn-signout" id="sign-out">Sign out</button>
