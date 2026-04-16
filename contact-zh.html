@@ -169,6 +169,15 @@
       color: #e4e7ed;
     }
 
+    .contact-submit-secondary {
+      margin-top: 0.65rem;
+      background: rgba(25, 32, 55, 0.6);
+    }
+
+    .contact-submit-secondary:hover {
+      background: rgba(40, 50, 85, 0.75);
+    }
+
     .contact-note {
       margin-top: 1rem;
       font-size: 0.75rem;
@@ -194,6 +203,25 @@
     .contact-direct a:hover {
       color: #e4e7ed;
     }
+
+    .contact-copy {
+      display: inline-block;
+      margin-left: 0.5rem;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: #6d758c;
+      background: rgba(40, 50, 80, 0.45);
+      border: 1px solid rgba(100, 120, 180, 0.3);
+      border-radius: 4px;
+      cursor: pointer;
+      vertical-align: middle;
+    }
+
+    .contact-copy:hover {
+      color: #e4e7ed;
+      border-color: rgba(160, 190, 255, 0.35);
+    }
   </style>
 </head>
 <body>
@@ -205,7 +233,7 @@
   <main class="contact-wrap">
     <div class="contact-card">
       <h1 class="contact-title">联系</h1>
-      <p class="contact-lead">填写留言后，将打开本机邮件应用发送；如需回复，请填写你的邮箱。</p>
+      <p class="contact-lead">可用本机邮件应用发送；若无反应，请用「在 Gmail 中撰写」或复制邮箱。</p>
       <form class="contact-form" id="contact-form" action="#" method="post" novalidate>
         <label>
           <span class="label">姓名</span>
@@ -224,10 +252,12 @@
           <textarea name="message" id="contact-message" required maxlength="8000" placeholder="请输入留言…"></textarea>
         </label>
         <button type="submit" class="contact-submit">在邮件应用中打开</button>
+        <button type="button" class="contact-submit contact-submit-secondary" id="open-gmail">在 Gmail 中撰写（浏览器）</button>
       </form>
-      <p class="contact-note">本站为静态页面，由你的设备发送邮件。若无反应，请使用下方地址。</p>
+      <p class="contact-note">本站无服务器，邮件由你的设备打开。若邮件链接无反应，请用 Gmail 或复制地址。</p>
       <p class="contact-direct">
-        <a id="contact-mailto" href="mailto:liu.zimo.email@gmail.com">liu.zimo.email@gmail.com</a>
+        <a href="mailto:liu.zimo.email@gmail.com">liu.zimo.email@gmail.com</a>
+        <button type="button" class="contact-copy" id="copy-email" title="复制邮箱">复制</button>
       </p>
     </div>
   </main>
@@ -236,27 +266,92 @@
     (function () {
       var CONTACT_TO = 'liu.zimo.email@gmail.com';
 
-      document.getElementById('contact-form').addEventListener('submit', function (e) {
-        e.preventDefault();
+      function buildBody() {
         var name = document.getElementById('contact-name').value.trim();
         var from = document.getElementById('contact-email').value.trim();
+        var message = document.getElementById('contact-message').value.trim();
+        var body = '';
+        if (name) body += '姓名: ' + name + '\n';
+        if (from) body += '回复邮箱: ' + from + '\n';
+        body += '\n' + message;
+        return body;
+      }
+
+      function triggerMailto(href) {
+        var a = document.createElement('a');
+        a.href = href;
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      function gmailComposeUrl(subject, body) {
+        return 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(CONTACT_TO)
+          + '&su=' + encodeURIComponent(subject)
+          + '&body=' + encodeURIComponent(body);
+      }
+
+      document.getElementById('contact-form').addEventListener('submit', function (e) {
+        e.preventDefault();
         var subject = document.getElementById('contact-subject').value.trim() || '来自 liuzimo.cn 的留言';
         var message = document.getElementById('contact-message').value.trim();
         if (!message) {
           alert('请填写留言内容。');
           return;
         }
-        var body = '';
-        if (name) body += '姓名: ' + name + '\n';
-        if (from) body += '回复邮箱: ' + from + '\n';
-        body += '\n' + message;
+        var body = buildBody();
         var href = 'mailto:' + CONTACT_TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         if (href.length > 1800) {
-          alert('内容过长，部分浏览器无法打开。请缩短留言，或直接使用下方邮箱地址。');
+          alert('内容过长，部分邮件客户端无法打开。请缩短留言，或改用「在 Gmail 中撰写」或复制下方邮箱。');
           return;
         }
-        window.location.href = href;
+        triggerMailto(href);
       });
+
+      document.getElementById('open-gmail').addEventListener('click', function () {
+        var subject = document.getElementById('contact-subject').value.trim() || '来自 liuzimo.cn 的留言';
+        var message = document.getElementById('contact-message').value.trim();
+        if (!message) {
+          alert('请填写留言内容。');
+          return;
+        }
+        var body = buildBody();
+        var url = gmailComposeUrl(subject, body);
+        if (url.length > 8000) {
+          alert('内容过长，无法在 Gmail 网页链接中打开。请缩短留言，或复制邮箱到 Gmail 手动粘贴。');
+          return;
+        }
+        window.open(url, '_blank', 'noopener,noreferrer');
+      });
+
+      document.getElementById('copy-email').addEventListener('click', function () {
+        var ok = function () { alert('已复制邮箱地址。'); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(CONTACT_TO).then(ok).catch(function () {
+            fallbackCopy(CONTACT_TO, ok);
+          });
+        } else {
+          fallbackCopy(CONTACT_TO, ok);
+        }
+      });
+
+      function fallbackCopy(text, done) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          done();
+        } catch (err) {
+          alert('无法复制。邮箱：' + text);
+        }
+        document.body.removeChild(ta);
+      }
     })();
   </script>
   <script>

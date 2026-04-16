@@ -172,6 +172,15 @@
       color: #e4e7ed;
     }
 
+    .contact-submit-secondary {
+      margin-top: 0.65rem;
+      background: rgba(25, 32, 55, 0.6);
+    }
+
+    .contact-submit-secondary:hover {
+      background: rgba(40, 50, 85, 0.75);
+    }
+
     .contact-note {
       margin-top: 1rem;
       font-size: 0.75rem;
@@ -197,6 +206,26 @@
     .contact-direct a:hover {
       color: #e4e7ed;
     }
+
+    .contact-copy {
+      display: inline-block;
+      margin-left: 0.5rem;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6d758c;
+      background: rgba(40, 50, 80, 0.45);
+      border: 1px solid rgba(100, 120, 180, 0.3);
+      border-radius: 4px;
+      cursor: pointer;
+      vertical-align: middle;
+    }
+
+    .contact-copy:hover {
+      color: #e4e7ed;
+      border-color: rgba(160, 190, 255, 0.35);
+    }
   </style>
 </head>
 <body>
@@ -208,7 +237,7 @@
   <main class="contact-wrap">
     <div class="contact-card">
       <h1 class="contact-title">Contact</h1>
-      <p class="contact-lead">Send a message—it opens your email app with this address. Add your own email in the form if you want a reply.</p>
+      <p class="contact-lead">Send a message using your email app, or use “Gmail (browser)” if nothing opens. Add your email if you want a reply.</p>
       <form class="contact-form" id="contact-form" action="#" method="post" novalidate>
         <label>
           <span class="label">Your name</span>
@@ -227,10 +256,12 @@
           <textarea name="message" id="contact-message" required maxlength="8000" placeholder="Write your message…"></textarea>
         </label>
         <button type="submit" class="contact-submit">Open in email app</button>
+        <button type="button" class="contact-submit contact-submit-secondary" id="open-gmail">Compose in Gmail (browser)</button>
       </form>
-      <p class="contact-note">This site is static: your device sends the email. If nothing opens, use the link below.</p>
+      <p class="contact-note">No server: mail opens on your device. If the email app link does nothing, use Gmail or copy the address.</p>
       <p class="contact-direct">
-        <a id="contact-mailto" href="mailto:liu.zimo.email@gmail.com">liu.zimo.email@gmail.com</a>
+        <a href="mailto:liu.zimo.email@gmail.com">liu.zimo.email@gmail.com</a>
+        <button type="button" class="contact-copy" id="copy-email" title="Copy address">Copy</button>
       </p>
     </div>
   </main>
@@ -239,27 +270,92 @@
     (function () {
       var CONTACT_TO = 'liu.zimo.email@gmail.com';
 
-      document.getElementById('contact-form').addEventListener('submit', function (e) {
-        e.preventDefault();
+      function buildBody() {
         var name = document.getElementById('contact-name').value.trim();
         var from = document.getElementById('contact-email').value.trim();
+        var message = document.getElementById('contact-message').value.trim();
+        var body = '';
+        if (name) body += 'Name: ' + name + '\n';
+        if (from) body += 'Reply to: ' + from + '\n';
+        body += '\n' + message;
+        return body;
+      }
+
+      function triggerMailto(href) {
+        var a = document.createElement('a');
+        a.href = href;
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
+      function gmailComposeUrl(subject, body) {
+        return 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(CONTACT_TO)
+          + '&su=' + encodeURIComponent(subject)
+          + '&body=' + encodeURIComponent(body);
+      }
+
+      document.getElementById('contact-form').addEventListener('submit', function (e) {
+        e.preventDefault();
         var subject = document.getElementById('contact-subject').value.trim() || 'Message from liuzimo.cn';
         var message = document.getElementById('contact-message').value.trim();
         if (!message) {
           alert('Please enter a message.');
           return;
         }
-        var body = '';
-        if (name) body += 'Name: ' + name + '\n';
-        if (from) body += 'Reply to: ' + from + '\n';
-        body += '\n' + message;
+        var body = buildBody();
         var href = 'mailto:' + CONTACT_TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         if (href.length > 1800) {
-          alert('Message is a bit long for some browsers. Try shortening it, or email directly using the address below.');
+          alert('Message is a bit long for some mail apps. Shorten it, use Gmail (browser), or copy the address below.');
           return;
         }
-        window.location.href = href;
+        triggerMailto(href);
       });
+
+      document.getElementById('open-gmail').addEventListener('click', function () {
+        var subject = document.getElementById('contact-subject').value.trim() || 'Message from liuzimo.cn';
+        var message = document.getElementById('contact-message').value.trim();
+        if (!message) {
+          alert('Please enter a message.');
+          return;
+        }
+        var body = buildBody();
+        var url = gmailComposeUrl(subject, body);
+        if (url.length > 8000) {
+          alert('Message is too long for Gmail’s web link. Shorten the text or use Copy and paste into Gmail.');
+          return;
+        }
+        window.open(url, '_blank', 'noopener,noreferrer');
+      });
+
+      document.getElementById('copy-email').addEventListener('click', function () {
+        var ok = function () { alert('Email address copied.'); };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(CONTACT_TO).then(ok).catch(function () {
+            fallbackCopy(CONTACT_TO, ok);
+          });
+        } else {
+          fallbackCopy(CONTACT_TO, ok);
+        }
+      });
+
+      function fallbackCopy(text, done) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          done();
+        } catch (err) {
+          alert('Could not copy. Address: ' + text);
+        }
+        document.body.removeChild(ta);
+      }
     })();
   </script>
   <script>
