@@ -55,7 +55,7 @@
 
     .backstage-card {
       width: 100%;
-      max-width: 26rem;
+      max-width: 38rem;
       padding: 2rem 1.75rem;
       border: 1px solid rgba(100, 120, 180, 0.22);
       border-radius: 12px;
@@ -132,6 +132,114 @@
       outline-offset: 4px;
       border-radius: 4px;
     }
+
+    .backstage-card .intro {
+      text-align: left;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .composer {
+      text-align: left;
+      margin: 1.5rem 0 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(100, 120, 180, 0.18);
+    }
+
+    .composer label {
+      display: block;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #6d758c;
+      margin-bottom: 0.35rem;
+      margin-top: 0.85rem;
+    }
+
+    .composer label:first-of-type {
+      margin-top: 0;
+    }
+
+    .composer input[type="password"],
+    .composer input[type="text"],
+    .composer input[type="datetime-local"],
+    .composer textarea {
+      width: 100%;
+      padding: 0.55rem 0.65rem;
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: #e4e7ed;
+      background: rgba(8, 10, 18, 0.85);
+      border: 1px solid rgba(100, 120, 180, 0.28);
+      border-radius: 6px;
+    }
+
+    .composer textarea {
+      min-height: 5rem;
+      resize: vertical;
+    }
+
+    .composer .token-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .composer .token-row input {
+      flex: 1 1 12rem;
+    }
+
+    .composer button.secondary {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.65rem;
+      color: #8c9abd;
+      background: rgba(40, 50, 80, 0.4);
+      border: 1px solid rgba(120, 140, 200, 0.28);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .composer button.secondary:hover {
+      color: #e4e7ed;
+      border-color: rgba(160, 190, 255, 0.35);
+    }
+
+    .composer .btn-publish {
+      margin-top: 1rem;
+      width: 100%;
+      max-width: none;
+      padding: 0.75rem 1rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #e4e7ed;
+      background: rgba(70, 90, 150, 0.45);
+      border: 1px solid rgba(140, 170, 255, 0.35);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .composer .btn-publish:hover:not(:disabled) {
+      background: rgba(90, 110, 180, 0.55);
+      border-color: rgba(170, 200, 255, 0.5);
+    }
+
+    .composer .btn-publish:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    #publish-status {
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #8c9abd;
+      min-height: 1.25rem;
+    }
   </style>
 </head>
 <body>
@@ -139,8 +247,35 @@
   <main class="backstage-wrap">
     <div class="backstage-card">
       <h1>Backstage</h1>
-      <p>You’re signed in. Blog posts are edited in <strong>posts.json</strong> in this GitHub repo—commit &amp; push to update what visitors see.</p>
-      <p style="font-size:0.85rem;margin-bottom:1rem;"><a href="https://github.com/liusida/liuzimo.cn/edit/main/posts.json" target="_blank" rel="noopener" style="color:#8c9abd;">Open posts.json on GitHub</a></p>
+      <p class="intro">Daily posts are stored under <strong>posts/</strong> (one <code>.json</code> per entry plus <code>posts/manifest.json</code>). Paste a <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener" style="color:#8c9abd;">fine-grained token</a> with <em>Contents: Read and write</em> for repo <strong>liusida/liuzimo.cn</strong>—it stays in this browser only. Publishing updates the repo via the API (no git on your machine).</p>
+
+      <section class="composer" aria-label="Publish post">
+        <label for="gh-token">GitHub token</label>
+        <div class="token-row">
+          <input type="password" id="gh-token" name="gh-token" autocomplete="off" placeholder="ghp_… or fine-grained token">
+          <button type="button" class="secondary" id="save-token">Save token</button>
+          <button type="button" class="secondary" id="clear-token">Clear</button>
+        </div>
+
+        <label for="post-title">Title (English)</label>
+        <input type="text" id="post-title" name="post-title" maxlength="200" autocomplete="off">
+
+        <label for="post-body">Body (English)</label>
+        <textarea id="post-body" name="post-body" rows="4"></textarea>
+
+        <label for="post-zhtitle">Title (Chinese, optional)</label>
+        <input type="text" id="post-zhtitle" name="post-zhtitle" maxlength="200" autocomplete="off">
+
+        <label for="post-zhbody">Body (Chinese, optional)</label>
+        <textarea id="post-zhbody" name="post-zhbody" rows="3"></textarea>
+
+        <label for="post-date">Date &amp; time</label>
+        <input type="datetime-local" id="post-date" name="post-date">
+
+        <button type="button" class="btn-publish" id="publish">Publish</button>
+        <p id="publish-status" role="status" aria-live="polite"></p>
+      </section>
+
       <div class="backstage-actions">
         <a class="btn-home" href="index.html">Home</a>
         <button type="button" class="btn-signout" id="sign-out">Sign out</button>
@@ -148,10 +283,23 @@
     </div>
   </main>
 
+  <script src="backstage-posts.js"></script>
+  <script>
+    (function () {
+      var d = document.getElementById('post-date');
+      if (d && !d.value) {
+        var now = new Date();
+        var pad = function (n) { return n < 10 ? '0' + n : String(n); };
+        var local = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + 'T' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+        d.value = local;
+      }
+    })();
+  </script>
   <script>
     document.getElementById('sign-out').addEventListener('click', function () {
       try {
         sessionStorage.removeItem('liuzimo_backstage_ok');
+        sessionStorage.removeItem('liuzimo_github_pat');
       } catch (e) {}
       window.location.href = 'login.html';
     });

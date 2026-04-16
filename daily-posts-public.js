@@ -28,8 +28,8 @@
       var pe = document.createElement('p');
       pe.className = 'daily-fetch-err';
       pe.textContent = isZhPage()
-        ? '无法加载文章（请确认已部署 posts.json）。'
-        : 'Could not load posts (check that posts.json is deployed).';
+        ? '无法加载文章（请确认已部署 posts/manifest.json）。'
+        : 'Could not load posts (check that posts/manifest.json is deployed).';
       wrap.appendChild(pe);
       return;
     }
@@ -78,16 +78,37 @@
     });
   }
 
+  function loadPost(base, id) {
+    var url = new URL('posts/' + encodeURIComponent(id) + '.json', base);
+    return fetch(url.toString(), { cache: 'default' }).then(function (res) {
+      if (!res.ok) throw new Error('post ' + id);
+      return res.json();
+    });
+  }
+
   function run() {
-    var url = new URL('posts.json', window.location.href);
-    fetch(url.toString(), { cache: 'default' })
+    var base = window.location.href;
+    var manifestUrl = new URL('posts/manifest.json', base);
+    fetch(manifestUrl.toString(), { cache: 'default' })
       .then(function (res) {
-        if (!res.ok) throw new Error('bad status');
+        if (!res.ok) throw new Error('manifest');
         return res.json();
       })
-      .then(function (data) {
-        if (!Array.isArray(data)) throw new Error('not array');
-        render(data, false);
+      .then(function (manifest) {
+        if (!manifest || !Array.isArray(manifest.entries)) throw new Error('bad manifest');
+        var entries = manifest.entries.filter(function (e) {
+          return e && e.id;
+        });
+        if (!entries.length) return [];
+
+        return Promise.all(
+          entries.map(function (e) {
+            return loadPost(base, e.id);
+          })
+        );
+      })
+      .then(function (posts) {
+        render(Array.isArray(posts) ? posts : [], false);
       })
       .catch(function () {
         render(null, true);
