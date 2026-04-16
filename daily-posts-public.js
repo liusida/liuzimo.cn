@@ -53,15 +53,27 @@
       art.className = 'daily-post';
 
       var t = document.createElement('time');
+      t.className = 'daily-post-time';
       if (p.dateIso) t.setAttribute('datetime', p.dateIso);
       try {
-        t.textContent = new Date(p.dateIso || Date.now()).toLocaleString(isZhPage() ? 'zh-CN' : undefined, {
+        var d = new Date(p.dateIso || Date.now());
+        var locale = isZhPage() ? 'zh-CN' : undefined;
+        var fmt = new Intl.DateTimeFormat(locale, {
           dateStyle: 'medium',
           timeStyle: 'short',
           timeZoneName: 'short'
         });
+        var label = fmt.format(d);
+        if (!label || !String(label).trim()) {
+          label = d.toISOString();
+        }
+        t.textContent = label;
       } catch (e) {
-        t.textContent = '';
+        try {
+          t.textContent = new Date(p.dateIso || Date.now()).toISOString();
+        } catch (e2) {
+          t.textContent = '';
+        }
       }
 
       var h3 = document.createElement('h3');

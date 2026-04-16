@@ -28,13 +28,15 @@
   border-top: none;
 }
 
-.daily-post time {
+.daily-post time,
+.daily-post-time {
   display: block;
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #5a617a;
-  margin-bottom: 0.45rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-variant-numeric: tabular-nums;
+  color: #b0b8d0;
+  margin-bottom: 0.5rem;
 }
 
 .daily-post-title {
