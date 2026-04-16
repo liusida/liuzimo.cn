@@ -212,6 +212,10 @@
           return;
         }
 
+        if (!window.confirm('Download all posts as a ZIP file (text files in a posts folder)?')) {
+          return;
+        }
+
         btn.disabled = true;
         var label = btn.textContent;
 
