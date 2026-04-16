@@ -74,6 +74,35 @@
     return true;
   };
 
+  window.liuzimoGetPosts = function () {
+    return load();
+  };
+
+  window.liuzimoDeletePostAt = function (index) {
+    var posts = load();
+    var i = parseInt(index, 10);
+    if (isNaN(i) || i < 0 || i >= posts.length) return false;
+    posts.splice(i, 1);
+    save(posts);
+    return true;
+  };
+
+  window.liuzimoDeletePostById = function (id) {
+    if (id == null || id === '') return false;
+    var posts = load();
+    var next = posts.filter(function (p) {
+      return String(p.id) !== String(id);
+    });
+    if (next.length === posts.length) return false;
+    save(next);
+    return true;
+  };
+
+  window.liuzimoClearAllPosts = function () {
+    save([]);
+    return true;
+  };
+
   window.liuzimoDailyPostsReload = render;
 
   if (document.readyState === 'loading') {

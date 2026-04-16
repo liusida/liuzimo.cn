@@ -12,7 +12,7 @@
     }
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Backstage — Zimo Liu</title>
+  <title>Delete posts — Backstage</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
@@ -41,7 +41,7 @@
       height: 100%;
     }
 
-    .backstage-wrap {
+    .manage-wrap {
       position: relative;
       z-index: 1;
       min-height: 100vh;
@@ -52,9 +52,9 @@
       padding: 2rem;
     }
 
-    .backstage-card {
+    .manage-card {
       width: 100%;
-      max-width: 26rem;
+      max-width: 32rem;
       padding: 2rem 1.75rem;
       border: 1px solid rgba(100, 120, 180, 0.22);
       border-radius: 12px;
@@ -62,122 +62,258 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+    }
+
+    .manage-card h1 {
+      font-family: "Cormorant Garamond", "Georgia", serif;
+      font-size: clamp(1.75rem, 4vw, 2.15rem);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: #e4e7ed;
+      margin-bottom: 0.35rem;
       text-align: center;
     }
 
-    .backstage-card h1 {
-      font-family: "Cormorant Garamond", "Georgia", serif;
-      font-size: clamp(1.85rem, 4.5vw, 2.5rem);
-      font-weight: 300;
-      letter-spacing: 0.1em;
-      color: #e4e7ed;
-      margin-bottom: 0.75rem;
-    }
-
-    .backstage-card p {
-      font-size: 0.95rem;
-      line-height: 1.65;
+    .manage-lede {
+      font-size: 0.88rem;
+      line-height: 1.55;
       color: #7a8199;
       font-weight: 300;
-      margin-bottom: 1.75rem;
+      text-align: center;
+      margin-bottom: 1.25rem;
     }
 
-    .backstage-actions {
+    .manage-list {
+      max-height: min(46vh, 22rem);
+      overflow-y: auto;
+      margin-bottom: 1.25rem;
+      padding-right: 0.25rem;
+    }
+
+    .manage-empty {
+      font-size: 0.9rem;
+      color: #5a617a;
+      text-align: center;
+      padding: 1.5rem 0;
+    }
+
+    .manage-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 0;
+      border-top: 1px solid rgba(90, 97, 122, 0.25);
+    }
+
+    .manage-row:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .manage-meta {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .manage-date {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #5a617a;
+      margin-bottom: 0.35rem;
+    }
+
+    .manage-title {
+      font-size: 0.95rem;
+      color: #d8dce8;
+      margin-bottom: 0.35rem;
+      word-break: break-word;
+    }
+
+    .manage-preview {
+      font-size: 0.8rem;
+      line-height: 1.45;
+      color: #6d748e;
+      word-break: break-word;
+    }
+
+    .btn-delete-one {
+      flex-shrink: 0;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.65rem;
+      color: #c8ccd4;
+      background: rgba(90, 40, 45, 0.45);
+      border: 1px solid rgba(200, 120, 130, 0.35);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-delete-one:hover {
+      background: rgba(120, 50, 58, 0.55);
+      border-color: rgba(230, 140, 150, 0.45);
+    }
+
+    .manage-actions {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
-      align-items: center;
+      gap: 0.65rem;
+      align-items: stretch;
     }
 
-    .backstage-actions a,
-    .backstage-actions button {
+    .manage-actions a,
+    .manage-actions button:not(.btn-delete-one) {
       font-size: 0.72rem;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
+      text-align: center;
       text-decoration: none;
-      cursor: pointer;
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
-    }
-
-    .btn-create-article {
-      padding: 0.65rem 1.25rem;
-      color: #07080d;
-      background: linear-gradient(165deg, rgba(180, 200, 255, 0.92), rgba(120, 145, 210, 0.85));
-      border: 1px solid rgba(200, 215, 255, 0.45);
+      padding: 0.65rem 1rem;
       border-radius: 6px;
-      width: 100%;
-      max-width: 16rem;
-      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
     }
 
-    .btn-create-article:hover {
-      background: linear-gradient(165deg, rgba(200, 218, 255, 0.98), rgba(140, 165, 225, 0.92));
-      border-color: rgba(220, 230, 255, 0.55);
-      color: #05060a;
-    }
-
-    .btn-home {
-      padding: 0.65rem 1.25rem;
+    .btn-back {
       color: #c8ccd4;
       background: rgba(60, 75, 120, 0.35);
       border: 1px solid rgba(140, 170, 255, 0.25);
-      border-radius: 6px;
-      width: 100%;
-      max-width: 16rem;
     }
 
-    .btn-home:hover {
+    .btn-back:hover {
       background: rgba(80, 100, 160, 0.45);
-      border-color: rgba(160, 190, 255, 0.4);
       color: #e4e7ed;
     }
 
-    .btn-signout {
-      background: none;
-      border: none;
-      color: #5a617a;
-      padding: 0.35rem;
-    }
-
-    .btn-signout:hover {
+    .btn-nuke {
       color: #b08088;
+      background: rgba(40, 25, 30, 0.5);
+      border: 1px solid rgba(160, 90, 100, 0.3);
     }
 
-    .btn-signout:focus-visible {
-      outline: 2px solid rgba(140, 170, 255, 0.45);
-      outline-offset: 4px;
-      border-radius: 4px;
+    .btn-nuke:hover {
+      color: #e8b8bc;
+      border-color: rgba(200, 120, 130, 0.45);
     }
   </style>
 </head>
 <body>
   <canvas id="bg" aria-hidden="true"></canvas>
-  <main class="backstage-wrap">
-    <div class="backstage-card">
-      <h1>Backstage</h1>
-      <p>You’re signed in. <strong>Create new article</strong> publishes to the homepage’s Daily recording (stored locally in this browser until you add a server).</p>
-      <div class="backstage-actions">
-        <a class="btn-create-article" href="new-article.html">Create new article</a>
-        <a class="btn-home" href="manage-posts.html">Delete posts</a>
-        <a class="btn-home" href="index.html">Home</a>
-        <button type="button" class="btn-signout" id="sign-out">Sign out</button>
+  <main class="manage-wrap">
+    <div class="manage-card">
+      <h1>Delete posts</h1>
+      <p class="manage-lede">Remove entries from Daily recording in this browser. The homepage updates next time you open it.</p>
+      <div class="manage-list" id="manage-list" aria-live="polite"></div>
+      <div class="manage-actions">
+        <button type="button" class="btn-nuke" id="btn-delete-all">Delete all posts</button>
+        <a class="btn-back" href="backstage.html">← Backstage</a>
       </div>
     </div>
   </main>
 
+  <script src="daily-posts.js"></script>
   <script>
-    document.getElementById('sign-out').addEventListener('click', function () {
-      try {
-        sessionStorage.removeItem('liuzimo_backstage_ok');
-      } catch (e) {}
-      window.location.href = 'login.html';
-    });
+    (function () {
+      function previewSlice(body) {
+        var s = (body || '').replace(/\s+/g, ' ').trim();
+        return s.length > 120 ? s.slice(0, 120) + '…' : s;
+      }
+
+      function refreshList() {
+        var container = document.getElementById('manage-list');
+        container.innerHTML = '';
+
+        if (typeof liuzimoGetPosts !== 'function') {
+          var err = document.createElement('p');
+          err.className = 'manage-empty';
+          err.textContent = 'Could not load posts.';
+          container.appendChild(err);
+          return;
+        }
+
+        var posts = liuzimoGetPosts();
+        if (!posts.length) {
+          var empty = document.createElement('p');
+          empty.className = 'manage-empty';
+          empty.textContent = 'No posts yet.';
+          container.appendChild(empty);
+          return;
+        }
+
+        posts.forEach(function (p, index) {
+          var row = document.createElement('div');
+          row.className = 'manage-row';
+
+          var meta = document.createElement('div');
+          meta.className = 'manage-meta';
+
+          var dateEl = document.createElement('div');
+          dateEl.className = 'manage-date';
+          try {
+            dateEl.textContent = new Date(p.dateIso || Date.now()).toLocaleString(undefined, {
+              dateStyle: 'medium',
+              timeStyle: 'short'
+            });
+          } catch (e) {
+            dateEl.textContent = '';
+          }
+
+          var titleEl = document.createElement('div');
+          titleEl.className = 'manage-title';
+          titleEl.textContent = (p.title && String(p.title).trim()) ? String(p.title).trim() : 'Untitled';
+
+          var prevEl = document.createElement('div');
+          prevEl.className = 'manage-preview';
+          prevEl.textContent = previewSlice(p.body);
+
+          meta.appendChild(dateEl);
+          meta.appendChild(titleEl);
+          meta.appendChild(prevEl);
+
+          var del = document.createElement('button');
+          del.type = 'button';
+          del.className = 'btn-delete-one';
+          del.setAttribute('data-index', String(index));
+          var tlabel = titleEl.textContent;
+          del.setAttribute('aria-label', 'Delete: ' + tlabel);
+          del.textContent = 'Delete';
+
+          row.appendChild(meta);
+          row.appendChild(del);
+          container.appendChild(row);
+        });
+      }
+
+      document.getElementById('manage-list').addEventListener('click', function (e) {
+        var btn = e.target.closest('.btn-delete-one');
+        if (!btn) return;
+        var index = parseInt(btn.getAttribute('data-index'), 10);
+        if (isNaN(index)) return;
+        if (!window.confirm('Delete this post?')) return;
+        if (typeof liuzimoDeletePostAt === 'function') {
+          liuzimoDeletePostAt(index);
+        }
+        refreshList();
+      });
+
+      document.getElementById('btn-delete-all').addEventListener('click', function () {
+        if (!window.confirm('Delete ALL posts? This cannot be undone.')) return;
+        if (typeof liuzimoClearAllPosts === 'function') {
+          liuzimoClearAllPosts();
+        }
+        refreshList();
+      });
+
+      refreshList();
+    })();
   </script>
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');
     let width, height, nodes, dpr, connectDist, pointerDist;
-
     const SPEED = 0.15;
 
     function isMobile() {
@@ -209,7 +345,6 @@
     }
 
     const pointer = { x: -1000, y: -1000, active: false };
-
     document.addEventListener('mousemove', e => {
       pointer.x = e.clientX;
       pointer.y = e.clientY;
@@ -220,7 +355,6 @@
       pointer.x = -1000;
       pointer.y = -1000;
     });
-
     document.addEventListener('touchmove', e => {
       const t = e.touches[0];
       pointer.x = t.clientX;
@@ -241,14 +375,12 @@
 
     function tick() {
       ctx.clearRect(0, 0, width, height);
-
       for (const n of nodes) {
         n.x += n.vx;
         n.y += n.vy;
         if (n.x < 0 || n.x > width) n.vx *= -1;
         if (n.y < 0 || n.y > height) n.vy *= -1;
       }
-
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
@@ -265,20 +397,17 @@
           }
         }
       }
-
       if (pointer.active) {
         for (let i = 0; i < nodes.length; i++) {
           const mdx = nodes[i].x - pointer.x;
           const mdy = nodes[i].y - pointer.y;
           const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
-
           if (mDist < pointerDist) {
             for (let j = i + 1; j < nodes.length; j++) {
               const mdx2 = nodes[j].x - pointer.x;
               const mdy2 = nodes[j].y - pointer.y;
               const mDist2 = Math.sqrt(mdx2 * mdx2 + mdy2 * mdy2);
               if (mDist2 > pointerDist) continue;
-
               const dx = nodes[i].x - nodes[j].x;
               const dy = nodes[i].y - nodes[j].y;
               const dist = Math.sqrt(dx * dx + dy * dy);
@@ -295,7 +424,6 @@
           }
         }
       }
-
       const nodeRadius = isMobile() ? 1.2 : 1.5;
       for (const n of nodes) {
         let glow = 0.3;
@@ -310,7 +438,6 @@
         ctx.fillStyle = `rgba(140,170,255,${glow})`;
         ctx.fill();
       }
-
       requestAnimationFrame(tick);
     }
 
