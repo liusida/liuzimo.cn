@@ -110,10 +110,15 @@
       max-width: 16rem;
     }
 
-    .btn-home:hover {
+    .btn-home:hover:not(:disabled) {
       background: rgba(80, 100, 160, 0.45);
       border-color: rgba(160, 190, 255, 0.4);
       color: #e4e7ed;
+    }
+
+    .btn-home:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
     }
 
     .btn-signout {
@@ -142,12 +147,102 @@
       <p>You’re signed in. Write posts in English in <strong>drafts/posts.txt</strong>, run <code>node scripts/sync-drafts.mjs</code>, then ask Cursor to add <strong>zhTitle</strong> / <strong>zhBody</strong> in <code>posts/*.json</code> and push.</p>
       <p style="font-size:0.85rem;margin-bottom:1rem;"><a href="https://github.com/liusida/liuzimo.cn/tree/main/drafts" target="_blank" rel="noopener" style="color:#8c9abd;">Open drafts on GitHub</a> · <a href="https://github.com/liusida/liuzimo.cn/tree/main/posts" target="_blank" rel="noopener" style="color:#8c9abd;">posts</a></p>
       <div class="backstage-actions">
+        <button type="button" class="btn-home" id="download-posts">Download all posts (zip)</button>
         <a class="btn-home" href="index.html">Home</a>
         <button type="button" class="btn-signout" id="sign-out">Sign out</button>
       </div>
     </div>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script>
+    (function () {
+      function safeFileName(id) {
+        return String(id || 'post').replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'post';
+      }
+
+      function formatPostTxt(p) {
+        var s = '';
+        s += 'id: ' + (p.id || '') + '\n';
+        s += 'dateIso: ' + (p.dateIso || '') + '\n\n';
+        s += '--- English ---\n';
+        s += (p.title || '') + '\n\n';
+        s += (p.body != null ? p.body : '') + '\n';
+        if ((p.zhTitle && String(p.zhTitle).trim()) || (p.zhBody != null && String(p.zhBody).trim())) {
+          s += '\n--- Chinese ---\n';
+          s += (p.zhTitle || '') + '\n\n';
+          s += p.zhBody != null ? p.zhBody : '';
+          s += '\n';
+        }
+        return s;
+      }
+
+      var btn = document.getElementById('download-posts');
+      if (!btn) return;
+
+      btn.addEventListener('click', function () {
+        if (typeof JSZip === 'undefined') {
+          alert('ZIP library failed to load. Check your connection and try again.');
+          return;
+        }
+
+        btn.disabled = true;
+        var label = btn.textContent;
+
+        fetch(new URL('posts/manifest.json', window.location.href), { cache: 'no-store' })
+          .then(function (res) {
+            if (!res.ok) throw new Error('manifest');
+            return res.json();
+          })
+          .then(function (manifest) {
+            var entries = (manifest && manifest.entries ? manifest.entries : []).filter(function (e) {
+              return e && e.id;
+            });
+            if (!entries.length) {
+              alert('No posts to download yet.');
+              return;
+            }
+
+            var zip = new JSZip();
+            var folder = zip.folder('posts');
+            var base = window.location.href;
+
+            return Promise.all(
+              entries.map(function (e) {
+                var u = new URL('posts/' + encodeURIComponent(e.id) + '.json', base);
+                return fetch(u.toString(), { cache: 'no-store' }).then(function (r) {
+                  if (!r.ok) throw new Error('post ' + e.id);
+                  return r.json();
+                });
+              })
+            ).then(function (posts) {
+              posts.forEach(function (p) {
+                folder.file(safeFileName(p.id) + '.txt', formatPostTxt(p));
+              });
+              return zip.generateAsync({ type: 'blob' });
+            });
+          })
+          .then(function (blob) {
+            if (!blob) return;
+            var a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'liuzimo-posts.zip';
+            a.rel = 'noopener';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(a.href);
+          })
+          .catch(function (err) {
+            alert('Could not build download: ' + (err && err.message ? err.message : String(err)));
+          })
+          .then(function () {
+            btn.disabled = false;
+            btn.textContent = label;
+          });
+      });
+    })();
+  </script>
   <script>
     document.getElementById('sign-out').addEventListener('click', function () {
       try {
