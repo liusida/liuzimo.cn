@@ -10,13 +10,16 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
     body {
       background: #07080d;
       color: #c8ccd4;
       font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
-      overflow: hidden;
-      height: 100vh;
-      height: 100dvh;
+      overflow-x: hidden;
     }
 
     canvas {
@@ -27,17 +30,58 @@
       height: 100%;
     }
 
-    .content {
+    .page {
       position: relative;
       z-index: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      height: 100dvh;
+      min-height: 100vh;
+      min-height: 100dvh;
       text-align: center;
       padding: 2rem;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #3a4158;
+      animation: hintPulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes hintPulse {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.9; }
+    }
+
+    .page-secondary h2 {
+      font-family: "Cormorant Garamond", "Georgia", serif;
+      font-size: clamp(1.8rem, 4.5vw, 2.75rem);
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: #e4e7ed;
+      margin-bottom: 0.75em;
+    }
+
+    .page-secondary .blurb {
+      max-width: 28rem;
+      font-size: clamp(1rem, 2.2vw, 1.125rem);
+      line-height: 1.75;
+      color: #7a8199;
+      font-weight: 300;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-snap-type: none; scroll-behavior: auto; }
+      .scroll-hint { animation: none; opacity: 0.55; }
     }
 
     h1 {
@@ -93,15 +137,24 @@
   </style>
 </head>
 <body>
-  <canvas id="bg"></canvas>
-  <div class="content">
-    <h1>Zimo Liu</h1>
-    <p class="subtitle">君子尚墨</p>
-    <nav class="links">
-      <a href="https://github.com/zimoliu-vt" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://zimoliu-vt.github.io/Car-Game/" target="_blank" rel="noopener">Car Game</a>
-    </nav>
-  </div>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <main>
+    <section class="page page-hero" aria-label="Intro">
+      <h1>Zimo Liu</h1>
+      <p class="subtitle">君子尚墨</p>
+      <nav class="links">
+        <a href="https://github.com/zimoliu-vt" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://zimoliu-vt.github.io/Car-Game/" target="_blank" rel="noopener">Car Game</a>
+      </nav>
+      <p class="scroll-hint">Scroll</p>
+    </section>
+    <section class="page page-secondary" aria-label="More">
+      <h2>Hello</h2>
+      <p class="blurb">
+        Exploring code, interaction, and small experiments on the web. The same night sky follows you here — scroll back up whenever you like.
+      </p>
+    </section>
+  </main>
 
   <script>
     const canvas = document.getElementById('bg');
