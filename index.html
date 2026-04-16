@@ -16,6 +16,7 @@
       font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
       overflow: hidden;
       height: 100vh;
+      height: 100dvh;
     }
 
     canvas {
@@ -34,6 +35,7 @@
       align-items: center;
       justify-content: center;
       height: 100vh;
+      height: 100dvh;
       text-align: center;
       padding: 2rem;
     }
@@ -72,6 +74,22 @@
     .links a:hover {
       color: #e4e7ed;
     }
+
+    @media (max-width: 480px) {
+      .links { gap: 1.5rem; }
+      .links a {
+        font-size: 0.8rem;
+        padding: 0.5rem 0;
+      }
+    }
+
+    @media (pointer: coarse) {
+      .links a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body>
@@ -88,21 +106,30 @@
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');
-    let width, height, nodes, mouse;
+    let width, height, nodes, dpr, connectDist, pointerDist;
 
-    const NODE_COUNT_BASE = 80;
-    const CONNECT_DIST = 160;
-    const NODE_RADIUS = 1.5;
     const SPEED = 0.15;
 
+    function isMobile() {
+      return window.innerWidth < 768;
+    }
+
     function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
+      dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      connectDist = isMobile() ? 120 : 160;
+      pointerDist = isMobile() ? 150 : 200;
     }
 
     function createNodes() {
-      const density = (width * height) / (1920 * 1080);
-      const count = Math.round(NODE_COUNT_BASE * density);
+      const area = width * height;
+      const baseCount = isMobile() ? 45 : 80;
+      const density = area / (1920 * 1080);
+      const count = Math.max(20, Math.round(baseCount * density));
       nodes = Array.from({ length: count }, () => ({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -111,14 +138,35 @@
       }));
     }
 
-    mouse = { x: -1000, y: -1000 };
+    const pointer = { x: -1000, y: -1000, active: false };
+
     document.addEventListener('mousemove', e => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      pointer.active = true;
     });
     document.addEventListener('mouseleave', () => {
-      mouse.x = -1000;
-      mouse.y = -1000;
+      pointer.active = false;
+      pointer.x = -1000;
+      pointer.y = -1000;
+    });
+
+    document.addEventListener('touchmove', e => {
+      const t = e.touches[0];
+      pointer.x = t.clientX;
+      pointer.y = t.clientY;
+      pointer.active = true;
+    }, { passive: true });
+    document.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      pointer.x = t.clientX;
+      pointer.y = t.clientY;
+      pointer.active = true;
+    }, { passive: true });
+    document.addEventListener('touchend', () => {
+      pointer.active = false;
+      pointer.x = -1000;
+      pointer.y = -1000;
     });
 
     function tick() {
@@ -136,8 +184,8 @@
           const dx = nodes[i].x - nodes[j].x;
           const dy = nodes[i].y - nodes[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < CONNECT_DIST) {
-            const alpha = (1 - dist / CONNECT_DIST) * 0.15;
+          if (dist < connectDist) {
+            const alpha = (1 - dist / connectDist) * 0.15;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
@@ -148,42 +196,47 @@
         }
       }
 
-      const MOUSE_DIST = 200;
-      for (let i = 0; i < nodes.length; i++) {
-        const mdx = nodes[i].x - mouse.x;
-        const mdy = nodes[i].y - mouse.y;
-        const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+      if (pointer.active) {
+        for (let i = 0; i < nodes.length; i++) {
+          const mdx = nodes[i].x - pointer.x;
+          const mdy = nodes[i].y - pointer.y;
+          const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
 
-        if (mDist < MOUSE_DIST) {
-          for (let j = i + 1; j < nodes.length; j++) {
-            const mdx2 = nodes[j].x - mouse.x;
-            const mdy2 = nodes[j].y - mouse.y;
-            const mDist2 = Math.sqrt(mdx2 * mdx2 + mdy2 * mdy2);
-            if (mDist2 > MOUSE_DIST) continue;
+          if (mDist < pointerDist) {
+            for (let j = i + 1; j < nodes.length; j++) {
+              const mdx2 = nodes[j].x - pointer.x;
+              const mdy2 = nodes[j].y - pointer.y;
+              const mDist2 = Math.sqrt(mdx2 * mdx2 + mdy2 * mdy2);
+              if (mDist2 > pointerDist) continue;
 
-            const dx = nodes[i].x - nodes[j].x;
-            const dy = nodes[i].y - nodes[j].y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < MOUSE_DIST) {
-              const alpha = (1 - dist / MOUSE_DIST) * 0.25;
-              ctx.beginPath();
-              ctx.moveTo(nodes[i].x, nodes[i].y);
-              ctx.lineTo(nodes[j].x, nodes[j].y);
-              ctx.strokeStyle = `rgba(140,170,255,${alpha})`;
-              ctx.lineWidth = 0.6;
-              ctx.stroke();
+              const dx = nodes[i].x - nodes[j].x;
+              const dy = nodes[i].y - nodes[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < pointerDist) {
+                const alpha = (1 - dist / pointerDist) * 0.25;
+                ctx.beginPath();
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(nodes[j].x, nodes[j].y);
+                ctx.strokeStyle = `rgba(140,170,255,${alpha})`;
+                ctx.lineWidth = 0.6;
+                ctx.stroke();
+              }
             }
           }
         }
       }
 
+      const nodeRadius = isMobile() ? 1.2 : 1.5;
       for (const n of nodes) {
-        const mdx = n.x - mouse.x;
-        const mdy = n.y - mouse.y;
-        const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
-        const glow = mDist < MOUSE_DIST ? 0.7 : 0.3;
+        let glow = 0.3;
+        if (pointer.active) {
+          const mdx = n.x - pointer.x;
+          const mdy = n.y - pointer.y;
+          const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mDist < pointerDist) glow = 0.7;
+        }
         ctx.beginPath();
-        ctx.arc(n.x, n.y, NODE_RADIUS, 0, Math.PI * 2);
+        ctx.arc(n.x, n.y, nodeRadius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(140,170,255,${glow})`;
         ctx.fill();
       }
@@ -191,7 +244,11 @@
       requestAnimationFrame(tick);
     }
 
-    window.addEventListener('resize', () => { resize(); createNodes(); });
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { resize(); createNodes(); }, 150);
+    });
     resize();
     createNodes();
     tick();
