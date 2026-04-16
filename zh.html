@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Zimo Liu</title>
+  <title>刘子墨</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
     body {
       background: #07080d;
       color: #c8ccd4;
-      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Inter", "Helvetica Neue", Arial, sans-serif;
       overflow-x: hidden;
       -ms-overflow-style: none;
       scrollbar-width: none;
@@ -105,6 +105,11 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-snap-type: none; scroll-behavior: auto; }
       .scroll-hint { animation: none; opacity: 0.55; }
+    }
+
+    body.zh h1,
+    body.zh .page-secondary h2 {
+      font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Georgia", serif;
     }
 
     h1 {
@@ -199,23 +204,23 @@
     }
   </style>
 </head>
-<body>
+<body class="zh">
   <canvas id="bg" aria-hidden="true"></canvas>
   <main>
-    <section class="page page-hero" aria-label="Intro">
-      <h1>Zimo Liu</h1>
-      <a class="subtitle" href="zh.html" hreflang="zh-Hans">君子尚墨</a>
+    <section class="page page-hero" aria-label="简介">
+      <h1>刘子墨</h1>
+      <a class="subtitle" href="index.html" hreflang="en">英文</a>
       <nav class="links">
         <a href="https://github.com/zimoliu-vt" target="_blank" rel="noopener">GitHub</a>
       </nav>
-      <p class="scroll-hint">Scroll</p>
+      <p class="scroll-hint">向下滚动</p>
     </section>
-    <section class="page page-secondary" aria-label="My journey">
-      <h2>My journey</h2>
+    <section class="page page-secondary" aria-label="我的旅程">
+      <h2>我的旅程</h2>
       <div class="blurb">
-        <p>Zimo Liu is a curious and active 12-year-old based in Singapore with a strong interest in understanding how things work. He demonstrates a keen aptitude for science, mathematics, and technology, and is particularly engaged in robotics through his school’s co-curricular activities (CCA), where he develops skills in design, construction, and programming.</p>
-        <p>In addition to his academic pursuits, Zimo enjoys outdoor activities and maintains an active lifestyle by riding his Rockrider mountain bike, reflecting his sense of adventure and enthusiasm for physical challenges. Bilingual and eager to learn, he consistently seeks opportunities to expand his knowledge and refine his skills, including personal initiatives such as developing his own website.</p>
-        <p>Overall, Zimo is a motivated and well-rounded learner who effectively balances creativity, analytical thinking, and physical activity in his daily life.</p>
+        <p>刘子墨是一名生活在新加坡、充满好奇心与活力的 12 岁少年，对探究事物如何运作有着浓厚兴趣。他在科学、数学与科技方面展现出敏锐的悟性，并尤其热衷参与学校的课外实践活动（CCA）中的机器人项目，在其中锻炼设计、搭建与编程等能力。</p>
+        <p>在学业之外，刘子墨喜爱户外活动，通过骑行 Rockrider 山地车保持积极的生活方式，体现出敢于挑战的冒险精神。他能使用中英文交流，求知若渴，不断寻找拓展知识、精进技能的机会，其中也包括自己动手开发个人网站等实践。</p>
+        <p>总体而言，刘子墨是一位积极主动、全面发展的学习者，在日常生活中能够较好地平衡创造力、思辨能力与体能活动。</p>
       </div>
     </section>
   </main>
