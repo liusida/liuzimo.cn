@@ -78,9 +78,11 @@
     });
   }
 
+  var fetchNoCache = { cache: 'no-store' };
+
   function loadPost(base, id) {
     var url = new URL('posts/' + encodeURIComponent(id) + '.json', base);
-    return fetch(url.toString(), { cache: 'default' }).then(function (res) {
+    return fetch(url.toString(), fetchNoCache).then(function (res) {
       if (!res.ok) throw new Error('post ' + id);
       return res.json();
     });
@@ -89,7 +91,7 @@
   function run() {
     var base = window.location.href;
     var manifestUrl = new URL('posts/manifest.json', base);
-    fetch(manifestUrl.toString(), { cache: 'default' })
+    fetch(manifestUrl.toString(), fetchNoCache)
       .then(function (res) {
         if (!res.ok) throw new Error('manifest');
         return res.json();
