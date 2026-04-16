@@ -146,6 +146,7 @@
     }
 
     .back-btn {
+      display: inline-block;
       background: none;
       border: none;
       padding: 0.35rem 0.75rem;
@@ -153,6 +154,7 @@
       font-size: 0.72rem;
       letter-spacing: 0.18em;
       text-transform: uppercase;
+      text-decoration: none;
       color: #5a617a;
       cursor: pointer;
       transition: color 0.2s;
@@ -198,8 +200,8 @@
         <p class="login-error" id="login-error" hidden role="alert">Invalid username or password.</p>
         <button type="submit" class="login-submit">Sign in (Backstage)</button>
       </form>
-      <nav class="back-nav" aria-label="Back">
-        <button type="button" class="back-btn" id="back-btn">Back</button>
+      <nav class="back-nav" aria-label="Back to home">
+        <a class="back-btn" href="index.html">Back</a>
       </nav>
     </div>
   </main>
@@ -246,9 +248,6 @@
         });
       });
     })();
-    document.getElementById('back-btn').addEventListener('click', function () {
-      window.location.href = 'index.html';
-    });
   </script>
   <script>
     const canvas = document.getElementById('bg');
