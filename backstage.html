@@ -187,10 +187,24 @@
         return String(id || 'post').replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'post';
       }
 
+      function formatDateWithTimeZone(dateIso) {
+        if (!dateIso) return '';
+        try {
+          return new Date(dateIso).toLocaleString(undefined, {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+            timeZoneName: 'short'
+          });
+        } catch (e) {
+          return '';
+        }
+      }
+
       function formatPostTxt(p) {
         var s = '';
         s += 'id: ' + (p.id || '') + '\n';
-        s += 'dateIso: ' + (p.dateIso || '') + '\n\n';
+        s += 'dateIso: ' + (p.dateIso || '') + '\n';
+        s += 'local time (with time zone): ' + formatDateWithTimeZone(p.dateIso) + '\n\n';
         s += '--- English ---\n';
         s += (p.title || '') + '\n\n';
         s += (p.body != null ? p.body : '') + '\n';

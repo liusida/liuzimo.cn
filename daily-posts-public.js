@@ -57,7 +57,8 @@
       try {
         t.textContent = new Date(p.dateIso || Date.now()).toLocaleString(isZhPage() ? 'zh-CN' : undefined, {
           dateStyle: 'medium',
-          timeStyle: 'short'
+          timeStyle: 'short',
+          timeZoneName: 'short'
         });
       } catch (e) {
         t.textContent = '';
