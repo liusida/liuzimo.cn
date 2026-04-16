@@ -222,6 +222,49 @@
       color: #e4e7ed;
       border-color: rgba(160, 190, 255, 0.35);
     }
+
+    .contact-honeypot {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      opacity: 0;
+    }
+
+    .contact-success {
+      display: none;
+      margin-bottom: 1.25rem;
+      padding: 0.85rem 1rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #a8c4a8;
+      text-align: center;
+      border: 1px solid rgba(120, 160, 120, 0.35);
+      border-radius: 8px;
+      background: rgba(20, 35, 25, 0.45);
+    }
+
+    .contact-success.is-visible {
+      display: block;
+    }
+
+    .contact-alt-details {
+      margin-top: 1.25rem;
+      font-size: 0.72rem;
+      color: #5a617a;
+      text-align: center;
+    }
+
+    .contact-alt-details summary {
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      list-style: none;
+    }
+
+    .contact-alt-details summary::-webkit-details-marker {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -233,15 +276,20 @@
   <main class="contact-wrap">
     <div class="contact-card">
       <h1 class="contact-title">联系</h1>
-      <p class="contact-lead">可用本机邮件应用发送；若无反应，请用「在 Gmail 中撰写」或复制邮箱。</p>
-      <form class="contact-form" id="contact-form" action="#" method="post" novalidate>
+      <p id="contact-success" class="contact-success" role="status">已发送，谢谢。</p>
+      <p class="contact-lead">在下方填写并发送，由表单服务投递到邮箱（不必安装邮件应用）。请填写你的邮箱以便回复。</p>
+      <form class="contact-form" id="contact-form" action="https://formsubmit.co/liu.zimo.email@gmail.com" method="POST" novalidate>
+        <input type="hidden" name="_next" value="https://liuzimo.cn/contact-zh.html?sent=1">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_replyto" id="fs-replyto" value="">
+        <input type="text" name="_gotcha" class="contact-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
         <label>
           <span class="label">姓名</span>
           <input type="text" name="name" id="contact-name" autocomplete="name" maxlength="120">
         </label>
         <label>
           <span class="label">电子邮箱（便于回复）</span>
-          <input type="email" name="email" id="contact-email" autocomplete="email" maxlength="200">
+          <input type="email" name="email" id="contact-email" autocomplete="email" maxlength="200" required>
         </label>
         <label>
           <span class="label">主题</span>
@@ -251,10 +299,16 @@
           <span class="label">留言</span>
           <textarea name="message" id="contact-message" required maxlength="8000" placeholder="请输入留言…"></textarea>
         </label>
-        <button type="submit" class="contact-submit">在邮件应用中打开</button>
-        <button type="button" class="contact-submit contact-submit-secondary" id="open-gmail">在 Gmail 中撰写（浏览器）</button>
+        <button type="submit" class="contact-submit">发送留言</button>
       </form>
-      <p class="contact-note">本站无服务器，邮件由你的设备打开。若邮件链接无反应，请用 Gmail 或复制地址。</p>
+      <details class="contact-alt-details">
+        <summary>其他方式（邮件应用 / Gmail）</summary>
+        <p style="margin-top:0.75rem;line-height:1.55;">
+          <button type="button" class="contact-submit contact-submit-secondary" id="open-mailapp" style="margin-top:0">在邮件应用中打开</button>
+          <button type="button" class="contact-submit contact-submit-secondary" id="open-gmail">在 Gmail 中撰写（浏览器）</button>
+        </p>
+      </details>
+      <p class="contact-note">首次使用 FormSubmit 时，可能会向该邮箱发送一次确认邮件，请查收邮箱完成验证。</p>
       <p class="contact-direct">
         <a href="mailto:liu.zimo.email@gmail.com">liu.zimo.email@gmail.com</a>
         <button type="button" class="contact-copy" id="copy-email" title="复制邮箱">复制</button>
@@ -265,6 +319,11 @@
   <script>
     (function () {
       var CONTACT_TO = 'liu.zimo.email@gmail.com';
+
+      if (/[?&]sent=1(?:&|$)/.test(window.location.search)) {
+        var el = document.getElementById('contact-success');
+        if (el) el.classList.add('is-visible');
+      }
 
       function buildBody() {
         var name = document.getElementById('contact-name').value.trim();
@@ -292,8 +351,12 @@
           + '&body=' + encodeURIComponent(body);
       }
 
-      document.getElementById('contact-form').addEventListener('submit', function (e) {
-        e.preventDefault();
+      document.getElementById('contact-form').addEventListener('submit', function () {
+        var em = document.getElementById('contact-email').value.trim();
+        document.getElementById('fs-replyto').value = em;
+      });
+
+      document.getElementById('open-mailapp').addEventListener('click', function () {
         var subject = document.getElementById('contact-subject').value.trim() || '来自 liuzimo.cn 的留言';
         var message = document.getElementById('contact-message').value.trim();
         if (!message) {
@@ -303,7 +366,7 @@
         var body = buildBody();
         var href = 'mailto:' + CONTACT_TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         if (href.length > 1800) {
-          alert('内容过长，部分邮件客户端无法打开。请缩短留言，或改用「在 Gmail 中撰写」或复制下方邮箱。');
+          alert('内容过长。请使用上方的「发送留言」，或缩短正文。');
           return;
         }
         triggerMailto(href);

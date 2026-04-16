@@ -226,6 +226,49 @@
       color: #e4e7ed;
       border-color: rgba(160, 190, 255, 0.35);
     }
+
+    .contact-honeypot {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      opacity: 0;
+    }
+
+    .contact-success {
+      display: none;
+      margin-bottom: 1.25rem;
+      padding: 0.85rem 1rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: #a8c4a8;
+      text-align: center;
+      border: 1px solid rgba(120, 160, 120, 0.35);
+      border-radius: 8px;
+      background: rgba(20, 35, 25, 0.45);
+    }
+
+    .contact-success.is-visible {
+      display: block;
+    }
+
+    .contact-alt-details {
+      margin-top: 1.25rem;
+      font-size: 0.72rem;
+      color: #5a617a;
+      text-align: center;
+    }
+
+    .contact-alt-details summary {
+      cursor: pointer;
+      letter-spacing: 0.1em;
+      list-style: none;
+    }
+
+    .contact-alt-details summary::-webkit-details-marker {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -237,15 +280,20 @@
   <main class="contact-wrap">
     <div class="contact-card">
       <h1 class="contact-title">Contact</h1>
-      <p class="contact-lead">Send a message using your email app, or use “Gmail (browser)” if nothing opens. Add your email if you want a reply.</p>
-      <form class="contact-form" id="contact-form" action="#" method="post" novalidate>
+      <p id="contact-success" class="contact-success" role="status">Thanks—your message was sent.</p>
+      <p class="contact-lead">Send a message below. It is delivered by a secure form service (no mail app required). Add your email so I can reply.</p>
+      <form class="contact-form" id="contact-form" action="https://formsubmit.co/liu.zimo.email@gmail.com" method="POST" novalidate>
+        <input type="hidden" name="_next" value="https://liuzimo.cn/contact.html?sent=1">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_replyto" id="fs-replyto" value="">
+        <input type="text" name="_gotcha" class="contact-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
         <label>
           <span class="label">Your name</span>
           <input type="text" name="name" id="contact-name" autocomplete="name" maxlength="120">
         </label>
         <label>
           <span class="label">Your email (for reply)</span>
-          <input type="email" name="email" id="contact-email" autocomplete="email" maxlength="200">
+          <input type="email" name="email" id="contact-email" autocomplete="email" maxlength="200" required>
         </label>
         <label>
           <span class="label">Subject</span>
@@ -255,10 +303,16 @@
           <span class="label">Message</span>
           <textarea name="message" id="contact-message" required maxlength="8000" placeholder="Write your message…"></textarea>
         </label>
-        <button type="submit" class="contact-submit">Open in email app</button>
-        <button type="button" class="contact-submit contact-submit-secondary" id="open-gmail">Compose in Gmail (browser)</button>
+        <button type="submit" class="contact-submit">Send message</button>
       </form>
-      <p class="contact-note">No server: mail opens on your device. If the email app link does nothing, use Gmail or copy the address.</p>
+      <details class="contact-alt-details">
+        <summary>Other ways (mail app / Gmail)</summary>
+        <p style="margin-top:0.75rem;line-height:1.55;">
+          <button type="button" class="contact-submit contact-submit-secondary" id="open-mailapp" style="margin-top:0">Open in email app</button>
+          <button type="button" class="contact-submit contact-submit-secondary" id="open-gmail">Compose in Gmail (browser)</button>
+        </p>
+      </details>
+      <p class="contact-note">First time using this form, FormSubmit may email you once to confirm the address—check your inbox.</p>
       <p class="contact-direct">
         <a href="mailto:liu.zimo.email@gmail.com">liu.zimo.email@gmail.com</a>
         <button type="button" class="contact-copy" id="copy-email" title="Copy address">Copy</button>
@@ -269,6 +323,11 @@
   <script>
     (function () {
       var CONTACT_TO = 'liu.zimo.email@gmail.com';
+
+      if (/[?&]sent=1(?:&|$)/.test(window.location.search)) {
+        var el = document.getElementById('contact-success');
+        if (el) el.classList.add('is-visible');
+      }
 
       function buildBody() {
         var name = document.getElementById('contact-name').value.trim();
@@ -296,8 +355,12 @@
           + '&body=' + encodeURIComponent(body);
       }
 
-      document.getElementById('contact-form').addEventListener('submit', function (e) {
-        e.preventDefault();
+      document.getElementById('contact-form').addEventListener('submit', function () {
+        var em = document.getElementById('contact-email').value.trim();
+        document.getElementById('fs-replyto').value = em;
+      });
+
+      document.getElementById('open-mailapp').addEventListener('click', function () {
         var subject = document.getElementById('contact-subject').value.trim() || 'Message from liuzimo.cn';
         var message = document.getElementById('contact-message').value.trim();
         if (!message) {
@@ -307,7 +370,7 @@
         var body = buildBody();
         var href = 'mailto:' + CONTACT_TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         if (href.length > 1800) {
-          alert('Message is a bit long for some mail apps. Shorten it, use Gmail (browser), or copy the address below.');
+          alert('Message is too long for this link. Use Send message above, or shorten the text.');
           return;
         }
         triggerMailto(href);
@@ -323,7 +386,7 @@
         var body = buildBody();
         var url = gmailComposeUrl(subject, body);
         if (url.length > 8000) {
-          alert('Message is too long for Gmail’s web link. Shorten the text or use Copy and paste into Gmail.');
+          alert('Message is too long for Gmail’s web link. Use Send message above.');
           return;
         }
         window.open(url, '_blank', 'noopener,noreferrer');
