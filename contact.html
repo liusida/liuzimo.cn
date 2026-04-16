@@ -315,7 +315,7 @@
       <h1 class="contact-title">Contact</h1>
       <p id="contact-success" class="contact-success" role="status">Thanks—your message was sent.</p>
       <p class="contact-lead">Send a message below. It is delivered by a secure form service (no mail app required). Add your email so I can reply.</p>
-      <form class="contact-form" id="contact-form" action="https://formsubmit.co/liu.zimo.email@gmail.com" method="POST" novalidate>
+      <form class="contact-form" id="contact-form" action="https://formsubmit.co/liu.zimo.email@gmail.com" method="POST">
         <input type="hidden" name="_next" value="https://liuzimo.cn/contact.html?sent=1">
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_replyto" id="fs-replyto" value="">
@@ -392,9 +392,26 @@
           + '&body=' + encodeURIComponent(body);
       }
 
-      document.getElementById('contact-form').addEventListener('submit', function () {
-        var em = document.getElementById('contact-email').value.trim();
-        document.getElementById('fs-replyto').value = em;
+      document.getElementById('contact-form').addEventListener('submit', function (e) {
+        var emailEl = document.getElementById('contact-email');
+        var messageEl = document.getElementById('contact-message');
+        var email = emailEl.value.trim();
+        var message = messageEl.value.trim();
+        if (!email) {
+          e.preventDefault();
+          alert('Please enter your email address.');
+          emailEl.focus();
+          return;
+        }
+        if (!message) {
+          e.preventDefault();
+          alert('Please enter a message.');
+          messageEl.focus();
+          return;
+        }
+        emailEl.value = email;
+        messageEl.value = message;
+        document.getElementById('fs-replyto').value = email;
       });
 
       document.getElementById('open-mailapp').addEventListener('click', function () {
