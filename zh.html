@@ -195,7 +195,12 @@
     }
 
     body.zh .hero-contact-btn {
+      padding: 0;
       text-transform: none;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      transition: color 0.2s;
     }
 
     .hero-contact-btn:hover {
@@ -204,9 +209,20 @@
       background: rgba(50, 65, 110, 0.45);
     }
 
+    body.zh .hero-contact-btn:hover {
+      border: none;
+      background: transparent;
+    }
+
     .hero-contact-btn:focus-visible {
       outline: 2px solid rgba(140, 170, 255, 0.45);
       outline-offset: 4px;
+    }
+
+    body.zh .hero-contact-btn:focus-visible {
+      outline: 2px solid rgba(140, 170, 255, 0.45);
+      outline-offset: 4px;
+      border-radius: 4px;
     }
 
     .site-nav {
