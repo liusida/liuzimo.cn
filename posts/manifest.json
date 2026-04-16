@@ -2,6 +2,10 @@
   "version": 1,
   "entries": [
     {
+      "id": "website-update",
+      "dateIso": "2026-04-16T12:22:53.000Z"
+    },
+    {
       "id": "welcome",
       "dateIso": "2026-04-16T10:17:48.920Z"
     }
