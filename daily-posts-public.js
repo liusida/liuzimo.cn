@@ -1,5 +1,17 @@
 (function () {
-  /** Human-readable date/time; never raw ISO. */
+  /** e.g. UTC+8, UTC-5, UTC+5:30 (viewer's offset for this Date). */
+  function utcOffsetLabel(d) {
+    if (!(d instanceof Date) || isNaN(d.getTime())) return '';
+    var offsetMin = -d.getTimezoneOffset();
+    var sign = offsetMin >= 0 ? '+' : '-';
+    var abs = Math.abs(offsetMin);
+    var h = Math.floor(abs / 60);
+    var m = abs % 60;
+    if (m === 0) return 'UTC' + sign + h;
+    return 'UTC' + sign + h + ':' + (m < 10 ? '0' : '') + m;
+  }
+
+  /** Human-readable date/time; never raw ISO. Appends (UTC±…). */
   function formatReadableDate(d, locale) {
     if (!(d instanceof Date) || isNaN(d.getTime())) return '';
     var loc = locale || undefined;
@@ -7,39 +19,34 @@
     try {
       out = new Intl.DateTimeFormat(loc, {
         dateStyle: 'medium',
-        timeStyle: 'short',
-        timeZoneName: 'short'
+        timeStyle: 'short'
       }).format(d);
     } catch (e) {
       out = '';
     }
-    if (out && String(out).trim()) return out;
-    try {
-      out = new Intl.DateTimeFormat(loc, {
-        dateStyle: 'medium',
-        timeStyle: 'short'
-      }).format(d);
-    } catch (e2) {
-      out = '';
+    if (!out || !String(out).trim()) {
+      try {
+        out = new Intl.DateTimeFormat(loc, {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: '2-digit'
+        }).format(d);
+      } catch (e3) {
+        out = '';
+      }
     }
-    if (out && String(out).trim()) return out;
-    try {
-      out = new Intl.DateTimeFormat(loc, {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit'
-      }).format(d);
-    } catch (e3) {
-      out = '';
+    if (!out || !String(out).trim()) {
+      try {
+        out = d.toLocaleString(loc);
+      } catch (e4) {
+        out = d.toLocaleString();
+      }
     }
-    if (out && String(out).trim()) return out;
-    try {
-      return d.toLocaleString(loc);
-    } catch (e4) {
-      return d.toLocaleString();
-    }
+    var u = utcOffsetLabel(d);
+    if (out && u) return String(out).trim() + ' (' + u + ')';
+    return out || '';
   }
 
   function isZhPage() {
