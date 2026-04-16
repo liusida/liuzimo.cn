@@ -187,24 +187,45 @@
         return String(id || 'post').replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'post';
       }
 
-      function formatDateWithTimeZone(dateIso) {
-        if (!dateIso) return '';
+      function formatReadableDate(d) {
+        if (!(d instanceof Date) || isNaN(d.getTime())) return '';
+        var out;
         try {
-          return new Date(dateIso).toLocaleString(undefined, {
+          out = new Intl.DateTimeFormat(undefined, {
             dateStyle: 'medium',
             timeStyle: 'short',
             timeZoneName: 'short'
-          });
+          }).format(d);
         } catch (e) {
-          return '';
+          out = '';
+        }
+        if (out && String(out).trim()) return out;
+        try {
+          out = new Intl.DateTimeFormat(undefined, {
+            dateStyle: 'medium',
+            timeStyle: 'short'
+          }).format(d);
+        } catch (e2) {
+          out = '';
+        }
+        if (out && String(out).trim()) return out;
+        try {
+          return d.toLocaleString(undefined, {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit'
+          });
+        } catch (e3) {
+          return d.toLocaleString();
         }
       }
 
       function formatPostTxt(p) {
         var s = '';
         s += 'id: ' + (p.id || '') + '\n';
-        s += 'dateIso: ' + (p.dateIso || '') + '\n';
-        s += 'local time (with time zone): ' + formatDateWithTimeZone(p.dateIso) + '\n\n';
+        s += 'date & time: ' + formatReadableDate(new Date(p.dateIso || '')) + '\n\n';
         s += '--- English ---\n';
         s += (p.title || '') + '\n\n';
         s += (p.body != null ? p.body : '') + '\n';

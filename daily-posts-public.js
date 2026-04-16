@@ -1,4 +1,47 @@
 (function () {
+  /** Human-readable date/time; never raw ISO. */
+  function formatReadableDate(d, locale) {
+    if (!(d instanceof Date) || isNaN(d.getTime())) return '';
+    var loc = locale || undefined;
+    var out;
+    try {
+      out = new Intl.DateTimeFormat(loc, {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+        timeZoneName: 'short'
+      }).format(d);
+    } catch (e) {
+      out = '';
+    }
+    if (out && String(out).trim()) return out;
+    try {
+      out = new Intl.DateTimeFormat(loc, {
+        dateStyle: 'medium',
+        timeStyle: 'short'
+      }).format(d);
+    } catch (e2) {
+      out = '';
+    }
+    if (out && String(out).trim()) return out;
+    try {
+      out = new Intl.DateTimeFormat(loc, {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+      }).format(d);
+    } catch (e3) {
+      out = '';
+    }
+    if (out && String(out).trim()) return out;
+    try {
+      return d.toLocaleString(loc);
+    } catch (e4) {
+      return d.toLocaleString();
+    }
+  }
+
   function isZhPage() {
     var lang = document.documentElement.getAttribute('lang') || '';
     return lang.indexOf('zh') === 0 || document.body.classList.contains('zh');
@@ -58,22 +101,9 @@
       try {
         var d = new Date(p.dateIso || Date.now());
         var locale = isZhPage() ? 'zh-CN' : undefined;
-        var fmt = new Intl.DateTimeFormat(locale, {
-          dateStyle: 'medium',
-          timeStyle: 'short',
-          timeZoneName: 'short'
-        });
-        var label = fmt.format(d);
-        if (!label || !String(label).trim()) {
-          label = d.toISOString();
-        }
-        t.textContent = label;
+        t.textContent = formatReadableDate(d, locale);
       } catch (e) {
-        try {
-          t.textContent = new Date(p.dateIso || Date.now()).toISOString();
-        } catch (e2) {
-          t.textContent = '';
-        }
+        t.textContent = '';
       }
 
       var h3 = document.createElement('h3');
