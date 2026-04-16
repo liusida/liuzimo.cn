@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="backstage-session.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — Zimo Liu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
+
+    body {
+      background: #07080d;
+      color: #c8ccd4;
+      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      overflow-x: hidden;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    body::-webkit-scrollbar { display: none; }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.35rem 1.25rem;
+      padding: 0.65rem 1rem;
+      background: rgba(7, 8, 13, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(100, 120, 180, 0.14);
+    }
+
+    .site-nav a {
+      color: #6d758c;
+      text-decoration: none;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    .site-nav a:hover { color: #e4e7ed; }
+
+    .site-nav a:focus-visible {
+      outline: 2px solid rgba(140, 170, 255, 0.45);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+
+    .contact-wrap {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4.5rem 2rem 2rem;
+    }
+
+    .contact-card {
+      width: 100%;
+      max-width: 26rem;
+      padding: 2rem 1.75rem;
+      border: 1px solid rgba(100, 120, 180, 0.22);
+      border-radius: 12px;
+      background: rgba(10, 12, 20, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+    }
+
+    .contact-title {
+      font-family: "Cormorant Garamond", "Georgia", serif;
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: #e4e7ed;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .contact-lead {
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: #7a8199;
+      font-weight: 300;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .contact-form label {
+      display: block;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    .contact-form .label {
+      display: block;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #5a617a;
+      margin-bottom: 0.45rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.7rem 0.85rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: #e4e7ed;
+      background: rgba(12, 14, 20, 0.9);
+      border: 1px solid rgba(90, 97, 122, 0.45);
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .contact-form textarea {
+      min-height: 7rem;
+      resize: vertical;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: rgba(140, 170, 255, 0.4);
+      box-shadow: 0 0 0 3px rgba(100, 140, 220, 0.12);
+    }
+
+    .contact-submit {
+      width: 100%;
+      margin-top: 0.35rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #c8ccd4;
+      background: rgba(60, 75, 120, 0.35);
+      border: 1px solid rgba(140, 170, 255, 0.25);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+
+    .contact-submit:hover {
+      background: rgba(80, 100, 160, 0.45);
+      border-color: rgba(160, 190, 255, 0.4);
+      color: #e4e7ed;
+    }
+
+    .contact-note {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      color: #5a617a;
+      text-align: center;
+    }
+
+    .contact-direct {
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(90, 97, 122, 0.22);
+      text-align: center;
+      font-size: 0.78rem;
+    }
+
+    .contact-direct a {
+      color: #8c9abd;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .contact-direct a:hover {
+      color: #e4e7ed;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <nav class="site-nav" aria-label="Page">
+    <a href="index.html">Home</a>
+    <a href="contact-zh.html" hreflang="zh-Hans">中文</a>
+  </nav>
+  <main class="contact-wrap">
+    <div class="contact-card">
+      <h1 class="contact-title">Contact</h1>
+      <p class="contact-lead">Send a message—it opens your email app with this address. Add your own email in the form if you want a reply.</p>
+      <form class="contact-form" id="contact-form" action="#" method="post" novalidate>
+        <label>
+          <span class="label">Your name</span>
+          <input type="text" name="name" id="contact-name" autocomplete="name" maxlength="120">
+        </label>
+        <label>
+          <span class="label">Your email (for reply)</span>
+          <input type="email" name="email" id="contact-email" autocomplete="email" maxlength="200">
+        </label>
+        <label>
+          <span class="label">Subject</span>
+          <input type="text" name="subject" id="contact-subject" maxlength="200" placeholder="Message from liuzimo.cn">
+        </label>
+        <label>
+          <span class="label">Message</span>
+          <textarea name="message" id="contact-message" required maxlength="8000" placeholder="Write your message…"></textarea>
+        </label>
+        <button type="submit" class="contact-submit">Open in email app</button>
+      </form>
+      <p class="contact-note">This site is static: your device sends the email. If nothing opens, use the link below.</p>
+      <p class="contact-direct">
+        <a id="contact-mailto" href="mailto:zimo.liu.email@gmail.com">zimo.liu.email@gmail.com</a>
+      </p>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var CONTACT_TO = 'zimo.liu.email@gmail.com';
+
+      document.getElementById('contact-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = document.getElementById('contact-name').value.trim();
+        var from = document.getElementById('contact-email').value.trim();
+        var subject = document.getElementById('contact-subject').value.trim() || 'Message from liuzimo.cn';
+        var message = document.getElementById('contact-message').value.trim();
+        if (!message) {
+          alert('Please enter a message.');
+          return;
+        }
+        var body = '';
+        if (name) body += 'Name: ' + name + '\n';
+        if (from) body += 'Reply to: ' + from + '\n';
+        body += '\n' + message;
+        var href = 'mailto:' + CONTACT_TO + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        if (href.length > 1800) {
+          alert('Message is a bit long for some browsers. Try shortening it, or email directly using the address below.');
+          return;
+        }
+        window.location.href = href;
+      });
+    })();
+  </script>
+  <script>
+    const canvas = document.getElementById('bg');
+    const ctx = canvas.getContext('2d');
+    let width, height, nodes, dpr, connectDist, pointerDist;
+
+    const SPEED = 0.15;
+
+    function isMobile() {
+      return window.innerWidth < 768;
+    }
+
+    function resize() {
+      dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      connectDist = isMobile() ? 120 : 160;
+      pointerDist = isMobile() ? 150 : 200;
+    }
+
+    function createNodes() {
+      const area = width * height;
+      const baseCount = isMobile() ? 45 : 80;
+      const density = area / (1920 * 1080);
+      const count = Math.max(20, Math.round(baseCount * density));
+      nodes = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * SPEED,
+        vy: (Math.random() - 0.5) * SPEED,
+      }));
+    }
+
+    const pointer = { x: -1000, y: -1000, active: false };
+
+    document.addEventListener('mousemove', e => {
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+      pointer.active = true;
+    });
+    document.addEventListener('mouseleave', () => {
+      pointer.active = false;
+      pointer.x = -1000;
+      pointer.y = -1000;
+    });
+
+    document.addEventListener('touchmove', e => {
+      const t = e.touches[0];
+      pointer.x = t.clientX;
+      pointer.y = t.clientY;
+      pointer.active = true;
+    }, { passive: true });
+    document.addEventListener('touchstart', e => {
+      const t = e.touches[0];
+      pointer.x = t.clientX;
+      pointer.y = t.clientY;
+      pointer.active = true;
+    }, { passive: true });
+    document.addEventListener('touchend', () => {
+      pointer.active = false;
+      pointer.x = -1000;
+      pointer.y = -1000;
+    });
+
+    function tick() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (const n of nodes) {
+        n.x += n.vx;
+        n.y += n.vy;
+        if (n.x < 0 || n.x > width) n.vx *= -1;
+        if (n.y < 0 || n.y > height) n.vy *= -1;
+      }
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < connectDist) {
+            const alpha = (1 - dist / connectDist) * 0.15;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(100,120,180,${alpha})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      if (pointer.active) {
+        for (let i = 0; i < nodes.length; i++) {
+          const mdx = nodes[i].x - pointer.x;
+          const mdy = nodes[i].y - pointer.y;
+          const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+
+          if (mDist < pointerDist) {
+            for (let j = i + 1; j < nodes.length; j++) {
+              const mdx2 = nodes[j].x - pointer.x;
+              const mdy2 = nodes[j].y - pointer.y;
+              const mDist2 = Math.sqrt(mdx2 * mdx2 + mdy2 * mdy2);
+              if (mDist2 > pointerDist) continue;
+
+              const dx = nodes[i].x - nodes[j].x;
+              const dy = nodes[i].y - nodes[j].y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              if (dist < pointerDist) {
+                const alpha = (1 - dist / pointerDist) * 0.25;
+                ctx.beginPath();
+                ctx.moveTo(nodes[i].x, nodes[i].y);
+                ctx.lineTo(nodes[j].x, nodes[j].y);
+                ctx.strokeStyle = `rgba(140,170,255,${alpha})`;
+                ctx.lineWidth = 0.6;
+                ctx.stroke();
+              }
+            }
+          }
+        }
+      }
+
+      const nodeRadius = isMobile() ? 1.2 : 1.5;
+      for (const n of nodes) {
+        let glow = 0.3;
+        if (pointer.active) {
+          const mdx = n.x - pointer.x;
+          const mdy = n.y - pointer.y;
+          const mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mDist < pointerDist) glow = 0.7;
+        }
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, nodeRadius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(140,170,255,${glow})`;
+        ctx.fill();
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => { resize(); createNodes(); }, 150);
+    });
+    resize();
+    createNodes();
+    tick();
+  </script>
+</body>
+</html>
