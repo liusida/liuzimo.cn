@@ -1,4 +1,10 @@
 (function () {
+  /**
+   * Password gate for the gallery UI. Set to false to show the lock form again.
+   * Keep in sync with the inline early script in gallery.html / gallery-zh.html (LOCK_DISABLED).
+   */
+  var LOCK_DISABLED = true;
+
   var STORAGE_KEY = 'liuzimo_gallery_unlock';
   var KEY_STORAGE = 'liuzimo_gallery_key';
   var PASSWORD = 'happyeggie';
@@ -12,7 +18,17 @@
     document.dispatchEvent(new Event('gallery-unlock'));
   }
 
+  function applyLockDisabled() {
+    if (!LOCK_DISABLED) return;
+    try {
+      sessionStorage.setItem(STORAGE_KEY, '1');
+      sessionStorage.setItem(KEY_STORAGE, PASSWORD);
+    } catch (e) {}
+    document.documentElement.classList.add('gallery-unlocked');
+  }
+
   function init() {
+    if (LOCK_DISABLED) return;
     var form = document.getElementById('gallery-lock-form');
     var input = document.getElementById('gallery-lock-input');
     var err = document.getElementById('gallery-lock-err');
@@ -39,6 +55,8 @@
       }
     } catch (e2) {}
   }
+
+  applyLockDisabled();
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
