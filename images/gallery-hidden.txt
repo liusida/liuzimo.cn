@@ -1,0 +1,5 @@
+# Filenames to hide from the gallery (must match the "file" field in images/gallery.json).
+# One name per line. Lines starting with # are ignored. Empty lines are ignored.
+#
+# Example (remove leading # to use):
+# PXL_20220808_130141622.jpg

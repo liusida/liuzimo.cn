@@ -90,6 +90,25 @@
     } catch (e) {}
   }
 
+  /** Plain text: one filename per line; # starts a comment. */
+  function parseHiddenFilenames(text) {
+    var hidden = {};
+    if (!text || typeof text !== 'string') return hidden;
+    text.split(/\r?\n/).forEach(function (line) {
+      var t = line.trim();
+      if (!t || t.charAt(0) === '#') return;
+      hidden[t] = true;
+    });
+    return hidden;
+  }
+
+  function filterVisibleItems(items, hidden) {
+    if (!hidden || !items) return items || [];
+    return items.filter(function (it) {
+      return it && it.file && !hidden[it.file];
+    });
+  }
+
   function openLightbox(imgSrc, altText, timeLine) {
     var lb = document.getElementById('gallery-lightbox');
     var im = document.querySelector('#gallery-lightbox .gallery-lightbox-img');
@@ -183,18 +202,28 @@
     var zh = isZhPage();
     var base = imgBaseUrl();
     var manifestUrl = new URL('gallery.json', base);
+    var hiddenUrl = new URL('gallery-hidden.txt', base);
 
-    fetch(manifestUrl.toString(), { cache: 'no-store' })
-      .then(function (res) {
+    Promise.all([
+      fetch(manifestUrl.toString(), { cache: 'no-store' }).then(function (res) {
         if (!res.ok) throw new Error('manifest');
         return res.json();
+      }),
+      fetch(hiddenUrl.toString(), { cache: 'no-store' }).then(function (res) {
+        return res.ok ? res.text() : '';
+      }).catch(function () {
+        return '';
       })
-      .then(function (data) {
+    ])
+      .then(function (pair) {
+        var data = pair[0];
+        var hiddenText = pair[1];
+        var hiddenMap = parseHiddenFilenames(hiddenText);
         if (noteEl && data) {
           var note = zh ? data.timezoneNoteZh : data.timezoneNoteEn;
           if (note) noteEl.textContent = note;
         }
-        var rawItems = (data && data.items) || [];
+        var rawItems = filterVisibleItems((data && data.items) || [], hiddenMap);
         var mode = readStoredSort();
         if (sortEl) {
           if (SORT_MODES.indexOf(mode) !== -1) sortEl.value = mode;
