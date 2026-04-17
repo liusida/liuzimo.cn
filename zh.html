@@ -183,46 +183,26 @@
 
     .hero-contact-btn {
       display: inline-block;
-      padding: 0.32rem 0.75rem;
+      padding: 0;
       font-size: 0.65rem;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-decoration: none;
       color: #6d758c;
-      border: 1px solid rgba(100, 120, 180, 0.32);
-      border-radius: 999px;
-      background: rgba(20, 26, 45, 0.55);
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      white-space: nowrap;
+      transition: color 0.2s;
     }
 
     body.zh .hero-contact-btn {
-      padding: 0;
+      letter-spacing: 0.12em;
       text-transform: none;
-      border: none;
-      border-radius: 0;
-      background: transparent;
-      transition: color 0.2s;
     }
 
     .hero-contact-btn:hover {
       color: #e4e7ed;
-      border-color: rgba(160, 190, 255, 0.4);
-      background: rgba(50, 65, 110, 0.45);
-    }
-
-    body.zh .hero-contact-btn:hover {
-      border: none;
-      background: transparent;
     }
 
     .hero-contact-btn:focus-visible {
-      outline: 2px solid rgba(140, 170, 255, 0.45);
-      outline-offset: 4px;
-    }
-
-    body.zh .hero-contact-btn:focus-visible {
-      outline: 2px solid rgba(140, 170, 255, 0.45);
-      outline-offset: 4px;
-      border-radius: 4px;
+      outline: none;
     }
 
     .site-nav {

@@ -12,3 +12,27 @@
 #   date:   optional — ISO time, e.g. 2026-04-16T12:00:00.000Z (defaults to now)
 #   title:  required
 # =============================================================================
+
+[[POST]]
+id: day-2-photo-gallery
+date: 2026-04-17T12:00:00.000Z
+title: Day 2 — photo gallery plans
+
+This is day 2 of creating this website. Today I am planning to add a photo gallery.
+[[/POST]]
+
+[[POST]]
+id: website-update
+date: 2026-04-16T12:22:53.000Z
+title: Website update
+
+Hi, today I created this website. If you wish to contact me, please wait patiently as I'm developing a new feature.
+[[/POST]]
+
+[[POST]]
+id: welcome
+date: 2026-04-16T10:17:48.920Z
+title: Welcome
+
+Hi and welcome to my website! It's now mostly empty but I'll be filling it up soon. See you!
+[[/POST]]
