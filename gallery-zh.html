@@ -2,16 +2,6 @@
 <html lang="zh-Hans">
 <head>
   <meta charset="utf-8">
-  <script src="backstage-session.js"></script>
-  <script>
-    try {
-      if (sessionStorage.getItem('liuzimo_backstage_ok') !== '1') {
-        window.location.replace('login.html');
-      }
-    } catch (e) {
-      window.location.replace('login.html');
-    }
-  </script>
   <script>try { sessionStorage.setItem('liuzimo_site_locale', 'zh'); } catch (e) {}</script>
   <script>
     try {
