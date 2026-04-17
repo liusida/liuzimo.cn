@@ -12,13 +12,31 @@ except ImportError:
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 IMAGES = os.path.join(ROOT, "images")
+HIDDEN_TXT = os.path.join(IMAGES, "gallery-hidden.txt")
 OUT = os.path.join(IMAGES, "gallery.json")
 
 
+def load_hidden_filenames(path: str) -> set:
+    """Basenames listed in gallery-hidden.txt (# comments, blank lines ignored)."""
+    hidden = set()
+    if not os.path.isfile(path):
+        return hidden
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            t = line.strip()
+            if not t or t.startswith("#"):
+                continue
+            hidden.add(t)
+    return hidden
+
+
 def main() -> None:
+    hidden = load_hidden_filenames(HIDDEN_TXT)
     rows = []
     for fn in sorted(os.listdir(IMAGES)):
         if fn == "gallery.json":
+            continue
+        if fn in hidden:
             continue
         if not fn.lower().endswith((".jpg", ".jpeg")):
             continue

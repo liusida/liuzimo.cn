@@ -1,5 +1,11 @@
-# Filenames to hide from the gallery (must match the "file" field in images/gallery.json).
-# One name per line. Lines starting with # are ignored. Empty lines are ignored.
+# Filenames to hide from the public site (must match names in images/gallery.json).
+# One name per line. Lines starting with # are ignored.
+#
+# 1) Add basenames here (e.g. PXL_20220808_130141622.jpg).
+# 2) Move files off the deployed site and refresh the manifest:
+#    .venv-gallery/bin/python scripts/move-hidden-gallery-images.py
+#    .venv-gallery/bin/python scripts/build-gallery-json.py
+# 3) Commit and push. Photos end up in private-gallery/ (gitignored, not published).
 #
 # Example (remove leading # to use):
 # PXL_20220808_130141622.jpg

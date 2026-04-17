@@ -2,3 +2,7 @@
 Thumbs.db
 *.bak
 .venv-gallery/
+
+# Local-only copies of photos removed from images/ (see scripts/move-hidden-gallery-images.py)
+private-gallery/*
+!private-gallery/README.md
