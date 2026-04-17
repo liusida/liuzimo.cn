@@ -3,6 +3,15 @@
 <head>
   <meta charset="utf-8">
   <script src="backstage-session.js"></script>
+  <script>
+    try {
+      if (sessionStorage.getItem('liuzimo_backstage_ok') !== '1') {
+        window.location.replace('login.html');
+      }
+    } catch (e) {
+      window.location.replace('login.html');
+    }
+  </script>
   <script>try { sessionStorage.setItem('liuzimo_site_locale', 'en'); } catch (e) {}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gallery — Zimo Liu</title>
