@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Reads drafts/posts.txt (English only) and writes posts/<id>.json + manifest.
- * Does not write zhTitle/zhBody — add those in posts/*.json (e.g. ask Cursor to translate).
+ * Reads posts/posts.txt (English only) and writes posts/<id>.json + manifest.
+ * Preserves zhTitle/zhBody from existing posts/<id>.json when re-syncing.
  * Usage: node scripts/sync-drafts.mjs
  */
 import fs from 'fs';
@@ -10,7 +10,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
-const draftPath = path.join(root, 'drafts', 'posts.txt');
+const draftPath = path.join(root, 'posts', 'posts.txt');
 const postsDir = path.join(root, 'posts');
 
 function slugify(raw) {
@@ -89,9 +89,22 @@ function buildPost(headers, body, usedIds) {
   };
 }
 
+function mergeExistingZh(jsonPath, base) {
+  if (!fs.existsSync(jsonPath)) return base;
+  try {
+    const prev = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    const out = { ...base };
+    if (prev.zhTitle != null && String(prev.zhTitle).trim()) out.zhTitle = prev.zhTitle;
+    if (prev.zhBody != null && String(prev.zhBody).trim()) out.zhBody = prev.zhBody;
+    return out;
+  } catch {
+    return base;
+  }
+}
+
 function main() {
   if (!fs.existsSync(draftPath)) {
-    console.error('Missing file: drafts/posts.txt');
+    console.error('Missing file: posts/posts.txt');
     process.exit(1);
   }
 
@@ -128,11 +141,13 @@ function main() {
   }
 
   for (const p of posts) {
-    const out = JSON.stringify(p, null, 2) + '\n';
-    fs.writeFileSync(path.join(postsDir, p.id + '.json'), out, 'utf8');
+    const jsonPath = path.join(postsDir, p.id + '.json');
+    const merged = mergeExistingZh(jsonPath, p);
+    const out = JSON.stringify(merged, null, 2) + '\n';
+    fs.writeFileSync(jsonPath, out, 'utf8');
   }
 
-  console.log('Wrote', posts.length, 'post(s) to posts/ (English fields only).');
+  console.log('Wrote', posts.length, 'post(s) to posts/ (English from posts/posts.txt; zh preserved when present).');
 }
 
 main();

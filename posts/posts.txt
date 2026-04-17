@@ -1,0 +1,14 @@
+# =============================================================================
+# Daily posts — write in English only (no Chinese here).
+#
+# Publish:
+#   1) Add a [[POST]] … [[/POST]] block below.
+#   2) Run:  node scripts/sync-drafts.mjs
+#   3) Add Chinese (zhTitle / zhBody) in posts/<id>.json if missing, then push.
+#      Sync keeps existing zhTitle/zhBody when you re-run it.
+#
+# Headers (one per line, then a blank line, then the body):
+#   id:     optional — URL slug; auto from title if omitted
+#   date:   optional — ISO time, e.g. 2026-04-16T12:00:00.000Z (defaults to now)
+#   title:  required
+# =============================================================================

@@ -5,23 +5,15 @@
   <script src="backstage-session.js"></script>
   <script>try { sessionStorage.setItem('liuzimo_site_locale', 'zh'); } catch (e) {}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>刘子墨</title>
+  <title>照片画廊 — 刘子墨</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="daily-posts.css?v=1">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html {
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
-      scrollbar-width: none;
-    }
-
-    html::-webkit-scrollbar {
-      display: none;
-    }
+    html { scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
 
     body {
       background: #07080d;
@@ -32,9 +24,7 @@
       scrollbar-width: none;
     }
 
-    body::-webkit-scrollbar {
-      display: none;
-    }
+    body::-webkit-scrollbar { display: none; }
 
     canvas {
       position: fixed;
@@ -42,167 +32,6 @@
       left: 0;
       width: 100%;
       height: 100%;
-    }
-
-    .page {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      min-height: 100dvh;
-      text-align: center;
-      padding: 2rem;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
-    }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.65rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: #3a4158;
-      animation: hintPulse 2.8s ease-in-out infinite;
-    }
-
-    @keyframes hintPulse {
-      0%, 100% { opacity: 0.35; }
-      50% { opacity: 0.9; }
-    }
-
-    .page-secondary {
-      justify-content: flex-start;
-      padding-top: clamp(2.75rem, 7vh, 4rem);
-      padding-bottom: clamp(3rem, 10vh, 6rem);
-    }
-
-    .page-secondary h2 {
-      font-size: clamp(1.8rem, 4.5vw, 2.75rem);
-      font-weight: 400;
-      letter-spacing: 0.14em;
-      color: #e4e7ed;
-      margin-bottom: 1em;
-    }
-
-    .page-secondary .blurb {
-      max-width: 38rem;
-      width: 100%;
-      text-align: left;
-      font-size: clamp(0.95rem, 2vw, 1.05rem);
-      line-height: 1.85;
-      color: #7a8199;
-      font-weight: 400;
-      letter-spacing: 0.03em;
-    }
-
-    .page-secondary .blurb p + p {
-      margin-top: 1.2em;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-snap-type: none; scroll-behavior: auto; }
-      .scroll-hint { animation: none; opacity: 0.55; }
-    }
-
-    body.zh h1,
-    body.zh .page-secondary h2 {
-      font-family: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
-    }
-
-    h1 {
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
-      font-weight: 400;
-      letter-spacing: 0.1em;
-      color: #e4e7ed;
-      margin-bottom: 0.3em;
-    }
-
-    .page-hero h1,
-    .page-hero .subtitle,
-    .page-secondary h2 {
-      display: inline-block;
-      transform-origin: center;
-      transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .page-hero h1:hover,
-      .page-hero .subtitle:hover,
-      .page-secondary h2:hover {
-        transform: scale(1.08);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .page-hero h1,
-      .page-hero .subtitle,
-      .page-secondary h2 { transition: none; }
-      .page-hero h1:hover,
-      .page-hero .subtitle:hover,
-      .page-secondary h2:hover { transform: none; }
-    }
-
-    .subtitle {
-      font-size: clamp(0.85rem, 2vw, 1.05rem);
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: #5a617a;
-      margin-bottom: 2.5em;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    a.subtitle {
-      display: inline-block;
-    }
-
-    a.subtitle:hover {
-      color: #e4e7ed;
-    }
-
-    a.subtitle:focus-visible {
-      outline: 2px solid rgba(140, 170, 255, 0.45);
-      outline-offset: 6px;
-    }
-
-    body.zh .subtitle {
-      letter-spacing: 0.14em;
-      font-weight: 400;
-      text-transform: none;
-    }
-
-    .hero-contact {
-      margin: 0.2rem 0 1rem;
-    }
-
-    .hero-contact-btn {
-      display: inline-block;
-      padding: 0;
-      font-size: 0.65rem;
-      letter-spacing: 0.14em;
-      text-decoration: none;
-      color: #6d758c;
-      white-space: nowrap;
-      transition: color 0.2s;
-    }
-
-    body.zh .hero-contact-btn {
-      letter-spacing: 0.12em;
-      text-transform: none;
-    }
-
-    .hero-contact-btn:hover {
-      color: #e4e7ed;
-    }
-
-    .hero-contact-btn:focus-visible {
-      outline: none;
     }
 
     .site-nav {
@@ -232,9 +61,7 @@
       transition: color 0.2s;
     }
 
-    .site-nav a:hover {
-      color: #e4e7ed;
-    }
+    .site-nav a:hover { color: #e4e7ed; }
 
     .site-nav a:focus-visible {
       outline: 2px solid rgba(140, 170, 255, 0.45);
@@ -242,8 +69,59 @@
       border-radius: 4px;
     }
 
-    .page-hero {
-      padding-top: clamp(3.25rem, 8vh, 4.25rem);
+    .site-nav a[aria-current="page"] { color: #a8b0cc; }
+
+    .gallery-wrap {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: clamp(4.25rem, 10vh, 5rem) 1.5rem 3rem;
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+
+    .gallery-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .gallery-title {
+      font-family: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
+      font-size: clamp(1.85rem, 4.5vw, 2.5rem);
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      color: #e4e7ed;
+      margin-bottom: 0.65rem;
+    }
+
+    .gallery-lead {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: #7a8199;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      max-width: 32rem;
+      margin: 0 auto;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+      gap: 1rem;
+    }
+
+    .gallery-slot {
+      aspect-ratio: 1;
+      border: 1px dashed rgba(100, 120, 180, 0.32);
+      border-radius: 10px;
+      background: rgba(10, 12, 20, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4a5168;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
     }
 
     @media (max-width: 520px) {
@@ -251,46 +129,39 @@
         gap: 0.35rem 0.75rem;
         padding: 0.55rem 0.75rem;
       }
+      .site-nav a { font-size: 0.6rem; }
+    }
 
-      .site-nav a {
-        font-size: 0.58rem;
-        letter-spacing: 0.08em;
-      }
+    @media (prefers-reduced-motion: reduce) {
+      .site-nav a { transition: none; }
     }
   </style>
 </head>
 <body class="zh">
   <canvas id="bg" aria-hidden="true"></canvas>
   <nav class="site-nav" aria-label="页面">
-    <a href="#top">首页</a>
-    <a href="#my-journey">我的旅程</a>
-    <a href="#daily-recording">日常记录</a>
-    <a href="gallery-zh.html">画廊</a>
+    <a href="zh.html">首页</a>
+    <a href="zh.html#my-journey">我的旅程</a>
+    <a href="zh.html#daily-recording">日常记录</a>
+    <a href="gallery-zh.html" aria-current="page">画廊</a>
     <a href="contact-zh.html">联系</a>
-    <a href="index.html" hreflang="en">English</a>
+    <a href="gallery.html" hreflang="en">English</a>
   </nav>
-  <main>
-    <section id="top" class="page page-hero" aria-label="简介">
-      <h1>刘子墨</h1>
-      <p class="hero-contact"><a class="hero-contact-btn" href="contact-zh.html">联系</a></p>
-      <a class="subtitle" href="index.html" hreflang="en">Esteem Knowledge</a>
-      <p class="scroll-hint">向下滚动</p>
-    </section>
-    <section id="my-journey" class="page page-secondary" aria-label="我的旅程">
-      <h2>我的旅程</h2>
-      <div class="blurb">
-        <p>刘子墨是一名生活在新加坡、充满好奇心与活力的 12 岁少年，对探究事物如何运作有着浓厚兴趣。他在科学、数学与科技方面展现出敏锐的悟性，并尤其热衷参与学校的课外实践活动（CCA）中的机器人项目，在其中锻炼设计、搭建与编程等能力。</p>
-        <p>在学业之外，刘子墨喜爱户外活动，通过骑行 Rockrider 山地车保持积极的生活方式，体现出敢于挑战的冒险精神。他能使用中英文交流，求知若渴，不断寻找拓展知识、精进技能的机会，其中也包括自己动手开发个人网站等实践。</p>
-        <p>总体而言，刘子墨是一位积极主动、全面发展的学习者，在日常生活中能够较好地平衡创造力、思辨能力与体能活动。</p>
-      </div>
-    </section>
-    <section class="page page-secondary" id="daily-recording" aria-label="日常记录">
-      <h2>日常记录</h2>
-      <div id="daily-posts" class="daily-posts" aria-live="polite"></div>
-    </section>
+  <main class="gallery-wrap">
+    <header class="gallery-header">
+      <h1 class="gallery-title">照片画廊</h1>
+      <p class="gallery-lead">展示照片的地方。准备好以后，可在每个格子里加入图片，或改成你自己的版式。</p>
+    </header>
+    <div class="gallery-grid" role="list">
+      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
+      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
+      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
+      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
+      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
+      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
+    </div>
   </main>
 
-  <script src="daily-posts-public.js?v=6" defer></script>
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');
