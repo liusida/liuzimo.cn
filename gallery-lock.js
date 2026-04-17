@@ -1,10 +1,12 @@
 (function () {
   var STORAGE_KEY = 'liuzimo_gallery_unlock';
+  var KEY_STORAGE = 'liuzimo_gallery_key';
   var PASSWORD = 'happyeggie';
 
-  function setUnlocked() {
+  function setUnlocked(password) {
     try {
       sessionStorage.setItem(STORAGE_KEY, '1');
+      sessionStorage.setItem(KEY_STORAGE, password);
     } catch (e) {}
     document.documentElement.classList.add('gallery-unlocked');
     document.dispatchEvent(new Event('gallery-unlock'));
@@ -17,7 +19,6 @@
     try {
       if (sessionStorage.getItem(STORAGE_KEY) === '1') {
         document.documentElement.classList.add('gallery-unlocked');
-        return;
       }
     } catch (e) {}
     if (!form || !input) return;
@@ -25,14 +26,17 @@
       e.preventDefault();
       if (err) err.hidden = true;
       if (input.value === PASSWORD) {
+        var pwd = input.value;
         input.value = '';
-        setUnlocked();
+        setUnlocked(pwd);
       } else if (err) {
         err.hidden = false;
       }
     });
     try {
-      input.focus();
+      if (sessionStorage.getItem(STORAGE_KEY) !== '1') {
+        input.focus();
+      }
     } catch (e2) {}
   }
 
