@@ -13,6 +13,13 @@
     }
   </script>
   <script>try { sessionStorage.setItem('liuzimo_site_locale', 'zh'); } catch (e) {}</script>
+  <script>
+    try {
+      if (sessionStorage.getItem('liuzimo_gallery_unlock') === '1') {
+        document.documentElement.classList.add('gallery-unlocked');
+      }
+    } catch (e) {}
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>照片画廊 — 刘子墨</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -338,6 +345,104 @@
         transform: none;
       }
     }
+
+    .gallery-lock {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: rgba(5, 6, 10, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    html.gallery-unlocked .gallery-lock {
+      display: none !important;
+    }
+
+    .gallery-lock-card {
+      width: 100%;
+      max-width: 20rem;
+      padding: 1.75rem 1.5rem;
+      border: 1px solid rgba(100, 120, 180, 0.28);
+      border-radius: 12px;
+      background: rgba(10, 12, 20, 0.88);
+      text-align: center;
+    }
+
+    .gallery-lock-title {
+      font-family: "Noto Serif SC", "Noto Sans SC", serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: #e4e7ed;
+      margin-bottom: 0.5rem;
+    }
+
+    .gallery-lock-lead {
+      font-size: 0.85rem;
+      color: #7a8199;
+      margin-bottom: 1.25rem;
+      line-height: 1.65;
+    }
+
+    .gallery-lock-card label {
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    .gallery-lock-card input[type="password"] {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.88rem;
+      color: #c8ccd4;
+      background: rgba(10, 12, 20, 0.9);
+      border: 1px solid rgba(100, 120, 180, 0.35);
+      border-radius: 8px;
+    }
+
+    .gallery-lock-card input:focus {
+      outline: 2px solid rgba(140, 170, 255, 0.45);
+      outline-offset: 2px;
+    }
+
+    .gallery-lock-card button[type="submit"] {
+      margin-top: 0.25rem;
+      padding: 0.55rem 1.25rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      color: #c8ccd4;
+      background: rgba(60, 75, 120, 0.45);
+      border: 1px solid rgba(140, 170, 255, 0.3);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .gallery-lock-card button[type="submit"]:hover {
+      background: rgba(80, 100, 160, 0.5);
+      color: #e4e7ed;
+    }
+
+    .gallery-lock-err {
+      font-size: 0.78rem;
+      color: #c08088;
+      margin-top: 0.5rem;
+    }
+
+    .gallery-lock-sr {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
 </head>
 <body class="zh">
@@ -350,6 +455,18 @@
     <a href="contact-zh.html">联系</a>
     <a href="gallery.html" hreflang="en">English</a>
   </nav>
+  <div id="gallery-lock" class="gallery-lock" role="dialog" aria-modal="true" aria-labelledby="gallery-lock-heading">
+    <form id="gallery-lock-form" class="gallery-lock-card" autocomplete="off">
+      <p id="gallery-lock-heading" class="gallery-lock-title">照片画廊</p>
+      <p class="gallery-lock-lead">请输入密码以查看照片。</p>
+      <label>
+        <span class="gallery-lock-sr">密码</span>
+        <input type="password" id="gallery-lock-input" name="gallery-password" autocomplete="current-password" required>
+      </label>
+      <p id="gallery-lock-err" class="gallery-lock-err" hidden>密码不正确。</p>
+      <button type="submit">解锁</button>
+    </form>
+  </div>
   <main class="gallery-wrap">
     <header class="gallery-header">
       <h1 class="gallery-title">照片画廊</h1>
@@ -375,7 +492,8 @@
     </div>
   </div>
 
-  <script src="gallery-ui.js?v=6" defer></script>
+  <script src="gallery-lock.js" defer></script>
+  <script src="gallery-ui.js?v=7" defer></script>
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');

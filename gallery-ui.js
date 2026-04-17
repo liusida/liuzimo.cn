@@ -1,7 +1,17 @@
 (function () {
+  var GALLERY_UNLOCK_KEY = 'liuzimo_gallery_unlock';
   var MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   var SORT_STORAGE = 'liuzimo_gallery_sort';
   var SORT_MODES = ['exif-asc', 'exif-desc'];
+  var started = false;
+
+  function isGalleryUnlocked() {
+    try {
+      return sessionStorage.getItem(GALLERY_UNLOCK_KEY) === '1';
+    } catch (e) {
+      return false;
+    }
+  }
 
   function parseExifDatetime(s) {
     if (!s || typeof s !== 'string') return null;
@@ -162,10 +172,13 @@
   }
 
   function run() {
+    if (started) return;
+    if (!isGalleryUnlocked()) return;
     var grid = document.getElementById('gallery-grid');
     var noteEl = document.getElementById('gallery-tz-note');
     var sortEl = document.getElementById('gallery-sort');
     if (!grid) return;
+    started = true;
 
     var zh = isZhPage();
     var base = imgBaseUrl();
@@ -209,9 +222,14 @@
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', run);
-  } else {
+  function tryRun() {
     run();
   }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryRun);
+  } else {
+    tryRun();
+  }
+  document.addEventListener('gallery-unlock', tryRun);
 })();
