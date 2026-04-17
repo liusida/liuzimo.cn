@@ -71,7 +71,7 @@
       var v = sessionStorage.getItem(SORT_STORAGE);
       if (v && SORT_MODES.indexOf(v) !== -1) return v;
     } catch (e) {}
-    return 'exif-asc';
+    return 'exif-desc';
   }
 
   function writeStoredSort(mode) {

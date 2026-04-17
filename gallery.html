@@ -348,8 +348,8 @@
       <div class="gallery-toolbar">
         <label for="gallery-sort" class="gallery-sort-label">Sort</label>
         <select id="gallery-sort" class="gallery-sort" autocomplete="off" aria-describedby="gallery-tz-note">
+          <option value="exif-desc" selected>Newest first (EXIF time)</option>
           <option value="exif-asc">Oldest first (EXIF time)</option>
-          <option value="exif-desc">Newest first (EXIF time)</option>
         </select>
       </div>
     </header>
@@ -365,7 +365,7 @@
     </div>
   </div>
 
-  <script src="gallery-ui.js?v=5" defer></script>
+  <script src="gallery-ui.js?v=6" defer></script>
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');
