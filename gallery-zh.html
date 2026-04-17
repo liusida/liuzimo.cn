@@ -117,6 +117,48 @@
       letter-spacing: 0.02em;
     }
 
+    .gallery-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem 0.85rem;
+      margin: 1.35rem auto 0;
+      max-width: 36rem;
+    }
+
+    .gallery-sort-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: #6d758c;
+    }
+
+    .gallery-sort {
+      min-width: 12rem;
+      max-width: 100%;
+      padding: 0.5rem 0.85rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      color: #c8ccd4;
+      background: rgba(10, 12, 20, 0.9);
+      border: 1px solid rgba(100, 120, 180, 0.35);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .gallery-sort:hover,
+    .gallery-sort:focus {
+      border-color: rgba(140, 170, 255, 0.4);
+      color: #e4e7ed;
+      outline: none;
+    }
+
+    .gallery-sort:focus-visible {
+      outline: 2px solid rgba(140, 170, 255, 0.45);
+      outline-offset: 3px;
+    }
+
     .gallery-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(min(100%, 10.5rem), 1fr));
@@ -177,12 +219,6 @@
 
     .gallery-caption-time {
       color: #9aa3b8;
-    }
-
-    .gallery-caption-place {
-      color: #6d758c;
-      font-size: 0.68rem;
-      margin-top: 0.15rem;
     }
 
     .gallery-load-err {
@@ -276,11 +312,6 @@
       color: #e4e7ed;
     }
 
-    .gallery-lightbox-place {
-      color: #8c95a8;
-      font-size: 0.8rem;
-    }
-
     @media (max-width: 520px) {
       .site-nav {
         gap: 0.35rem 0.75rem;
@@ -313,8 +344,17 @@
   <main class="gallery-wrap">
     <header class="gallery-header">
       <h1 class="gallery-title">照片画廊</h1>
-      <p class="gallery-lead">说明文字与时间来自 images/gallery.json；排序按每张照片 EXIF 中的拍摄时间。</p>
+      <p class="gallery-lead">images/gallery.json 提供每张照片的 EXIF 时间。可用下方菜单调整排序。</p>
       <p id="gallery-tz-note" class="gallery-tz-note" aria-live="polite"></p>
+      <div class="gallery-toolbar">
+        <label for="gallery-sort" class="gallery-sort-label">排序</label>
+        <select id="gallery-sort" class="gallery-sort" autocomplete="off" aria-describedby="gallery-tz-note">
+          <option value="exif-asc">拍摄时间（旧→新）</option>
+          <option value="exif-desc">拍摄时间（新→旧）</option>
+          <option value="name-asc">文件名 A–Z</option>
+          <option value="name-desc">文件名 Z–A</option>
+        </select>
+      </div>
     </header>
     <div id="gallery-grid" class="gallery-grid" role="list"></div>
   </main>
@@ -328,7 +368,7 @@
     </div>
   </div>
 
-  <script src="gallery-ui.js?v=2" defer></script>
+  <script src="gallery-ui.js?v=4" defer></script>
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');

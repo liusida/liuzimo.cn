@@ -1,5 +1,7 @@
 (function () {
   var MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var SORT_STORAGE = 'liuzimo_gallery_sort';
+  var SORT_MODES = ['exif-asc', 'exif-desc', 'name-asc', 'name-desc'];
 
   function parseExifDatetime(s) {
     if (!s || typeof s !== 'string') return null;
@@ -38,7 +40,55 @@
     return new URL('images/', window.location.href);
   }
 
-  function openLightbox(imgSrc, altText, timeLine, place) {
+  /** Missing EXIF time sorts last for both orders. */
+  function exifSortKey(it, oldestFirst) {
+    if (it.datetimeExif) return it.datetimeExif;
+    return oldestFirst ? '9999:99:99 99:99:99' : '0000:00:00 00:00:00';
+  }
+
+  function sortItems(items, mode) {
+    var arr = items.slice();
+    if (mode === 'exif-asc') {
+      arr.sort(function (a, b) {
+        var ka = exifSortKey(a, true);
+        var kb = exifSortKey(b, true);
+        var c = ka.localeCompare(kb);
+        return c !== 0 ? c : a.file.localeCompare(b.file);
+      });
+    } else if (mode === 'exif-desc') {
+      arr.sort(function (a, b) {
+        var ka = exifSortKey(a, false);
+        var kb = exifSortKey(b, false);
+        var c = kb.localeCompare(ka);
+        return c !== 0 ? c : a.file.localeCompare(b.file);
+      });
+    } else if (mode === 'name-asc') {
+      arr.sort(function (a, b) {
+        return a.file.localeCompare(b.file, undefined, { sensitivity: 'base' });
+      });
+    } else if (mode === 'name-desc') {
+      arr.sort(function (a, b) {
+        return b.file.localeCompare(a.file, undefined, { sensitivity: 'base' });
+      });
+    }
+    return arr;
+  }
+
+  function readStoredSort() {
+    try {
+      var v = sessionStorage.getItem(SORT_STORAGE);
+      if (v && SORT_MODES.indexOf(v) !== -1) return v;
+    } catch (e) {}
+    return 'exif-asc';
+  }
+
+  function writeStoredSort(mode) {
+    try {
+      sessionStorage.setItem(SORT_STORAGE, mode);
+    } catch (e) {}
+  }
+
+  function openLightbox(imgSrc, altText, timeLine) {
     var lb = document.getElementById('gallery-lightbox');
     var im = document.querySelector('#gallery-lightbox .gallery-lightbox-img');
     var cap = document.querySelector('#gallery-lightbox .gallery-lightbox-caption');
@@ -49,13 +99,6 @@
     var strong = document.createElement('strong');
     strong.textContent = timeLine || '';
     cap.appendChild(strong);
-    if (place) {
-      cap.appendChild(document.createElement('br'));
-      var span = document.createElement('span');
-      span.className = 'gallery-lightbox-place';
-      span.textContent = place;
-      cap.appendChild(span);
-    }
     lb.hidden = false;
     document.body.style.overflow = 'hidden';
     im.focus();
@@ -70,9 +113,66 @@
     if (im) im.removeAttribute('src');
   }
 
+  function renderGrid(items, base, zh) {
+    var grid = document.getElementById('gallery-grid');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    items.forEach(function (item) {
+      var file = item.file;
+      if (!file) return;
+      var parsed = parseExifDatetime(item.datetimeExif);
+      var timeLine = zh ? formatTimeZh(parsed) : formatTimeEn(parsed);
+      if (!timeLine && item.datetimeExif) timeLine = item.datetimeExif;
+
+      var wrap = document.createElement('div');
+      wrap.className = 'gallery-item';
+      wrap.setAttribute('role', 'listitem');
+
+      var thumbWrap = document.createElement('div');
+      thumbWrap.className = 'gallery-thumb-wrap';
+
+      var img = document.createElement('img');
+      img.className = 'gallery-thumb-img';
+      img.src = new URL(file, base).toString();
+      img.alt = timeLine || file;
+      img.loading = 'lazy';
+      img.decoding = 'async';
+
+      var cap = document.createElement('figcaption');
+      cap.className = 'gallery-caption';
+      var t1 = document.createElement('div');
+      t1.className = 'gallery-caption-time';
+      t1.textContent = timeLine || (zh ? '无时间信息' : 'No time in file');
+
+      cap.appendChild(t1);
+
+      thumbWrap.appendChild(img);
+      wrap.appendChild(thumbWrap);
+      wrap.appendChild(cap);
+      grid.appendChild(wrap);
+
+      function onOpen() {
+        openLightbox(img.src, img.alt, timeLine || '');
+      }
+
+      thumbWrap.addEventListener('click', onOpen);
+      thumbWrap.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onOpen();
+        }
+      });
+      thumbWrap.tabIndex = 0;
+      thumbWrap.setAttribute('role', 'button');
+      thumbWrap.setAttribute('aria-label', (zh ? '查看大图：' : 'View large: ') + file);
+    });
+  }
+
   function run() {
     var grid = document.getElementById('gallery-grid');
     var noteEl = document.getElementById('gallery-tz-note');
+    var sortEl = document.getElementById('gallery-sort');
     if (!grid) return;
 
     var zh = isZhPage();
@@ -89,63 +189,19 @@
           var note = zh ? data.timezoneNoteZh : data.timezoneNoteEn;
           if (note) noteEl.textContent = note;
         }
-        var items = (data && data.items) || [];
-        grid.innerHTML = '';
-
-        items.forEach(function (item) {
-          var file = item.file;
-          if (!file) return;
-          var parsed = parseExifDatetime(item.datetimeExif);
-          var timeLine = zh ? formatTimeZh(parsed) : formatTimeEn(parsed);
-          if (!timeLine && item.datetimeExif) timeLine = item.datetimeExif;
-          var place = zh ? (item.countryZh || '') : (item.countryEn || '');
-
-          var wrap = document.createElement('div');
-          wrap.className = 'gallery-item';
-          wrap.setAttribute('role', 'listitem');
-
-          var thumbWrap = document.createElement('div');
-          thumbWrap.className = 'gallery-thumb-wrap';
-
-          var img = document.createElement('img');
-          img.className = 'gallery-thumb-img';
-          img.src = new URL(file, base).toString();
-          img.alt = [timeLine, place].filter(Boolean).join(' · ') || file;
-          img.loading = 'lazy';
-          img.decoding = 'async';
-
-          var cap = document.createElement('figcaption');
-          cap.className = 'gallery-caption';
-          var t1 = document.createElement('div');
-          t1.className = 'gallery-caption-time';
-          t1.textContent = timeLine || (zh ? '无时间信息' : 'No time in file');
-          var t2 = document.createElement('div');
-          t2.className = 'gallery-caption-place';
-          t2.textContent = place || '';
-
-          cap.appendChild(t1);
-          if (place) cap.appendChild(t2);
-
-          thumbWrap.appendChild(img);
-          wrap.appendChild(thumbWrap);
-          wrap.appendChild(cap);
-          grid.appendChild(wrap);
-
-          function onOpen() {
-            openLightbox(img.src, img.alt, timeLine || '', place || '');
-          }
-
-          thumbWrap.addEventListener('click', onOpen);
-          thumbWrap.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              onOpen();
-            }
+        var rawItems = (data && data.items) || [];
+        var mode = readStoredSort();
+        if (sortEl) {
+          if (SORT_MODES.indexOf(mode) !== -1) sortEl.value = mode;
+          sortEl.addEventListener('change', function () {
+            var m = sortEl.value;
+            if (SORT_MODES.indexOf(m) === -1) return;
+            writeStoredSort(m);
+            renderGrid(sortItems(rawItems, m), base, zh);
           });
-          thumbWrap.tabIndex = 0;
-          thumbWrap.setAttribute('role', 'button');
-          thumbWrap.setAttribute('aria-label', (zh ? '查看大图：' : 'View large: ') + file);
-        });
+        }
+        var initial = sortEl && SORT_MODES.indexOf(sortEl.value) !== -1 ? sortEl.value : mode;
+        renderGrid(sortItems(rawItems, initial), base, zh);
       })
       .catch(function () {
         grid.innerHTML = '<p class="gallery-load-err">' + (zh ? '无法加载相册数据（images/gallery.json）。' : 'Could not load gallery data (images/gallery.json).') + '</p>';

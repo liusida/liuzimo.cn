@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate images/gallery.json from EXIF in each JPEG. Requires: pip install piexif."""
+"""Regenerate images/gallery.json from EXIF DateTimeOriginal in each JPEG. Requires: pip install piexif."""
 import json
 import os
 import sys
@@ -15,31 +15,24 @@ IMAGES = os.path.join(ROOT, "images")
 OUT = os.path.join(IMAGES, "gallery.json")
 
 
-def infer_labels(fn: str) -> tuple[str, str]:
-    fnu = fn.upper()
-    if fnu.startswith("PXL_") or fn.startswith("original_"):
-        return "Singapore (inferred)", "新加坡（推测，无 GPS）"
-    return "Place not in file", "无定位信息"
-
-
 def main() -> None:
     rows = []
     for fn in sorted(os.listdir(IMAGES)):
+        if fn == "gallery.json":
+            continue
         if not fn.lower().endswith((".jpg", ".jpeg")):
             continue
         path = os.path.join(IMAGES, fn)
         try:
             d = piexif.load(path)
         except Exception:
-            ce, cz = infer_labels(fn)
-            rows.append({"file": fn, "datetimeExif": None, "countryEn": ce, "countryZh": cz})
+            rows.append({"file": fn, "datetimeExif": None})
             continue
         ex = d.get("Exif", {})
         dt = ex.get(piexif.ExifIFD.DateTimeOriginal)
         if dt and isinstance(dt, bytes):
             dt = dt.decode()
-        ce, cz = infer_labels(fn)
-        rows.append({"file": fn, "datetimeExif": dt, "countryEn": ce, "countryZh": cz})
+        rows.append({"file": fn, "datetimeExif": dt})
 
     def sort_key(r: dict) -> tuple:
         return (r.get("datetimeExif") or "", r["file"])
