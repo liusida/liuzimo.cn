@@ -4,34 +4,6 @@
   "timezoneNoteZh": "时间为照片 EXIF 中的相机本地时间（文件未含时区信息）。",
   "items": [
     {
-      "file": "20140321_114352.jpg",
-      "datetimeExif": null
-    },
-    {
-      "file": "IMG_0516.JPG",
-      "datetimeExif": null
-    },
-    {
-      "file": "IMG_6470.JPG",
-      "datetimeExif": null
-    },
-    {
-      "file": "IMG_8661.JPG",
-      "datetimeExif": null
-    },
-    {
-      "file": "mmexport1719495678731.jpg",
-      "datetimeExif": null
-    },
-    {
-      "file": "mmexport1719498155702.jpg",
-      "datetimeExif": null
-    },
-    {
-      "file": "mmexport1731231237861.jpg",
-      "datetimeExif": null
-    },
-    {
       "file": "DSC_0441.JPG",
       "datetimeExif": "2013:09:28 17:05:59"
     },
