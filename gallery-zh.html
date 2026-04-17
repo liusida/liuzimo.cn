@@ -26,12 +26,14 @@
 
     body::-webkit-scrollbar { display: none; }
 
-    canvas {
+    canvas#bg {
       position: fixed;
       top: 0;
       left: 0;
+      z-index: 0;
       width: 100%;
       height: 100%;
+      pointer-events: none;
     }
 
     .site-nav {
@@ -73,7 +75,7 @@
 
     .gallery-wrap {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       min-height: 100vh;
       min-height: 100dvh;
       padding: clamp(4.25rem, 10vh, 5rem) 1.5rem 3rem;
@@ -107,21 +109,27 @@
 
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr));
       gap: 1rem;
+      align-items: start;
     }
 
     .gallery-slot {
+      margin: 0;
+      min-width: 0;
+      width: 100%;
       aspect-ratio: 1;
-      border: 1px dashed rgba(100, 120, 180, 0.32);
       border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(100, 120, 180, 0.22);
       background: rgba(10, 12, 20, 0.55);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #4a5168;
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
+    }
+
+    .gallery-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     @media (max-width: 520px) {
@@ -150,15 +158,26 @@
   <main class="gallery-wrap">
     <header class="gallery-header">
       <h1 class="gallery-title">照片画廊</h1>
-      <p class="gallery-lead">展示照片的地方。准备好以后，可在每个格子里加入图片，或改成你自己的版式。</p>
+      <p class="gallery-lead">照片均在 images 文件夹：文件名含日期的按日期排序，其余按相机卷编号；已去掉重复文件。</p>
     </header>
     <div class="gallery-grid" role="list">
-      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
-      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
-      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
-      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
-      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
-      <div class="gallery-slot" role="listitem" aria-label="空照片位"></div>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_20200215_133222.jpg" alt="2020年2月15日" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/original_e901d2d3-f959-45ab-82ba-545399cc8de5_PXL_20220611_010840597.MP.jpg" alt="2022年6月11日" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/PXL_20240805_135442066.jpg" alt="2024年8月5日" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/PXL_20240811_141721009.jpg" alt="2024年8月11日" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/original_fff14606-7164-4188-ab9b-65300cab2a7d_PXL_20240815_143805923.MP.jpg" alt="2024年8月15日" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/PXL_20240821_165512506.MP.jpg" alt="2024年8月21日" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/PXL_20250612_124918602.jpg" alt="2025年6月12日" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/PXL_20250814_105353713.jpg" alt="2025年8月14日" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3044.JPG" alt="相机卷 3044" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3054.JPG" alt="相机卷 3054" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3535.JPG" alt="相机卷 3535" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3538.JPG" alt="相机卷 3538" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3581.JPG" alt="相机卷 3581" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3598.JPG" alt="相机卷 3598" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_5787.JPG" alt="相机卷 5787" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_5987.JPG" alt="相机卷 5987" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_7233.JPG" alt="相机卷 7233" loading="lazy" decoding="async"></figure>
     </div>
   </main>
 

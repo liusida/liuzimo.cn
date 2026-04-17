@@ -26,12 +26,14 @@
 
     body::-webkit-scrollbar { display: none; }
 
-    canvas {
+    canvas#bg {
       position: fixed;
       top: 0;
       left: 0;
+      z-index: 0;
       width: 100%;
       height: 100%;
+      pointer-events: none;
     }
 
     .site-nav {
@@ -74,7 +76,7 @@
 
     .gallery-wrap {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       min-height: 100vh;
       min-height: 100dvh;
       padding: clamp(4.25rem, 10vh, 5rem) 1.5rem 3rem;
@@ -107,22 +109,27 @@
 
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr));
       gap: 1rem;
+      align-items: start;
     }
 
     .gallery-slot {
+      margin: 0;
+      min-width: 0;
+      width: 100%;
       aspect-ratio: 1;
-      border: 1px dashed rgba(100, 120, 180, 0.32);
       border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(100, 120, 180, 0.22);
       background: rgba(10, 12, 20, 0.55);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #4a5168;
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+    }
+
+    .gallery-slot img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     @media (max-width: 520px) {
@@ -151,15 +158,26 @@
   <main class="gallery-wrap">
     <header class="gallery-header">
       <h1 class="gallery-title">Gallery</h1>
-      <p class="gallery-lead">A place for photos. When you are ready, add images to each slot or replace these blocks with your own markup.</p>
+      <p class="gallery-lead">All photos live in the images folder—sorted by date when the filename has one; otherwise by camera-roll number. Duplicate files were removed.</p>
     </header>
     <div class="gallery-grid" role="list">
-      <div class="gallery-slot" role="listitem" aria-label="Empty photo slot"></div>
-      <div class="gallery-slot" role="listitem" aria-label="Empty photo slot"></div>
-      <div class="gallery-slot" role="listitem" aria-label="Empty photo slot"></div>
-      <div class="gallery-slot" role="listitem" aria-label="Empty photo slot"></div>
-      <div class="gallery-slot" role="listitem" aria-label="Empty photo slot"></div>
-      <div class="gallery-slot" role="listitem" aria-label="Empty photo slot"></div>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_20200215_133222.jpg" alt="Photo, 15 February 2020" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/original_e901d2d3-f959-45ab-82ba-545399cc8de5_PXL_20220611_010840597.MP.jpg" alt="Photo, 11 June 2022" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/PXL_20240805_135442066.jpg" alt="Photo, 5 August 2024" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/PXL_20240811_141721009.jpg" alt="Photo, 11 August 2024" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/original_fff14606-7164-4188-ab9b-65300cab2a7d_PXL_20240815_143805923.MP.jpg" alt="Photo, 15 August 2024" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/PXL_20240821_165512506.MP.jpg" alt="Photo, 21 August 2024" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/PXL_20250612_124918602.jpg" alt="Photo, 12 June 2025" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/PXL_20250814_105353713.jpg" alt="Photo, 14 August 2025" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3044.JPG" alt="Photo, camera roll 3044" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3054.JPG" alt="Photo, camera roll 3054" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3535.JPG" alt="Photo, camera roll 3535" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3538.JPG" alt="Photo, camera roll 3538" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3581.JPG" alt="Photo, camera roll 3581" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_3598.JPG" alt="Photo, camera roll 3598" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_5787.JPG" alt="Photo, camera roll 5787" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_5987.JPG" alt="Photo, camera roll 5987" loading="lazy" decoding="async"></figure>
+      <figure class="gallery-slot" role="listitem"><img src="images/IMG_7233.JPG" alt="Photo, camera roll 7233" loading="lazy" decoding="async"></figure>
     </div>
   </main>
 
