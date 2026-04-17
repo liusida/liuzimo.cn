@@ -1,0 +1,109 @@
+{
+  "version": 1,
+  "timezoneNoteEn": "Times are from the camera EXIF (local clock; no timezone stored).",
+  "timezoneNoteZh": "时间为照片 EXIF 中的相机本地时间（文件未含时区信息）。",
+  "items": [
+    {
+      "file": "IMG_3535.JPG",
+      "datetimeExif": "2016:06:27 12:58:14",
+      "countryEn": "Place not in file",
+      "countryZh": "无定位信息"
+    },
+    {
+      "file": "IMG_3538.JPG",
+      "datetimeExif": "2016:06:27 12:59:32",
+      "countryEn": "Place not in file",
+      "countryZh": "无定位信息"
+    },
+    {
+      "file": "IMG_3581.JPG",
+      "datetimeExif": "2016:06:27 13:36:46",
+      "countryEn": "Place not in file",
+      "countryZh": "无定位信息"
+    },
+    {
+      "file": "IMG_3598.JPG",
+      "datetimeExif": "2016:06:27 14:00:25",
+      "countryEn": "Place not in file",
+      "countryZh": "无定位信息"
+    },
+    {
+      "file": "IMG_3044.JPG",
+      "datetimeExif": "2016:12:07 08:54:32",
+      "countryEn": "Place not in file",
+      "countryZh": "无定位信息"
+    },
+    {
+      "file": "IMG_3054.JPG",
+      "datetimeExif": "2016:12:07 09:04:06",
+      "countryEn": "Place not in file",
+      "countryZh": "无定位信息"
+    },
+    {
+      "file": "IMG_5787.JPG",
+      "datetimeExif": "2017:11:04 13:32:54",
+      "countryEn": "Place not in file",
+      "countryZh": "无定位信息"
+    },
+    {
+      "file": "IMG_5987.JPG",
+      "datetimeExif": "2017:11:25 11:02:21",
+      "countryEn": "Place not in file",
+      "countryZh": "无定位信息"
+    },
+    {
+      "file": "IMG_7233.JPG",
+      "datetimeExif": "2018:01:25 16:21:20",
+      "countryEn": "Place not in file",
+      "countryZh": "无定位信息"
+    },
+    {
+      "file": "IMG_20200215_133222.jpg",
+      "datetimeExif": "2020:02:15 13:32:22",
+      "countryEn": "Place not in file",
+      "countryZh": "无定位信息"
+    },
+    {
+      "file": "original_e901d2d3-f959-45ab-82ba-545399cc8de5_PXL_20220611_010840597.MP.jpg",
+      "datetimeExif": "2022:06:11 09:08:40",
+      "countryEn": "Singapore (inferred)",
+      "countryZh": "新加坡（推测，无 GPS）"
+    },
+    {
+      "file": "PXL_20240805_135442066.jpg",
+      "datetimeExif": "2024:08:05 15:54:42",
+      "countryEn": "Singapore (inferred)",
+      "countryZh": "新加坡（推测，无 GPS）"
+    },
+    {
+      "file": "PXL_20240811_141721009.jpg",
+      "datetimeExif": "2024:08:11 16:17:21",
+      "countryEn": "Singapore (inferred)",
+      "countryZh": "新加坡（推测，无 GPS）"
+    },
+    {
+      "file": "original_fff14606-7164-4188-ab9b-65300cab2a7d_PXL_20240815_143805923.MP.jpg",
+      "datetimeExif": "2024:08:15 16:38:05",
+      "countryEn": "Singapore (inferred)",
+      "countryZh": "新加坡（推测，无 GPS）"
+    },
+    {
+      "file": "PXL_20240821_165512506.MP.jpg",
+      "datetimeExif": "2024:08:21 18:55:12",
+      "countryEn": "Singapore (inferred)",
+      "countryZh": "新加坡（推测，无 GPS）"
+    },
+    {
+      "file": "PXL_20250612_124918602.jpg",
+      "datetimeExif": "2025:06:12 20:49:18",
+      "countryEn": "Singapore (inferred)",
+      "countryZh": "新加坡（推测，无 GPS）"
+    },
+    {
+      "file": "PXL_20250814_105353713.jpg",
+      "datetimeExif": "2025:08:14 18:53:53",
+      "countryEn": "Singapore (inferred)",
+      "countryZh": "新加坡（推测，无 GPS）"
+    }
+  ]
+}
