@@ -3,6 +3,7 @@ __pycache__/
 Thumbs.db
 *.bak
 .venv-gallery/
+.venv-favicon/
 
 # Local-only copies of photos removed from images/ (see scripts/move-hidden-gallery-images.py)
 private-gallery/*
