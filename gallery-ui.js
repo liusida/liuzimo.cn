@@ -1,7 +1,7 @@
 (function () {
   var MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   var SORT_STORAGE = 'liuzimo_gallery_sort';
-  var SORT_MODES = ['exif-asc', 'exif-desc', 'name-asc', 'name-desc'];
+  var SORT_MODES = ['exif-asc', 'exif-desc'];
 
   function parseExifDatetime(s) {
     if (!s || typeof s !== 'string') return null;
@@ -61,14 +61,6 @@
         var kb = exifSortKey(b, false);
         var c = kb.localeCompare(ka);
         return c !== 0 ? c : a.file.localeCompare(b.file);
-      });
-    } else if (mode === 'name-asc') {
-      arr.sort(function (a, b) {
-        return a.file.localeCompare(b.file, undefined, { sensitivity: 'base' });
-      });
-    } else if (mode === 'name-desc') {
-      arr.sort(function (a, b) {
-        return b.file.localeCompare(a.file, undefined, { sensitivity: 'base' });
       });
     }
     return arr;
