@@ -7,7 +7,7 @@
   <script>
     try {
       /* Must match LOCK_DISABLED in gallery-lock.js — avoids a flash of the lock overlay */
-      var LOCK_DISABLED = true;
+      var LOCK_DISABLED = false;
       if (LOCK_DISABLED) {
         sessionStorage.setItem('liuzimo_gallery_unlock', '1');
         sessionStorage.setItem('liuzimo_gallery_key', 'happyeggie');
@@ -489,7 +489,7 @@
     </div>
   </div>
 
-  <script src="gallery-lock.js?v=5" defer></script>
+  <script src="gallery-lock.js?v=6" defer></script>
   <script src="gallery-ui.js?v=11" defer></script>
   <script>
     const canvas = document.getElementById('bg');

@@ -3,7 +3,7 @@
    * Password gate for the gallery UI. Set to false to show the lock form again.
    * Keep in sync with the inline early script in gallery.html / gallery-zh.html (LOCK_DISABLED).
    */
-  var LOCK_DISABLED = true;
+  var LOCK_DISABLED = false;
 
   var STORAGE_KEY = 'liuzimo_gallery_unlock';
   var KEY_STORAGE = 'liuzimo_gallery_key';
