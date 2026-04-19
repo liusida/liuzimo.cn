@@ -179,14 +179,6 @@
       background: rgba(40, 50, 85, 0.75);
     }
 
-    .contact-note {
-      margin-top: 1rem;
-      font-size: 0.75rem;
-      line-height: 1.55;
-      color: #5a617a;
-      text-align: center;
-    }
-
     .contact-direct {
       margin-top: 1.25rem;
       padding-top: 1.25rem;
@@ -266,38 +258,6 @@
     .contact-alt-details summary::-webkit-details-marker {
       display: none;
     }
-
-    .contact-spam-hint {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.65rem;
-      margin-top: 1rem;
-      padding: 0.65rem 0.85rem;
-      font-size: 0.78rem;
-      line-height: 1.6;
-      color: #9aa3b8;
-      text-align: left;
-      border: 1px solid rgba(180, 140, 90, 0.28);
-      border-radius: 8px;
-      background: rgba(35, 28, 18, 0.45);
-    }
-
-    .contact-spam-badge {
-      flex-shrink: 0;
-      padding: 0.2rem 0.45rem;
-      font-size: 0.58rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      color: #d4b896;
-      background: rgba(90, 70, 40, 0.55);
-      border: 1px solid rgba(200, 160, 100, 0.35);
-      border-radius: 4px;
-    }
-
-    .contact-spam-hint strong {
-      color: #c8b898;
-      font-weight: 500;
-    }
   </style>
 </head>
 <body>
@@ -341,11 +301,6 @@
           <button type="button" class="contact-submit contact-submit-secondary" id="open-gmail">在 Gmail 中撰写（浏览器）</button>
         </p>
       </details>
-      <p class="contact-note">首次使用 FormSubmit 时，可能会向该邮箱发送一次确认邮件，请查收邮箱完成验证。</p>
-      <p class="contact-spam-hint" role="note">
-        <span class="contact-spam-badge">垃圾邮件</span>
-        <span>FormSubmit 或本站回复的邮件有时会被归入 <strong>垃圾邮件</strong> / <strong>骚扰邮件</strong> 文件夹。若收件箱里没有，请一并查看这些文件夹。</span>
-      </p>
       <p class="contact-direct">
         <a href="mailto:liu.zimo.email@gmail.com">liu.zimo.email@gmail.com</a>
         <button type="button" class="contact-copy" id="copy-email" title="复制邮箱">复制</button>
