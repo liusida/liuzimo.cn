@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hans">
 <head>
   <meta charset="utf-8">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <script src="backstage-session.js"></script>
+  <script>try { sessionStorage.setItem('liuzimo_site_locale', 'zh'); } catch (e) {}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Projects and highlights — including Zimo’s Rubik’s cube build, written up on liusida.com.">
-  <meta property="og:title" content="Projects — Zimo Liu">
-  <meta property="og:description" content="Highlights of personal and school work, with links to full write-ups.">
-  <meta property="og:url" content="https://liuzimo.cn/projects.html">
+  <meta name="description" content="个人与学校作品摘录，含自制魔方的完整记述（liusida.com）。">
+  <meta property="og:title" content="项目 — 刘子墨">
+  <meta property="og:description" content="个人与学校作品摘录，附全文链接。">
+  <meta property="og:url" content="https://liuzimo.cn/projects-zh.html">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="zh_CN">
   <meta property="og:image" content="https://liuzimo.cn/images/og-site.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:type" content="image/png">
-  <meta property="og:image:alt" content="Zimo Liu — liuzimo.cn">
+  <meta property="og:image:alt" content="刘子墨 — liuzimo.cn">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Projects — Zimo Liu">
-  <meta name="twitter:description" content="Highlights of personal and school work, with links to full write-ups.">
+  <meta name="twitter:title" content="项目 — 刘子墨">
+  <meta name="twitter:description" content="个人与学校作品摘录，附全文链接。">
   <meta name="twitter:image" content="https://liuzimo.cn/images/og-site.png">
-  <title>Projects — Zimo Liu</title>
+  <title>项目 — 刘子墨</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -32,7 +34,7 @@
     body {
       background: #07080d;
       color: #c8ccd4;
-      font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+      font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
       overflow-x: hidden;
       -ms-overflow-style: none;
       scrollbar-width: none;
@@ -112,10 +114,10 @@
     }
 
     .page-title {
-      font-family: "Cormorant Garamond", "Georgia", serif;
+      font-family: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
       font-size: clamp(1.75rem, 4vw, 2.25rem);
-      font-weight: 300;
-      letter-spacing: 0.1em;
+      font-weight: 400;
+      letter-spacing: 0.14em;
       color: #e4e7ed;
       text-align: center;
       margin-bottom: 1rem;
@@ -149,9 +151,9 @@
     }
 
     .project-heading {
-      font-family: "Cormorant Garamond", "Georgia", serif;
+      font-family: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
       font-size: clamp(1.05rem, 2.5vw, 1.2rem);
-      font-weight: 300;
+      font-weight: 400;
       letter-spacing: 0.06em;
       color: #c8ccd4;
       margin-bottom: 0.55rem;
@@ -244,9 +246,8 @@
     .link-preview-hint {
       display: inline-block;
       margin-top: 0.65rem;
-      font-size: 0.6rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
       color: #6d758c;
     }
 
@@ -271,21 +272,21 @@
     }
   </style>
 </head>
-<body>
+<body class="zh">
   <canvas id="bg" aria-hidden="true"></canvas>
-  <nav class="site-nav" aria-label="Page">
-    <a href="index.html">Home</a>
-    <a href="projects.html" aria-current="page">Projects</a>
-    <a href="contact.html">Contact</a>
-    <a href="projects-zh.html" hreflang="zh-Hans">中文</a>
+  <nav class="site-nav" aria-label="页面">
+    <a href="zh.html">首页</a>
+    <a href="projects-zh.html" aria-current="page">项目</a>
+    <a href="contact-zh.html">联系</a>
+    <a href="projects.html" hreflang="en">English</a>
   </nav>
   <main class="page-wrap">
     <div class="page-card">
-      <h1 class="page-title">Projects</h1>
+      <h1 class="page-title">项目</h1>
       <div class="page-body">
-        <p>Highlights of personal and school work.</p>
+        <p>个人与学校作品的摘录。</p>
         <article class="project-item">
-          <h2 class="project-heading">How a Kid Makes a Rubik’s Cube From Scratch</h2>
+          <h2 class="project-heading">孩子怎样从零做出一只魔方</h2>
           <a class="link-preview" href="https://liusida.com/post.html?slug=how-a-kid-makes-a-rubiks-cube-from-scratch" rel="noopener noreferrer" target="_blank">
             <div class="link-preview-visual">
               <div class="link-preview-chrome" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -308,11 +309,11 @@
             </div>
             <div class="link-preview-meta">
               <span class="link-preview-host">liusida.com</span>
-              <p class="link-preview-summary">A father-son bet turns into a three-week journey through 3D modeling, prototyping, and perseverance — told from the supervisor’s perspective.</p>
-              <span class="link-preview-hint">Read article</span>
+              <p class="link-preview-summary">一场父子约定，引出约三周的 3D 建模、打样与坚持——以指导者视角叙述。（正文为英文）</p>
+              <span class="link-preview-hint">阅读全文</span>
             </div>
           </a>
-          <p>Modeling and printing a conventional cube in Fusion 360—prototypes, simulations, and a deadline—on <a href="https://liusida.com" rel="noopener noreferrer">liusida.com</a>.</p>
+          <p>在 Fusion 360 中建模并打印一只标准魔方——打样、仿真与截止日期的故事，见 <a href="https://liusida.com" rel="noopener noreferrer">liusida.com</a>（文章为英文）。</p>
         </article>
       </div>
     </div>
