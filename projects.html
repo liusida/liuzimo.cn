@@ -4,25 +4,16 @@
   <meta charset="utf-8">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <script src="backstage-session.js"></script>
-  <script>try { sessionStorage.setItem('liuzimo_site_locale', 'en'); } catch (e) {}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Zimo Liu</title>
+  <title>Projects — Zimo Liu</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="daily-posts.css?v=1">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html {
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
-      scrollbar-width: none;
-    }
-
-    html::-webkit-scrollbar {
-      display: none;
-    }
+    html { scrollbar-width: none; }
+    html::-webkit-scrollbar { display: none; }
 
     body {
       background: #07080d;
@@ -33,9 +24,7 @@
       scrollbar-width: none;
     }
 
-    body::-webkit-scrollbar {
-      display: none;
-    }
+    body::-webkit-scrollbar { display: none; }
 
     canvas {
       position: fixed;
@@ -43,170 +32,6 @@
       left: 0;
       width: 100%;
       height: 100%;
-    }
-
-    .page {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      min-height: 100dvh;
-      text-align: center;
-      padding: 2rem;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
-    }
-
-    .scroll-hint {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.65rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: #3a4158;
-      animation: hintPulse 2.8s ease-in-out infinite;
-    }
-
-    @keyframes hintPulse {
-      0%, 100% { opacity: 0.35; }
-      50% { opacity: 0.9; }
-    }
-
-    .page-secondary {
-      justify-content: flex-start;
-      padding-top: clamp(2.75rem, 7vh, 4rem);
-      padding-bottom: clamp(3rem, 10vh, 6rem);
-    }
-
-    .page-secondary h2 {
-      font-family: "Cormorant Garamond", "Georgia", serif;
-      font-size: clamp(1.8rem, 4.5vw, 2.75rem);
-      font-weight: 300;
-      letter-spacing: 0.12em;
-      color: #e4e7ed;
-      margin-bottom: 1em;
-    }
-
-    .page-secondary .blurb {
-      max-width: 38rem;
-      width: 100%;
-      text-align: left;
-      font-size: clamp(0.95rem, 2vw, 1.05rem);
-      line-height: 1.8;
-      color: #7a8199;
-      font-weight: 300;
-    }
-
-    .page-secondary .blurb p + p {
-      margin-top: 1.2em;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-snap-type: none; scroll-behavior: auto; }
-      .scroll-hint { animation: none; opacity: 0.55; }
-    }
-
-    h1 {
-      font-family: "Cormorant Garamond", "Georgia", serif;
-      font-size: clamp(2.8rem, 7vw, 5.5rem);
-      font-weight: 300;
-      letter-spacing: 0.08em;
-      color: #e4e7ed;
-      margin-bottom: 0.3em;
-    }
-
-    .page-hero h1 .name-link {
-      color: inherit;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    .page-hero h1 .name-link:focus-visible {
-      outline: 2px solid rgba(140, 170, 255, 0.45);
-      outline-offset: 6px;
-      border-radius: 4px;
-    }
-
-    .page-hero h1,
-    .page-hero .subtitle,
-    .page-secondary h2 {
-      display: inline-block;
-      transform-origin: center;
-      transition: transform 0.45s cubic-bezier(0.34, 1.2, 0.64, 1);
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .page-hero h1:hover,
-      .page-hero .subtitle:hover,
-      .page-secondary h2:hover {
-        transform: scale(1.08);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .page-hero h1,
-      .page-hero .subtitle,
-      .page-secondary h2 { transition: none; }
-      .page-hero h1:hover,
-      .page-hero .subtitle:hover,
-      .page-secondary h2:hover { transform: none; }
-    }
-
-    .subtitle {
-      font-size: clamp(0.85rem, 2vw, 1.05rem);
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: #5a617a;
-      margin-bottom: 2.5em;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    a.subtitle {
-      display: inline-block;
-    }
-
-    a.subtitle:hover {
-      color: #e4e7ed;
-    }
-
-    a.subtitle:focus-visible {
-      outline: 2px solid rgba(140, 170, 255, 0.45);
-      outline-offset: 6px;
-    }
-
-    .hero-contact {
-      margin: 0.2rem 0 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 0.85rem 1rem;
-    }
-
-    .hero-contact-btn {
-      display: inline-block;
-      padding: 0;
-      font-size: 0.65rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: #6d758c;
-      white-space: nowrap;
-      transition: color 0.2s;
-    }
-
-    .hero-contact-btn:hover {
-      color: #e4e7ed;
-    }
-
-    .hero-contact-btn:focus-visible {
-      outline: none;
     }
 
     .site-nav {
@@ -237,9 +62,7 @@
       transition: color 0.2s;
     }
 
-    .site-nav a:hover {
-      color: #e4e7ed;
-    }
+    .site-nav a:hover { color: #e4e7ed; }
 
     .site-nav a:focus-visible {
       outline: 2px solid rgba(140, 170, 255, 0.45);
@@ -251,8 +74,49 @@
       color: #a8b0cc;
     }
 
-    .page-hero {
-      padding-top: clamp(3.25rem, 8vh, 4.25rem);
+    .page-wrap {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4.5rem 2rem 2rem;
+    }
+
+    .page-card {
+      width: 100%;
+      max-width: 36rem;
+      padding: 2rem 1.75rem;
+      border: 1px solid rgba(100, 120, 180, 0.22);
+      border-radius: 12px;
+      background: rgba(10, 12, 20, 0.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
+    }
+
+    .page-title {
+      font-family: "Cormorant Garamond", "Georgia", serif;
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: #e4e7ed;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .page-body {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: #7a8199;
+      font-weight: 300;
+      text-align: left;
+    }
+
+    .page-body p + p {
+      margin-top: 1em;
     }
 
     @media (max-width: 520px) {
@@ -271,38 +135,19 @@
 <body>
   <canvas id="bg" aria-hidden="true"></canvas>
   <nav class="site-nav" aria-label="Page">
-    <a href="#top">Home</a>
-    <a href="projects.html">Projects</a>
-    <a href="#my-journey">My journey</a>
-    <a href="#daily-recording">Daily recording</a>
+    <a href="index.html">Home</a>
+    <a href="projects.html" aria-current="page">Projects</a>
     <a href="contact.html">Contact</a>
     <a href="zh.html" hreflang="zh-Hans">中文</a>
   </nav>
-  <main>
-    <section id="top" class="page page-hero" aria-label="Intro">
-      <h1><a class="name-link" href="login.html">Zimo Liu</a></h1>
-      <p class="hero-contact">
-        <a class="hero-contact-btn" href="projects.html">Projects</a>
-        <a class="hero-contact-btn" href="contact.html">Contact</a>
-      </p>
-      <a class="subtitle" href="zh.html" hreflang="zh-Hans">君子尚墨</a>
-      <p class="scroll-hint">Scroll</p>
-    </section>
-    <section id="my-journey" class="page page-secondary" aria-label="My journey">
-      <h2>My journey</h2>
-      <div class="blurb">
-        <p>Zimo Liu is a curious and active 12-year-old based in Singapore with a strong interest in understanding how things work. He demonstrates a keen aptitude for science, mathematics, and technology, and is particularly engaged in robotics through his school’s co-curricular activities (CCA), where he develops skills in design, construction, and programming.</p>
-        <p>In addition to his academic pursuits, Zimo enjoys outdoor activities and maintains an active lifestyle by riding his Rockrider mountain bike, reflecting his sense of adventure and enthusiasm for physical challenges. Bilingual and eager to learn, he consistently seeks opportunities to expand his knowledge and refine his skills, including personal initiatives such as developing his own website.</p>
-        <p>Overall, Zimo is a motivated and well-rounded learner who effectively balances creativity, analytical thinking, and physical activity in his daily life.</p>
+  <main class="page-wrap">
+    <div class="page-card">
+      <h1 class="page-title">Projects</h1>
+      <div class="page-body">
+        <p>Highlights of personal and school work will appear here.</p>
       </div>
-    </section>
-    <section class="page page-secondary" id="daily-recording" aria-label="Daily recording">
-      <h2>Daily recording</h2>
-      <div id="daily-posts" class="daily-posts" aria-live="polite"></div>
-    </section>
+    </div>
   </main>
-
-  <script src="daily-posts-public.js?v=6" defer></script>
   <script>
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');
