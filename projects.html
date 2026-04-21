@@ -115,8 +115,53 @@
       text-align: left;
     }
 
+    .page-body a {
+      color: #8b95b5;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: color 0.2s;
+    }
+
+    .page-body a:hover {
+      color: #e4e7ed;
+    }
+
     .page-body p + p {
       margin-top: 1em;
+    }
+
+    .project-item {
+      margin-top: 1.5rem;
+    }
+
+    .project-heading {
+      font-family: "Cormorant Garamond", "Georgia", serif;
+      font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: #c8ccd4;
+      margin-bottom: 0.55rem;
+    }
+
+    .project-external {
+      display: inline-block;
+      margin-top: 0.85rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #6d758c;
+      transition: color 0.2s;
+    }
+
+    .project-external:hover {
+      color: #e4e7ed;
+    }
+
+    .project-external:focus-visible {
+      outline: 2px solid rgba(140, 170, 255, 0.45);
+      outline-offset: 4px;
+      border-radius: 4px;
     }
 
     @media (max-width: 520px) {
@@ -144,7 +189,14 @@
     <div class="page-card">
       <h1 class="page-title">Projects</h1>
       <div class="page-body">
-        <p>Highlights of personal and school work will appear here.</p>
+        <p>Highlights of personal and school work.</p>
+        <article class="project-item">
+          <h2 class="project-heading">How a Kid Makes a Rubik’s Cube From Scratch</h2>
+          <p>Modeling and printing a conventional cube in Fusion 360—prototypes, simulations, and a deadline—described from a supervisor’s perspective on <a href="https://liusida.com" rel="noopener noreferrer">liusida.com</a>.</p>
+          <p>
+            <a class="project-external" href="https://liusida.com/post.html?slug=how-a-kid-makes-a-rubiks-cube-from-scratch" rel="noopener noreferrer">Read the article</a>
+          </p>
+        </article>
       </div>
     </div>
   </main>
