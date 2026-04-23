@@ -1,5 +1,5 @@
 # =============================================================================
-# Daily posts — write in English only (no Chinese here).
+# Notes — write in English only (no Chinese here).
 #
 # Publish:
 #   1) Add a [[POST]] … [[/POST]] block below.
