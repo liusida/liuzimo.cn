@@ -14,19 +14,19 @@
 # =============================================================================
 
 [[POST]]
-id: welcome
-date: 2026-04-16T10:17:48.920Z
-title: Welcome
+id: thursday-hawker-center
+date: 2026-04-23T12:00:00.000Z
+title: Thursday at the hawker center
 
-Hi and welcome to my website! It's now mostly empty but I'll be filling it up soon. See you!
+Hi, today is a Thursday and I just went down to my local hawker center to eat. Also some of you might have noticed that the "daily recordings" isn't really "daily", so I might change the name.
 [[/POST]]
 
 [[POST]]
-id: website-update
-date: 2026-04-16T12:22:53.000Z
-title: Website update
+id: sunday-study-and-website-update
+date: 2026-04-19T03:38:12.716Z
+title: Sunday study and website update
 
-Hi, today I created this website. If you wish to contact me, please wait patiently as I'm developing a new feature.
+Hi, it's sunday today, I have just been studying and now I'm updating my website again.
 [[/POST]]
 
 [[POST]]
@@ -38,9 +38,17 @@ This is day 2 of creating this website. Today I am planning to add a photo galle
 [[/POST]]
 
 [[POST]]
-id: sunday-study-and-website-update
-date: 2026-04-19T03:38:12.716Z
-title: Sunday study and website update
+id: website-update
+date: 2026-04-16T12:22:53.000Z
+title: Website update
 
-Hi, it's sunday today, I have just been studying and now I'm updating my website again.
+Hi, today I created this website. If you wish to contact me, please wait patiently as I'm developing a new feature.
+[[/POST]]
+
+[[POST]]
+id: welcome
+date: 2026-04-16T10:17:48.920Z
+title: Welcome
+
+Hi and welcome to my website! It's now mostly empty but I'll be filling it up soon. See you!
 [[/POST]]
