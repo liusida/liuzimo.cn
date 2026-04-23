@@ -261,11 +261,10 @@
     <div class="contact-card">
       <h1 class="contact-title">联系</h1>
       <p id="contact-success" class="contact-success" role="status">已发送，谢谢。</p>
-      <p class="contact-lead">在下方填写并发送，由表单服务投递到邮箱（不必安装邮件应用）。请填写你的邮箱以便回复。</p>
-      <form class="contact-form" id="contact-form" action="https://formsubmit.co/liu.zimo.email@gmail.com" method="POST">
-        <input type="hidden" name="_next" value="https://liuzimo.cn/contact-zh.html?sent=1">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_replyto" id="fs-replyto" value="">
+      <p class="contact-lead">在下方填写并发送，内容会通过邮件投递（不必安装邮件应用）。请填写你的邮箱以便回复。</p>
+      <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" id="web3forms-access-key" value="">
+        <input type="hidden" name="redirect" value="https://liuzimo.cn/contact-zh.html?sent=1">
         <label>
           <span class="label">姓名</span>
           <input type="text" name="name" id="contact-name" autocomplete="name" maxlength="120">
@@ -298,6 +297,7 @@
     </div>
   </main>
 
+  <script src="js/web3forms-config.js"></script>
   <script>
     (function () {
       var CONTACT_TO = 'liu.zimo.email@gmail.com';
@@ -334,6 +334,14 @@
       }
 
       document.getElementById('contact-form').addEventListener('submit', function (e) {
+        var key = (typeof window.LIUZIMO_WEB3FORMS_ACCESS_KEY === 'string' && window.LIUZIMO_WEB3FORMS_ACCESS_KEY)
+          || '';
+        if (!key.trim()) {
+          e.preventDefault();
+          alert('联系表单尚未配置好。请打开 js/web3forms-config.js，在 https://web3forms.com 获取并填入 access key，保存后重新部署。');
+          return;
+        }
+        document.getElementById('web3forms-access-key').value = key.trim();
         var emailEl = document.getElementById('contact-email');
         var messageEl = document.getElementById('contact-message');
         var email = emailEl.value.trim();
@@ -352,7 +360,6 @@
         }
         emailEl.value = email;
         messageEl.value = message;
-        document.getElementById('fs-replyto').value = email;
       });
 
       document.getElementById('open-mailapp').addEventListener('click', function () {

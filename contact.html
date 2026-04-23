@@ -265,11 +265,10 @@
     <div class="contact-card">
       <h1 class="contact-title">Contact</h1>
       <p id="contact-success" class="contact-success" role="status">Thanks—your message was sent.</p>
-      <p class="contact-lead">Send a message below. It is delivered by a secure form service (no mail app required). Add your email so I can reply.</p>
-      <form class="contact-form" id="contact-form" action="https://formsubmit.co/liu.zimo.email@gmail.com" method="POST">
-        <input type="hidden" name="_next" value="https://liuzimo.cn/contact.html?sent=1">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_replyto" id="fs-replyto" value="">
+      <p class="contact-lead">Send a message below. Your message is sent by email (no mail app required). Add your email so I can reply.</p>
+      <form class="contact-form" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" id="web3forms-access-key" value="">
+        <input type="hidden" name="redirect" value="https://liuzimo.cn/contact.html?sent=1">
         <label>
           <span class="label">Your name</span>
           <input type="text" name="name" id="contact-name" autocomplete="name" maxlength="120">
@@ -302,6 +301,7 @@
     </div>
   </main>
 
+  <script src="js/web3forms-config.js"></script>
   <script>
     (function () {
       var CONTACT_TO = 'liu.zimo.email@gmail.com';
@@ -338,6 +338,14 @@
       }
 
       document.getElementById('contact-form').addEventListener('submit', function (e) {
+        var key = (typeof window.LIUZIMO_WEB3FORMS_ACCESS_KEY === 'string' && window.LIUZIMO_WEB3FORMS_ACCESS_KEY)
+          || '';
+        if (!key.trim()) {
+          e.preventDefault();
+          alert('The contact form is not fully set up. Open js/web3forms-config.js, add your Web3Forms access key from https://web3forms.com , save, and deploy.');
+          return;
+        }
+        document.getElementById('web3forms-access-key').value = key.trim();
         var emailEl = document.getElementById('contact-email');
         var messageEl = document.getElementById('contact-message');
         var email = emailEl.value.trim();
@@ -356,7 +364,6 @@
         }
         emailEl.value = email;
         messageEl.value = message;
-        document.getElementById('fs-replyto').value = email;
       });
 
       document.getElementById('open-mailapp').addEventListener('click', function () {
