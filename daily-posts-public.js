@@ -50,7 +50,7 @@
   }
 
   function isZhPage() {
-    var lang = document.documentElement.getAttribute('lang') || '';
+    var lang = (document.documentElement.getAttribute('lang') || '').toLowerCase();
     return lang.indexOf('zh') === 0 || document.body.classList.contains('zh');
   }
 
