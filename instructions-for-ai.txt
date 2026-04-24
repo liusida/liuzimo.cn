@@ -1,0 +1,38 @@
+================================================================================
+liuzimo.cn — instructions for AI and coding agents (not the site author)
+================================================================================
+Read this when editing the repo. The human maintainer uses the same workflow;
+this file is the single plain-text copy of the rules for tools that search the tree.
+
+--------------------------------------------------------------------------------
+Posts: what NOT to do
+--------------------------------------------------------------------------------
+- Do not treat posts/posts.txt as a full archive. Never paste the entire list of
+  old posts into posts.txt.
+- The canonical published posts are posts/*.json plus posts/manifest.json.
+
+--------------------------------------------------------------------------------
+Posts: how publishing works
+--------------------------------------------------------------------------------
+- posts.txt should only have the # instruction header and, while the author is
+  drafting, a [[POST]] ... [[/POST]] block in English.
+- The author runs:  node scripts/sync-drafts.mjs
+- That script merges the block into JSON, updates the manifest, and removes
+  the [[POST]] block from posts.txt (instructions stay). Details: scripts/sync-drafts.mjs
+- Chinese (optional): zhTitle and zhBody live in the matching posts/<id>.json
+  The author commits and deploys. Re-running sync keeps existing zh when English changes.
+
+--------------------------------------------------------------------------------
+Where to look
+--------------------------------------------------------------------------------
+- List / edit published posts: posts/manifest.json and posts/<id>.json
+- Author-facing draft file: posts/posts.txt (format described in its # header)
+- Backstage (password UI) mirrors a short "Instructions for AI" panel; the
+  source of truth for agents is this file and posts/posts.txt.
+
+--------------------------------------------------------------------------------
+Contact form
+--------------------------------------------------------------------------------
+- Web3Forms public access key: js/web3forms-config.js  ( LIUZIMO_WEB3FORMS_ACCESS_KEY )
+
+================================================================================

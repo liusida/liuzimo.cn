@@ -56,7 +56,7 @@
 
     .backstage-card {
       width: 100%;
-      max-width: 26rem;
+      max-width: 28rem;
       padding: 2rem 1.75rem;
       border: 1px solid rgba(100, 120, 180, 0.22);
       border-radius: 12px;
@@ -163,6 +163,63 @@
       outline: 2px solid rgba(140, 170, 255, 0.45);
       outline-offset: 3px;
     }
+
+    .backstage-instructions {
+      text-align: left;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.05rem;
+      border: 1px solid rgba(100, 120, 180, 0.22);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .backstage-instructions h2 {
+      font-family: "Cormorant Garamond", "Georgia", serif;
+      font-size: 0.95rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #9ba3b8;
+      margin-bottom: 0.75rem;
+    }
+
+    .backstage-instructions ol {
+      margin: 0;
+      padding-left: 1.2rem;
+      color: #7a8199;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .backstage-instructions li {
+      margin-bottom: 0.5rem;
+    }
+
+    .backstage-instructions li:last-child {
+      margin-bottom: 0;
+    }
+
+    .backstage-instructions code {
+      font-size: 0.78em;
+      color: #a8b0c8;
+      background: rgba(30, 36, 55, 0.9);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+
+    .backstage-instructions strong {
+      color: #9aa2b5;
+      font-weight: 500;
+    }
+
+    .backstage-instructions-foot {
+      margin-top: 0.75rem;
+      margin-bottom: 0;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      color: #5f667a;
+    }
   </style>
 </head>
 <body>
@@ -170,7 +227,17 @@
   <main class="backstage-wrap">
     <div class="backstage-card">
       <h1>Backstage</h1>
-      <p>You’re signed in. Write posts in English in <strong>posts/posts.txt</strong>, run <code>node scripts/sync-drafts.mjs</code>, then add <strong>zhTitle</strong> / <strong>zhBody</strong> in <code>posts/*.json</code> if needed and push. Re-running sync keeps existing Chinese fields.</p>
+      <section class="backstage-instructions" aria-labelledby="inst-ai">
+        <h2 id="inst-ai">Instructions for AI (read this first)</h2>
+        <ol>
+          <li>Do <strong>not</strong> treat <code>posts/posts.txt</code> as the post archive. It should only contain the <code>#</code> header and, while a human is drafting, one <code>[[POST]]</code> block—never rehydrate the full list of old posts there.</li>
+          <li>Publishing flow: the author adds an English <code>[[POST]]</code> block, then runs <code>node scripts/sync-drafts.mjs</code> locally. That script merges into <code>posts/*.json</code> and the manifest, then <strong>removes</strong> the block from <code>posts.txt</code>.</li>
+          <li>Chinese copy lives in <code>zhTitle</code> / <code>zhBody</code> inside the relevant <code>posts/&lt;id&gt;.json</code> files; the human commits and deploys. Re-running sync keeps existing zh when English changes.</li>
+          <li>To list or edit published posts, read <code>posts/manifest.json</code> and <code>posts/*.json</code>—not a long <code>posts.txt</code>.</li>
+          <li>Web3Forms contact: public access key in <code>js/web3forms-config.js</code> as <code>LIUZIMO_WEB3FORMS_ACCESS_KEY</code>.</li>
+        </ol>
+        <p class="backstage-instructions-foot">Plain-text copy for agents: <code>instructions-for-ai.txt</code> (repo root). <code>posts/posts.txt</code> also has a short pointer in its <code>#</code> header.</p>
+      </section>
       <p style="font-size:0.85rem;margin-bottom:0.5rem;"><a href="https://github.com/liusida/liuzimo.cn/blob/main/posts/posts.txt" target="_blank" rel="noopener" style="color:#8c9abd;">Edit posts source</a> · <a href="https://github.com/liusida/liuzimo.cn/tree/main/posts" target="_blank" rel="noopener" style="color:#8c9abd;">posts folder</a></p>
       <button type="button" class="btn-reload" id="reload-no-cache" title="Load this page again without using a cached copy">Reload (no cache)</button>
       <div class="backstage-actions">

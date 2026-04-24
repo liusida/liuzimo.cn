@@ -1,54 +1,27 @@
 # =============================================================================
 # Notes — write in English only (no Chinese here).
 #
-# Publish:
-#   1) Add a [[POST]] … [[/POST]] block below.
+# This file is NOT an archive. Published posts live only in posts/<id>.json and
+# posts/manifest.json. Do not keep old post blocks in this file; the sync
+# command removes them after a successful run (these # lines are kept).
+#
+# Publish a new or updated post:
+#   1) Add one post block below: start a line with [[POST]], your headers
+#      (title, optional id, optional date), a blank line, the English body, then
+#      a line with [[/POST]]. See scripts/sync-drafts.mjs for the exact format.
 #   2) Run:  node scripts/sync-drafts.mjs
-#   3) Add Chinese (zhTitle / zhBody) in posts/<id>.json if missing, then push.
-#      Sync keeps existing zhTitle/zhBody when you re-run it.
+#   3) The script merges that block into the JSON on disk, updates the manifest,
+#      and clears all such blocks from this file.
+#   4) Add Chinese (zhTitle / zhBody) in posts/<id>.json if missing; then commit
+#      and push. Re-run sync any time; existing zh is preserved when English changes.
 #
 # Headers (one per line, then a blank line, then the body):
-#   id:     optional — URL slug; auto from title if omitted
+#   id:     optional — URL slug; auto from title if omitted. If it matches an
+#           existing post id, that post is updated in English.
 #   date:   optional — ISO time, e.g. 2026-04-16T12:00:00.000Z (defaults to now)
 #   title:  required
+#
+# For AI / coding agents: read instructions-for-ai.txt in the repository root
+# (not this file) for the full contract. Do not re-fill this file with all old
+# posts. Backstage (after login) has a short “Instructions for AI” panel.
 # =============================================================================
-
-[[POST]]
-id: thursday-hawker-center
-date: 2026-04-23T12:00:00.000Z
-title: Thursday at the hawker center
-
-Hi, today is a Thursday and I just went down to my local hawker center to eat. Also some of you might have noticed that the "daily recordings" isn't really "daily", so I might change the name.
-[[/POST]]
-
-[[POST]]
-id: sunday-study-and-website-update
-date: 2026-04-19T03:38:12.716Z
-title: Sunday study and website update
-
-Hi, it's sunday today, I have just been studying and now I'm updating my website again.
-[[/POST]]
-
-[[POST]]
-id: day-2-photo-gallery
-date: 2026-04-17T12:00:00.000Z
-title: Day 2 — photo gallery plans
-
-This is day 2 of creating this website. Today I am planning to add a photo gallery.
-[[/POST]]
-
-[[POST]]
-id: website-update
-date: 2026-04-16T12:22:53.000Z
-title: Website update
-
-Hi, today I created this website. If you wish to contact me, please wait patiently as I'm developing a new feature.
-[[/POST]]
-
-[[POST]]
-id: welcome
-date: 2026-04-16T10:17:48.920Z
-title: Welcome
-
-Hi and welcome to my website! It's now mostly empty but I'll be filling it up soon. See you!
-[[/POST]]

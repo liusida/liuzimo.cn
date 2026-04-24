@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /**
- * Reads posts/posts.txt (English only) and writes posts/<id>.json + manifest.
- * Preserves zhTitle/zhBody from existing posts/<id>.json when re-syncing.
+ * Merges [[POST]] … [[/POST]] blocks from posts/posts.txt into existing posts/<id>.json
+ * and posts/manifest.json. Old posts live only in JSON; posts.txt is not a full archive.
+ * After a successful run, all [[POST]] blocks are removed from posts.txt (instructions stay).
+ * Preserves zhTitle/zhBody on write when re-merging from disk.
  * Usage: node scripts/sync-drafts.mjs
  */
 import fs from 'fs';
@@ -61,32 +63,70 @@ function parseOneBlock(block) {
   return { headers, body };
 }
 
-function buildPost(headers, body, usedIds) {
+function parseDateHeader(raw) {
+  const s = (raw || '').trim();
+  if (!s) return null;
+  const t = Date.parse(s);
+  if (Number.isNaN(t)) throw new Error('Bad date: ' + raw);
+  return new Date(t).toISOString();
+}
+
+function loadAllFromDisk() {
+  const byId = {};
+  if (!fs.existsSync(postsDir)) return byId;
+  for (const f of fs.readdirSync(postsDir)) {
+    if (!f.endsWith('.json') || f === 'manifest.json') continue;
+    try {
+      const full = path.join(postsDir, f);
+      const p = JSON.parse(fs.readFileSync(full, 'utf8'));
+      if (p && p.id) byId[p.id] = p;
+    } catch {
+      // skip invalid
+    }
+  }
+  return byId;
+}
+
+/**
+ * Merges one [[POST]] block into base (mutates). usedIds = all id strings already taken.
+ */
+function applyBlock(block, base, usedIds) {
+  if (!block.length) return;
+  const { headers, body } = parseOneBlock(block);
   const title = (headers.title || '').trim();
   if (!title) throw new Error('Each [[POST]] needs title: …');
 
-  let id = (headers.id || '').trim();
-  if (!id) id = slugify(title);
-  const base = id;
-  let n = 2;
-  while (usedIds.has(id)) id = base + '-' + n++;
-  usedIds.add(id);
+  const explicitId = (headers.id || '').trim();
+  const dateFromHeader = parseDateHeader(headers.date);
 
-  let dateIso = (headers.date || '').trim();
-  if (!dateIso) {
-    dateIso = new Date().toISOString();
-  } else {
-    const t = Date.parse(dateIso);
-    if (Number.isNaN(t)) throw new Error('Bad date for post "' + id + '": ' + headers.date);
-    dateIso = new Date(t).toISOString();
+  if (explicitId) {
+    if (Object.prototype.hasOwnProperty.call(base, explicitId)) {
+      const prev = base[explicitId];
+      base[explicitId] = {
+        ...prev,
+        id: explicitId,
+        title,
+        body,
+        dateIso: dateFromHeader != null ? dateFromHeader : prev.dateIso
+      };
+      return;
+    }
+    if (usedIds.has(explicitId)) {
+      throw new Error('Duplicate or conflicting id: ' + explicitId);
+    }
+    usedIds.add(explicitId);
+    const dateIso = dateFromHeader != null ? dateFromHeader : new Date().toISOString();
+    base[explicitId] = { id: explicitId, dateIso, title, body };
+    return;
   }
 
-  return {
-    id,
-    dateIso,
-    title,
-    body
-  };
+  let id = slugify(title);
+  const orig = id;
+  let n = 2;
+  while (usedIds.has(id)) id = orig + '-' + n++;
+  usedIds.add(id);
+  const dateIso = dateFromHeader != null ? dateFromHeader : new Date().toISOString();
+  base[id] = { id, dateIso, title, body };
 }
 
 function mergeExistingZh(jsonPath, base) {
@@ -102,6 +142,16 @@ function mergeExistingZh(jsonPath, base) {
   }
 }
 
+/**
+ * Remove only "real" blocks: the opening [[POST]] must be at the start of a line
+ * (so we do not match the words inside # instruction lines that mention the markers).
+ */
+function stripPostBlocksFromFile(raw) {
+  let out = raw.replace(/^[\t ]*\[\[POST\]\][\s\S]*?^[\t ]*\[\[\/POST\]\]/gm, '');
+  out = out.replace(/\n{3,}/g, '\n\n');
+  return out.replace(/\s+$/, '') + '\n';
+}
+
 function main() {
   if (!fs.existsSync(draftPath)) {
     console.error('Missing file: posts/posts.txt');
@@ -110,16 +160,19 @@ function main() {
 
   const raw = fs.readFileSync(draftPath, 'utf8');
   const blocks = parseBlocks(raw);
-  const posts = [];
-  const usedIds = new Set();
+  const base = loadAllFromDisk();
+  const usedIds = new Set(Object.keys(base));
 
   for (const block of blocks) {
-    if (!block.length) continue;
-    const { headers, body } = parseOneBlock(block);
-    posts.push(buildPost(headers, body, usedIds));
+    try {
+      applyBlock(block, base, usedIds);
+    } catch (e) {
+      console.error(e.message || e);
+      process.exit(1);
+    }
   }
 
-  posts.sort((a, b) => new Date(b.dateIso) - new Date(a.dateIso));
+  const posts = Object.values(base).sort((a, b) => new Date(b.dateIso) - new Date(a.dateIso));
 
   if (!fs.existsSync(postsDir)) fs.mkdirSync(postsDir, { recursive: true });
 
@@ -130,24 +183,19 @@ function main() {
 
   fs.writeFileSync(path.join(postsDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n', 'utf8');
 
-  const existing = fs.readdirSync(postsDir);
-  for (const f of existing) {
-    if (!f.endsWith('.json') || f === 'manifest.json') continue;
-    const id = f.replace(/\.json$/, '');
-    if (!posts.some((p) => p.id === id)) {
-      fs.unlinkSync(path.join(postsDir, f));
-      console.warn('Removed orphan file:', f);
-    }
-  }
-
   for (const p of posts) {
     const jsonPath = path.join(postsDir, p.id + '.json');
-    const merged = mergeExistingZh(jsonPath, p);
-    const out = JSON.stringify(merged, null, 2) + '\n';
-    fs.writeFileSync(jsonPath, out, 'utf8');
+    const toWrite = { id: p.id, dateIso: p.dateIso, title: p.title, body: p.body };
+    const merged = mergeExistingZh(jsonPath, toWrite);
+    fs.writeFileSync(jsonPath, JSON.stringify(merged, null, 2) + '\n', 'utf8');
   }
 
-  console.log('Wrote', posts.length, 'post(s) to posts/ (English from posts/posts.txt; zh preserved when present).');
+  if (blocks.length) {
+    fs.writeFileSync(draftPath, stripPostBlocksFromFile(raw), 'utf8');
+    console.log('Published', blocks.length, 'draft block(s); cleared [[POST]] from posts/posts.txt. Total posts:', posts.length);
+  } else {
+    console.log('No [[POST]] blocks in posts.txt. Wrote', posts.length, 'post(s) to manifest/JSON (unchanged if nothing edited).');
+  }
 }
 
 main();
