@@ -33,6 +33,6 @@ Where to look
 --------------------------------------------------------------------------------
 Contact form
 --------------------------------------------------------------------------------
-- Web3Forms public access key: js/web3forms-config.js  ( LIUZIMO_WEB3FORMS_ACCESS_KEY )
+- Web3Forms public access key: assets/js/web3forms-config.js  ( LIUZIMO_WEB3FORMS_ACCESS_KEY )
 
 ================================================================================

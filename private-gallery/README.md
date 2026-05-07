@@ -13,4 +13,4 @@ Keep a backup of this folder on your machine if you care about those originals.
 
 ## Encrypted files on GitHub (alternative)
 
-To keep photo blobs in the repo but **not viewable** without the passphrase, use AES-256-GCM via `scripts/encrypt-gallery.py`. The passphrase must match the gallery lock password (`GALLERY_KEY` env var, same as `gallery-lock.js`). See the script docstring. After encrypting, commit `images/enc/*.enc` and `images/gallery.json` (v2); remove plaintext JPEGs from `images/` when you are ready.
+To keep photo blobs in the repo but **not viewable** without the passphrase, use AES-256-GCM via `scripts/encrypt-gallery.py`. The passphrase must match the gallery lock password (`GALLERY_KEY` env var, same as `assets/js/gallery-lock.js`). See the script docstring. After encrypting, commit `images/enc/*.enc` and `images/gallery.json` (v2); remove plaintext JPEGs from `images/` when you are ready.

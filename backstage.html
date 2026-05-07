@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <script src="backstage-session.js"></script>
+  <script src="assets/js/backstage-session.js"></script>
   <script>
     try {
       if (sessionStorage.getItem('liuzimo_backstage_ok') !== '1') {
@@ -234,7 +234,7 @@
           <li>Publishing flow: the author adds an English <code>[[POST]]</code> block, then runs <code>node scripts/sync-drafts.mjs</code> locally. That script merges into <code>posts/*.json</code> and the manifest, then <strong>removes</strong> the block from <code>posts.txt</code>.</li>
           <li>Chinese copy lives in <code>zhTitle</code> / <code>zhBody</code> inside the relevant <code>posts/&lt;id&gt;.json</code> files; the human commits and deploys. Re-running sync keeps existing zh when English changes.</li>
           <li>To list or edit published posts, read <code>posts/manifest.json</code> and <code>posts/*.json</code>—not a long <code>posts.txt</code>.</li>
-          <li>Web3Forms contact: public access key in <code>js/web3forms-config.js</code> as <code>LIUZIMO_WEB3FORMS_ACCESS_KEY</code>.</li>
+          <li>Web3Forms contact: public access key in <code>assets/js/web3forms-config.js</code> as <code>LIUZIMO_WEB3FORMS_ACCESS_KEY</code>.</li>
         </ol>
         <p class="backstage-instructions-foot">Plain-text copy for agents: <code>instructions-for-ai.txt</code> (repo root). <code>posts/posts.txt</code> also has a short pointer in its <code>#</code> header.</p>
       </section>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <script src="backstage-session.js"></script>
+  <script src="assets/js/backstage-session.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contact — Zimo Liu</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -301,7 +301,7 @@
     </div>
   </main>
 
-  <script src="js/web3forms-config.js"></script>
+  <script src="assets/js/web3forms-config.js"></script>
   <script>
     (function () {
       var CONTACT_TO = 'liu.zimo.email@gmail.com';
@@ -342,7 +342,7 @@
           || '';
         if (!key.trim()) {
           e.preventDefault();
-          alert('The contact form is not fully set up. Open js/web3forms-config.js, add your Web3Forms access key from https://web3forms.com , save, and deploy.');
+          alert('The contact form is not fully set up. Open assets/js/web3forms-config.js, add your Web3Forms access key from https://web3forms.com , save, and deploy.');
           return;
         }
         document.getElementById('web3forms-access-key').value = key.trim();

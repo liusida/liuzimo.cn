@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <script src="backstage-session.js"></script>
+  <script src="assets/js/backstage-session.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>联系 — 刘子墨</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -297,7 +297,7 @@
     </div>
   </main>
 
-  <script src="js/web3forms-config.js"></script>
+  <script src="assets/js/web3forms-config.js"></script>
   <script>
     (function () {
       var CONTACT_TO = 'liu.zimo.email@gmail.com';
@@ -338,7 +338,7 @@
           || '';
         if (!key.trim()) {
           e.preventDefault();
-          alert('联系表单尚未配置好。请打开 js/web3forms-config.js，在 https://web3forms.com 获取并填入 access key，保存后重新部署。');
+          alert('联系表单尚未配置好。请打开 assets/js/web3forms-config.js，在 https://web3forms.com 获取并填入 access key，保存后重新部署。');
           return;
         }
         document.getElementById('web3forms-access-key').value = key.trim();
