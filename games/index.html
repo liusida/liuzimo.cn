@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Games | Zimo Liu</title>
+  <link rel="stylesheet" href="../daily-posts.css?v=1">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { min-height: 100vh; background: #07080d; color: #c8ccd4; font-family: "Inter", "Helvetica Neue", Arial, sans-serif; }
+    .page { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; text-align: center; }
+    .page h1 { font-family: "Cormorant Garamond", "Georgia", serif; font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 0.5rem; }
+    .page p { max-width: 40rem; color: #7a8199; line-height: 1.8; margin-bottom: 2rem; }
+    .nav-links, .game-list { list-style: none; width: 100%; max-width: 36rem; }
+    .nav-links li, .game-list li { margin: 0.75rem 0; }
+    .nav-links a, .game-list a { display: block; padding: 1rem 1.25rem; border: 1px solid rgba(120, 140, 180, 0.25); border-radius: 999px; text-decoration: none; color: #e4e7ed; transition: background 0.2s, border-color 0.2s; }
+    .nav-links a:hover, .game-list a:hover { background: rgba(140, 170, 255, 0.08); border-color: #8caaff; }
+    .game-list a span { display: block; font-size: 0.95rem; color: #a8b0cc; margin-top: 0.3rem; }
+    .back-link { margin-top: 2rem; color: #6d758c; font-size: 0.75rem; text-decoration: none; }
+    .back-link:hover { color: #e4e7ed; }
+  </style>
+</head>
+<body>
+  <main class="page" aria-label="Games">
+    <h1>Games</h1>
+    <p>Enjoy a small collection of car game demos. Select a game below to play and explore.</p>
+    <ul class="game-list" aria-label="Game links">
+      <li>
+        <a href="2d-car-game/">
+          Simple Car Game
+          <span>2D top-down car dodge game with score and vehicle selection.</span>
+        </a>
+      </li>
+      <li>
+        <a href="3d-car-game/">
+          3D Car Game Demo
+          <span>Low-poly 3D driving demo with interactive controls.</span>
+        </a>
+      </li>
+    </ul>
+    <a class="back-link" href="../index.html">Back to home</a>
+  </main>
+</body>
+</html>
