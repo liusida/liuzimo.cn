@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>游戏 | 刘子墨</title>
+  <link rel="stylesheet" href="../assets/css/daily-posts.css?v=1">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      background: #07080d;
+      color: #c8ccd4;
+      font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    }
+    .page {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+    }
+    .lang-link {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      color: #6d758c;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      border: 1px solid rgba(120, 140, 180, 0.25);
+      border-radius: 999px;
+      padding: 0.4rem 0.8rem;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
+    }
+    .lang-link:hover {
+      color: #e4e7ed;
+      border-color: #8caaff;
+      background: rgba(140, 170, 255, 0.08);
+    }
+    .page h1 {
+      font-family: "Noto Serif SC", "Songti SC", "STSong", Georgia, serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+    }
+    .page p {
+      max-width: 40rem;
+      color: #7a8199;
+      line-height: 1.85;
+      margin-bottom: 2rem;
+    }
+    .game-list { list-style: none; width: 100%; max-width: 36rem; }
+    .game-list li { margin: 0.75rem 0; }
+    .game-list a {
+      display: block;
+      padding: 1rem 1.25rem;
+      border: 1px solid rgba(120, 140, 180, 0.25);
+      border-radius: 999px;
+      text-decoration: none;
+      color: #e4e7ed;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .game-list a:hover {
+      background: rgba(140, 170, 255, 0.08);
+      border-color: #8caaff;
+    }
+    .game-list a span {
+      display: block;
+      font-size: 0.95rem;
+      color: #a8b0cc;
+      margin-top: 0.3rem;
+      letter-spacing: 0.02em;
+    }
+    .back-link {
+      margin-top: 2rem;
+      color: #6d758c;
+      font-size: 0.78rem;
+      text-decoration: none;
+      letter-spacing: 0.08em;
+    }
+    .back-link:hover { color: #e4e7ed; }
+  </style>
+</head>
+<body>
+  <a class="lang-link" href="index.html" hreflang="en">English</a>
+  <main class="page" aria-label="游戏">
+    <h1>游戏</h1>
+    <p>这里整理了一些汽车小游戏演示。点击下方条目即可进入体验。</p>
+    <ul class="game-list" aria-label="游戏链接">
+      <li>
+        <a href="2d-car-game/">
+          简易汽车游戏
+          <span>2D 俯视躲避玩法，包含分数系统和车辆选择。</span>
+        </a>
+      </li>
+      <li>
+        <a href="3d-car-game/">
+          3D 汽车演示
+          <span>低多边形风格的 3D 驾驶演示，可进行交互控制。</span>
+        </a>
+      </li>
+      <li>
+        <a href="engine-sim/">
+          引擎模拟器
+          <span>基于 Web Audio API 的引擎音效与模拟演示。</span>
+        </a>
+      </li>
+    </ul>
+    <a class="back-link" href="../zh.html">返回首页</a>
+  </main>
+</body>
+</html>
