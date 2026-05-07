@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choose Your Car</title>
+    <link rel="stylesheet" href="./car-select.css" />
+  </head>
+  <body>
+    <main class="chooser-shell">
+      <h1>Choose Your Car</h1>
+      <p class="subtext">Pick your ride, then go back and start the run.</p>
+      <div class="addon-row">
+        <label class="addon-label">
+          <input id="trailerToggle" type="checkbox" />
+          Truck Trailer Add-on
+        </label>
+        <span class="addon-note">Only applies when you pick a truck.</span>
+      </div>
+      <section id="carGrid" class="car-grid" aria-label="car choices"></section>
+      <a class="back-btn" href="./index.html">Back to Game</a>
+    </main>
+
+    <script src="./car-select.js?v=3"></script>
+  </body>
+</html>

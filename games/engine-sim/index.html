@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Engine Sound Simulator</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <section class="panel">
+        <h1>Real-Time Engine Sound Simulator</h1>
+        <p>
+          Controls: <kbd>W</kbd> throttle, <kbd>S</kbd> brake/load, <kbd>Q</kbd> clutch,
+          <kbd>E</kbd> toggle limiter, <kbd>A</kbd>/<kbd>D</kbd> shift down/up,
+          <kbd>C</kbd> switch camera, <kbd>Z</kbd>/<kbd>X</kbd> distance near/far.
+        </p>
+        <div class="row">
+          <button id="audio-toggle" type="button">Start Audio</button>
+          <button id="camera-toggle" type="button">Camera: Exterior</button>
+          <button id="engine-toggle" type="button">Engine: Off</button>
+        </div>
+      </section>
+      <section class="panel">
+        <h2>Debug</h2>
+        <pre id="debug-output">Waiting for audio initialization...</pre>
+      </section>
+    </main>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

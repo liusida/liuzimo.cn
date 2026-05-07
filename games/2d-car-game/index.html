@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Car Game</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <h1>Simple Car Game</h1>
+      <p class="hint">Use left/right arrows or A/D to switch lanes. Avoid other cars.</p>
+
+      <section class="hud">
+        <span>Score: <strong id="score">0</strong></span>
+        <span>Best: <strong id="best">0</strong></span>
+        <span>Speed: <strong id="speedKmh">0 km/h</strong></span>
+        <span>Radio: <strong id="radioStatus">Off</strong></span>
+        <span>Channel: <strong id="radioChannel">CNA938</strong></span>
+      </section>
+      <section class="radio-legend" aria-label="radio station key legend">
+        <span><strong>1</strong> CNA938</span>
+        <span><strong>2</strong> Kiss92</span>
+        <span><strong>3</strong> Symphony 924</span>
+        <span><strong>4</strong> Capital 958</span>
+        <span><strong>5</strong> UFM 100.3</span>
+        <span><strong>6</strong> 883JIA</span>
+        <span><strong>7</strong> Smooth Jazz</span>
+        <span><strong>8</strong> RelaxingJazz</span>
+      </section>
+
+      <div class="canvas-wrap">
+        <canvas id="gameCanvas" width="400" height="650" aria-label="Car game canvas"></canvas>
+        <div id="overlay" class="overlay">
+          <div class="overlay-card">
+            <p class="overlay-kicker">PIXEL HIGHWAY</p>
+            <p id="statusText">Pick a lane and survive traffic.</p>
+            <p class="overlay-help">Move: Left/Right or A/D | Speed: W/S or Up/Down | Radio: R | Stations: 1-8</p>
+            <div class="overlay-actions">
+              <button id="startBtn">Start Run</button>
+              <a class="ghost-btn" href="./car-select.html">Choose Car</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="./game.js"></script>
+  </body>
+</html>

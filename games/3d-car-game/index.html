@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Open road — inspired scene</title>
+  <style>
+    * { margin: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; background: #1a1e20; }
+    canvas { display: block; width: 100%; height: 100%; outline: none; }
+    #hint {
+      position: fixed;
+      left: 1rem;
+      bottom: 1rem;
+      font-family: system-ui, sans-serif;
+      font-size: 0.75rem;
+      color: rgba(244, 242, 237, 0.55);
+      pointer-events: none;
+      user-select: none;
+    }
+    #speed {
+      position: fixed;
+      right: 1.25rem;
+      bottom: 1rem;
+      font-family: ui-monospace, monospace;
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgba(244, 242, 237, 0.92);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+      pointer-events: none;
+      user-select: none;
+    }
+    #speed .unit {
+      font-size: 0.65em;
+      font-weight: 400;
+      opacity: 0.75;
+      margin-left: 0.15em;
+    }
+    #distance {
+      position: fixed;
+      right: 1.25rem;
+      bottom: 3.1rem;
+      font-family: ui-monospace, monospace;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      color: rgba(244, 242, 237, 0.78);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+      pointer-events: none;
+      user-select: none;
+    }
+    #distance .unit {
+      font-size: 0.75em;
+      opacity: 0.7;
+      margin-left: 0.2em;
+    }
+    #status-stack {
+      position: fixed;
+      left: 1rem;
+      top: 1rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.35rem;
+      max-width: min(20rem, calc(100vw - 9rem));
+      pointer-events: none;
+    }
+    .status-badge {
+      font-family: ui-monospace, monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      user-select: none;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+      border: 1px solid rgba(244, 242, 237, 0.2);
+      background: rgba(22, 26, 30, 0.9);
+      color: rgba(244, 242, 237, 0.88);
+    }
+    .status-badge--on {
+      color: rgba(130, 220, 175, 0.96);
+      background: rgba(16, 28, 24, 0.88);
+      border-color: rgba(130, 220, 175, 0.38);
+    }
+    .status-badge--off {
+      color: rgba(200, 195, 185, 0.55);
+      background: rgba(26, 24, 22, 0.82);
+      border-color: rgba(200, 195, 185, 0.2);
+    }
+    .status-badge--camera-chase {
+      color: rgba(160, 200, 235, 0.95);
+      background: rgba(18, 24, 34, 0.88);
+      border-color: rgba(160, 200, 235, 0.32);
+    }
+    .status-badge--camera-fpv {
+      color: rgba(255, 210, 150, 0.95);
+      background: rgba(34, 26, 18, 0.88);
+      border-color: rgba(255, 210, 150, 0.35);
+    }
+    .status-badge--camera-free {
+      color: rgba(190, 175, 240, 0.95);
+      background: rgba(26, 22, 38, 0.88);
+      border-color: rgba(190, 175, 240, 0.35);
+    }
+    .top-actions {
+      position: fixed;
+      right: 1rem;
+      top: 1rem;
+      z-index: 2;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .top-actions button {
+      font-family: system-ui, sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(244, 242, 237, 0.95);
+      background: rgba(35, 42, 48, 0.92);
+      border: 1px solid rgba(244, 242, 237, 0.22);
+      border-radius: 8px;
+      padding: 0.45rem 0.75rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .top-actions button:hover {
+      background: rgba(50, 58, 66, 0.96);
+      border-color: rgba(244, 242, 237, 0.35);
+    }
+    .top-actions button:active {
+      transform: scale(0.98);
+    }
+    .top-actions button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    #loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.65rem;
+      background: rgba(14, 16, 18, 0.9);
+      backdrop-filter: blur(5px);
+      font-family: system-ui, sans-serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: rgba(244, 242, 237, 0.94);
+      text-shadow: 0 1px 3px rgba(0,0,0,0.45);
+      pointer-events: all;
+    }
+    #loading-overlay.is-visible {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <div class="top-actions" role="toolbar" aria-label="Game controls">
+    <button type="button" id="pause-btn" tabindex="-1" title="Pause or resume (Esc)">Pause</button>
+    <button type="button" id="new-world-btn" tabindex="-1" title="New terrain and plants (same as G)">New world</button>
+  </div>
+  <div id="speed" aria-live="polite"><span id="speed-val">0</span><span class="unit">km/h</span></div>
+  <div id="distance" aria-live="polite"><span id="distance-val">0.00</span><span class="unit">km</span></div>
+  <div id="status-stack" aria-live="polite">
+    <div id="status-camera" class="status-badge status-badge--camera-chase">Chase camera</div>
+    <div id="status-mouse" class="status-badge status-badge--on">Mouse steer · On</div>
+    <div id="status-autopilot" class="status-badge status-badge--off">Autopilot · Off</div>
+  </div>
+  <div id="hint">Esc — pause · WASD / arrows — drive · mouse X on canvas — steer · M — toggle mouse steer · Space — brake · Shift — turbo (+20 km/h) · P — autopilot (avoids plants and poles) · G — new world · R — reset (clears road save) · V — first person · T — free camera · free cam: Alt — precise · Shift — fast</div>
+  <div id="loading-overlay" role="status" aria-live="polite" aria-hidden="true">Generating world…</div>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.170.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.170.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
