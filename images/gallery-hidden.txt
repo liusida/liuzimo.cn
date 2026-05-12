@@ -1,11 +1,58 @@
 # Filenames to hide from the public site (must match names in images/gallery.json).
 # One name per line. Lines starting with # are ignored.
 #
-# 1) Add basenames here (e.g. PXL_20220808_130141622.jpg).
-# 2) Move files off the deployed site and refresh the manifest:
-#    .venv-gallery/bin/python scripts/move-hidden-gallery-images.py
-#    .venv-gallery/bin/python scripts/build-gallery-json.py
-# 3) Commit and push. Photos end up in private-gallery/ (gitignored, not published).
-#
-# Example (remove leading # to use):
-# PXL_20220808_130141622.jpg
+# Auto-populated to remove all current photos from GitHub-tracked images/.
+20141229_103028.jpg
+DSC_0441.JPG
+DSC_0503.JPG
+IMG_20200215_133222.jpg
+IMG_20200625_195251.jpg
+IMG_3044.JPG
+IMG_3054.JPG
+IMG_3535.JPG
+IMG_3538.JPG
+IMG_3581.JPG
+IMG_3598.JPG
+IMG_3644.JPG
+IMG_3943.JPG
+IMG_4027.JPG
+IMG_5787.JPG
+IMG_5987.JPG
+IMG_6533.JPG
+IMG_7233.JPG
+IMG_8064.JPG
+PXL_20230421_230832726.jpg
+PXL_20230911_084036708.jpg
+PXL_20240502_084046835.jpg
+PXL_20240502_085632722.jpg
+PXL_20240728_084327097.jpg
+PXL_20240731_073118594.jpg
+PXL_20240731_150918166.MP.jpg
+PXL_20240731_151054168.jpg
+PXL_20240805_135442066.jpg
+PXL_20240805_151921211.jpg
+PXL_20240811_141721009.jpg
+PXL_20240815_103822388.jpg
+PXL_20240815_144822864.jpg
+PXL_20240820_140013100.jpg
+PXL_20240821_165512506.MP.jpg
+PXL_20240822_175203721.jpg
+PXL_20240906_020450837.jpg
+PXL_20241221_044614913.MP.jpg
+PXL_20250105_093815590.MP.jpg
+PXL_20250128_085959217.MP.jpg
+PXL_20250612_124918602.jpg
+PXL_20250814_105353713.jpg
+PXL_20250921_064012145.jpg
+PXL_20250927_102418214~2.jpg
+PXL_20251230_024131709.MP.jpg
+PXL_20260207_053714059.jpg
+PXL_20260207_055729923.jpg
+PXL_20260320_031214682.jpg
+PXL_20260320_032431219.jpg
+mmexport1682127099678.jpg
+mmexport2e4a33eb33096f5732968f9f398f3646_1718859263469.jpeg
+mmexportbaefa66c0f577b254df78a5b1aa1bbb2_1718859197446.jpeg
+mmexportdc2edcac847456acd13db98890597b53_1718859278004.jpeg
+original_e901d2d3-f959-45ab-82ba-545399cc8de5_PXL_20220611_010840597.MP.jpg
+original_fff14606-7164-4188-ab9b-65300cab2a7d_PXL_20240815_143805923.MP.jpg
