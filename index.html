@@ -348,6 +348,10 @@
     const canvas = document.getElementById('bg');
     const ctx = canvas.getContext('2d');
     let width, height, nodes, dpr, connectDist, pointerDist;
+    const shootingStars = [];
+    const SHOOTING_STAR_MIN_INTERVAL = 1800;
+    const SHOOTING_STAR_MAX_INTERVAL = 5200;
+    let nextShootingStarAt = 0;
 
     const SPEED = 0.15;
 
@@ -377,6 +381,66 @@
         vx: (Math.random() - 0.5) * SPEED,
         vy: (Math.random() - 0.5) * SPEED,
       }));
+      shootingStars.length = 0;
+    }
+
+    function scheduleNextShootingStar(now) {
+      const span = SHOOTING_STAR_MAX_INTERVAL - SHOOTING_STAR_MIN_INTERVAL;
+      const cadenceFactor = isMobile() ? 1.2 : 1;
+      nextShootingStarAt = now + (SHOOTING_STAR_MIN_INTERVAL + Math.random() * span) * cadenceFactor;
+    }
+
+    function spawnShootingStar(origin = null) {
+      const speed = (isMobile() ? 4.6 : 5.7) + Math.random() * (isMobile() ? 1.7 : 2.3);
+      shootingStars.push({
+        x: origin ? origin.x : width * (0.35 + Math.random() * 0.65),
+        y: origin ? origin.y : Math.random() * height * 0.35,
+        vx: -speed * (0.75 + Math.random() * 0.15),
+        vy: speed * (0.45 + Math.random() * 0.25),
+        tail: (isMobile() ? 7 : 10) + Math.random() * (isMobile() ? 5 : 9),
+        size: (isMobile() ? 1.1 : 1.35) + Math.random() * 0.45,
+        life: (isMobile() ? 32 : 44) + Math.random() * (isMobile() ? 18 : 24),
+      });
+    }
+
+    function drawShootingStars() {
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        const s = shootingStars[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.life -= 1;
+
+        const lifeMax = isMobile() ? 50 : 68;
+        const lifeProgress = 1 - Math.max(0, s.life) / lifeMax;
+        const fadeIn = Math.min(1, lifeProgress / 0.18);
+        const fadeOut = Math.min(1, Math.max(0, s.life) / (lifeMax * 0.36));
+        const alpha = 0.9 * fadeIn * fadeOut;
+
+        const tailX = s.x - s.vx * s.tail;
+        const tailY = s.y - s.vy * s.tail;
+
+        const trail = ctx.createLinearGradient(s.x, s.y, tailX, tailY);
+        trail.addColorStop(0, `rgba(255,255,255,${alpha})`);
+        trail.addColorStop(0.25, `rgba(210,225,255,${alpha * 0.72})`);
+        trail.addColorStop(1, "rgba(210,225,255,0)");
+
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(tailX, tailY);
+        ctx.strokeStyle = trail;
+        ctx.lineWidth = s.size;
+        ctx.lineCap = "round";
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size * 0.75, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${alpha * 0.9})`;
+        ctx.fill();
+
+        if (s.life <= 0 || s.x < -120 || s.y > height + 120) {
+          shootingStars.splice(i, 1);
+        }
+      }
     }
 
     const pointer = { x: -1000, y: -1000, active: false };
@@ -409,9 +473,18 @@
       pointer.x = -1000;
       pointer.y = -1000;
     });
+    document.addEventListener('pointerdown', e => {
+      spawnShootingStar({ x: e.clientX, y: e.clientY });
+    });
 
-    function tick() {
+    function tick(now = 0) {
       ctx.clearRect(0, 0, width, height);
+
+      if (now >= nextShootingStarAt) {
+        spawnShootingStar();
+        scheduleNextShootingStar(now);
+      }
+      drawShootingStars();
 
       for (const n of nodes) {
         n.x += n.vx;
@@ -492,6 +565,7 @@
     });
     resize();
     createNodes();
+    scheduleNextShootingStar(performance.now());
     tick();
   </script>
   <script defer src="https://analytics.liusida.com/umami/script.js" data-website-id="3fee6ee7-4c33-47a5-97ea-217310d843ca"></script>
