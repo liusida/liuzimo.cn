@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three.js FPS</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.js"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="ui">
+    <div id="score">Score: 0</div>
+    <div id="shots">Bullets Shot: 0</div>
+    <div id="health">Health: 100</div>
+    <div id="loadout-ui">
+      <div id="weapon-main">1 Main: Rifle Assault</div>
+      <div id="weapon-side">2 Side: Pistol Compact</div>
+    </div>
+    <div id="ammo">Ammo: 12 / 12</div>
+    <div id="instructions">Click to lock pointer. Move: W/A/S/D. Fire: left click. Aim: hold right click. Switch weapon: 1/2. Reload: R. Infinite ammo (test): P. No cooldown (test): L.</div>
+    <div id="message">Click to start</div>
+  </div>
+  <div id="gun-menu">
+    <div id="active-weapon">Active: Main [1]</div>
+    <label for="main-gun-select">Main</label>
+    <select id="main-gun-select">
+      <option value="SMG_Compact_West">SMG Compact</option>
+      <option value="SMG_Full_West">SMG Full</option>
+      <option value="Rifle_Assault_West">Rifle Assault</option>
+      <option value="Rifle_Battle_West">Rifle Battle</option>
+      <option value="Shotgun_Pump_West">Shotgun Pump</option>
+      <option value="Shotgun_Auto_West">Shotgun Auto</option>
+      <option value="Sniper_Rifle_West">Sniper Rifle</option>
+      <option value="Sniper_Material_West">Sniper Material</option>
+    </select>
+    <label for="side-gun-select">Side</label>
+    <select id="side-gun-select">
+      <option value="Pistol_Compact_West">Pistol Compact</option>
+      <option value="Pistol_Full_West">Pistol Full</option>
+    </select>
+  </div>
+  <div id="crosshair"></div>
+  <div id="scope-overlay">
+    <div class="scope-line scope-line-h"></div>
+    <div class="scope-line scope-line-v"></div>
+  </div>
+  <div id="iron-sight-overlay">
+    <div class="iron-rear-left-wall"></div>
+    <div class="iron-rear-right-wall"></div>
+    <div class="iron-rear-bottom-bar"></div>
+    <div class="iron-front-post"></div>
+  </div>
+  <div id="current-weapon-bottom">Current: Rifle Assault</div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>

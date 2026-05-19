@@ -1,0 +1,245 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body {
+  width: 100%;
+  height: 100%;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: radial-gradient(circle at top, #111 0%, #0a0815 55%, #000 100%);
+  font-family: system-ui, sans-serif;
+  color: #fff;
+}
+body {
+  cursor: crosshair;
+}
+#ui {
+  position: fixed;
+  left: calc(env(safe-area-inset-left, 0px) + 12px);
+  right: calc(env(safe-area-inset-right, 0px) + 12px);
+  top: calc(env(safe-area-inset-top, 0px) + 12px);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 520px;
+  text-shadow: 0 0 8px rgba(0,0,0,0.8);
+}
+#message {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.55);
+  font-size: 0.95rem;
+}
+#instructions {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+#loadout-ui {
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 320px;
+}
+#weapon-main, #weapon-side {
+  font-size: 0.88rem;
+  color: #cfd5df;
+}
+#weapon-main.active, #weapon-side.active {
+  color: #c8ffd8;
+}
+#gun-menu {
+  position: fixed;
+  right: calc(env(safe-area-inset-right, 0px) + 16px);
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  z-index: 26;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.55);
+  max-width: 320px;
+}
+#gun-menu label {
+  font-size: 0.9rem;
+  color: #d7d7d7;
+}
+#main-gun-select, #side-gun-select {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(16, 16, 16, 0.9);
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+}
+#active-weapon {
+  width: 100%;
+  font-size: 0.86rem;
+  color: #c8ffd8;
+}
+#ammo {
+  position: fixed;
+  right: calc(env(safe-area-inset-right, 0px) + 16px);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+  z-index: 25;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.5);
+}
+#crosshair {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  margin-top: -8px;
+  border: none;
+  border-radius: 0;
+  background:
+    linear-gradient(
+      to right,
+      transparent 0 46%,
+      rgba(255, 255, 255, 0.96) 46% 54%,
+      transparent 54% 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0 46%,
+      rgba(255, 255, 255, 0.96) 46% 54%,
+      transparent 54% 100%
+    );
+  z-index: 30;
+  pointer-events: none;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
+  transition: width 80ms linear, height 80ms linear, margin 80ms linear;
+}
+#crosshair.iron-cross {
+  border: none;
+  border-radius: 0;
+  background:
+    linear-gradient(
+      to right,
+      transparent 0 45%,
+      rgba(210, 255, 230, 0.98) 45% 55%,
+      transparent 55% 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0 45%,
+      rgba(210, 255, 230, 0.98) 45% 55%,
+      transparent 55% 100%
+    );
+  box-shadow: 0 0 10px rgba(160, 255, 210, 0.5);
+}
+#scope-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 29;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 120ms ease;
+  background:
+    radial-gradient(circle at center, transparent 0 21%, rgba(0, 0, 0, 0.78) 21.2% 100%);
+}
+#scope-overlay.active {
+  opacity: 1;
+}
+#iron-sight-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 29;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 100ms ease;
+}
+#iron-sight-overlay.active {
+  opacity: 1;
+}
+.iron-rear-left-wall,
+.iron-rear-right-wall,
+.iron-rear-bottom-bar,
+.iron-front-post {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+}
+.iron-rear-left-wall {
+  left: calc(50% - 44px);
+  top: calc(50% + 2px);
+  width: 6px;
+  height: 24px;
+  border-radius: 3px;
+}
+.iron-rear-right-wall {
+  left: calc(50% + 38px);
+  top: calc(50% + 2px);
+  width: 6px;
+  height: 24px;
+  border-radius: 3px;
+}
+.iron-rear-bottom-bar {
+  left: calc(50% - 44px);
+  top: calc(50% + 20px);
+  width: 88px;
+  height: 6px;
+  border-radius: 3px;
+}
+.iron-front-post {
+  left: 50%;
+  top: calc(50% - 34px);
+  width: 8px;
+  height: 38px;
+  margin-left: -4px;
+  border-radius: 3px;
+}
+#current-weapon-bottom {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+  transform: translateX(-50%);
+  z-index: 27;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.58);
+  color: #c8ffd8;
+  font-size: 0.9rem;
+  letter-spacing: 0.2px;
+  pointer-events: none;
+}
+.scope-line {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.45);
+}
+.scope-line-h {
+  left: 50%;
+  top: 50%;
+  width: 120px;
+  height: 2px;
+  margin-left: -60px;
+  margin-top: -1px;
+}
+.scope-line-v {
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 120px;
+  margin-left: -1px;
+  margin-top: -60px;
+}
+canvas {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
